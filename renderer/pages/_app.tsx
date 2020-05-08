@@ -1,6 +1,7 @@
-import "antd/dist/antd.css";
+import { AppProps } from "next/app";
 
-// This default export is required in a new `pages/_app.js` file.
-export default function MyApp({ Component, pageProps }) {
+function App({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />;
 }
+
+export default App;
