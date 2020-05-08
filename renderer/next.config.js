@@ -1,48 +1,57 @@
 const lessToJS = require("less-vars-to-js");
 const fs = require("fs");
 const path = require("path");
+const process = require("process");
 const withSass = require("@zeit/next-sass");
-const withLess = require("@zeit/next-less");
-const withCSS = require("@zeit/next-css");
-const withPlugins = require("next-compose-plugins");
+
 const themeVariables = lessToJS(
   fs.readFileSync(path.resolve(__dirname, "./less/antd-custom.less"), "utf8")
 );
 
-const nextConfig = {
-  distDir: ".next",
-};
+const isDev = process.env.NODE_ENV === "development";
 
-const plugins = [
-  withCSS,
-  withLess({
-    lessLoaderOptions: {
-      javascriptEnabled: true,
-      modifyVars: themeVariables,
-    },
-    webpack: (config, { isServer }) => {
-      if (isServer) {
-        const antStyles = /antd\/.*?\/style.*?/;
-        const origExternals = [...config.externals];
-        config.externals = [
-          (context, request, callback) => {
-            if (request.match(antStyles)) return callback();
-            if (typeof origExternals[0] === "function") {
-              origExternals[0](context, request, callback);
-            } else {
-              callback();
-            }
+module.exports = withSass({
+  cssModules: true,
+  cssLoaderOptions: {
+    localIdentName: isDev
+      ? "[path][name]__[local]___[hash:base64:6]"
+      : "_[hash:base64:6]",
+  },
+  webpack(config, options) {
+    const { rules } = config.module;
+    const { use } = rules[rules.length - 1];
+
+    const loaders = options.isServer
+      ? ["css-loader"]
+      : use.slice(0, isDev ? 2 : 1).concat(["css-loader"]);
+
+    config.module.rules.push({
+      test: /.*\.(css|less)$/,
+      use: [
+        ...loaders,
+        {
+          loader: "less-loader",
+          options: {
+            javascriptEnabled: true,
+            modifyVars: themeVariables,
+            sourceMap: isDev,
           },
-          ...(typeof origExternals[0] === "function" ? [] : origExternals),
-        ];
+        },
+      ],
+    });
 
-        config.module.rules.unshift({
-          test: antStyles,
-          use: "null-loader",
-        });
-      }
-      return config;
-    },
-  }),
-];
-module.exports = withPlugins(plugins, nextConfig);
+    if (options.isServer) {
+      const externalsFunc = config.externals[0];
+
+      config.externals[0] = function (context, request, callback) {
+        if (/(antd|rc-|css-animation|@ant-design)/.test(request)) {
+          return callback();
+        }
+
+        return externalsFunc(context, request, callback);
+      };
+    }
+
+    return config;
+  },
+});

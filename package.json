@@ -16,6 +16,7 @@
     "electron-serve": "^1.0.0",
     "electron-store": "^5.1.1",
     "less": "^3.11.1",
+    "less-loader": "5",
     "next": "^9.3.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
