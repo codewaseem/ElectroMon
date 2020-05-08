@@ -1,0 +1,11 @@
+.topNotch {
+  position: relative;
+  &::before {
+    position: absolute;
+    content: "";
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: rgb(29, 180, 137);
+  }
+}

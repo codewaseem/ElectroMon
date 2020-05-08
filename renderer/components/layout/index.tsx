@@ -1,13 +1,17 @@
 import React from "react";
+import { Layout as AppLayout, Menu, Breadcrumb } from "antd";
 import styles from "./style.module.scss";
-import { Switch } from "antd";
 
-console.log(styles);
+const { Header, Content, Footer } = AppLayout;
 
-export default function Layout() {
+export default function Layout({ children }) {
   return (
-    <div className={styles.container}>
-      <Switch />
-    </div>
+    <AppLayout className={styles.layout}>
+      {/* <Header className={styles.header}></Header> */}
+      <Content style={{ padding: "0 50px" }}>{children}</Content>
+      {/* <Footer style={{ textAlign: "center" }}>
+        Ant Design ©2018 Created by Ant UED
+      </Footer> */}
+    </AppLayout>
   );
 }
