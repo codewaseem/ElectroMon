@@ -1,29 +1,45 @@
-import React, { ReactComponentElement } from "react";
-import { Card, Row, Col, Typography } from "antd";
+import React from "react";
+import { Card, Typography } from "antd";
 import styles from "./styles.module.scss";
 import { CardProps } from "antd/lib/card";
 
+const CardHead = ({ icon: Icon, title = "" }) => {
+  return (
+    <div className={styles.cardHead}>
+      <span>
+        <Icon />
+      </span>
+      <Typography.Text
+        type="secondary"
+        style={{ fontSize: "1rem", lineHeight: 1 }}
+      >
+        {title}
+      </Typography.Text>
+    </div>
+  );
+};
+
+const CardContent = ({ children }) => {
+  return <div>{children}</div>;
+};
 
 const OptionsCard: React.FC<CardProps & { icon: any; title: string }> = ({
   icon: Icon,
   title,
+  children,
   ...props
 }) => {
   return (
     <Card
       hoverable={true}
-      className={styles.topNotch}
       style={{ width: 210 }}
       {...props}
+      className={styles.cardOveride}
     >
-      <Row gutter={15} justify="center">
-        <Col>
-          <Icon />
-        </Col>
-        <Col>
-          <Typography.Text type="secondary"> {title}</Typography.Text>
-        </Col>
-      </Row>
+      <div className={styles.container}>
+        <CardHead icon={Icon} title={title} />
+        <CardContent>{children}</CardContent>
+      </div>
     </Card>
   );
 };

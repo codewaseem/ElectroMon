@@ -1,11 +1,26 @@
-.topNotch {
-  position: relative;
-  &::before {
-    position: absolute;
-    content: "";
-    display: block;
-    width: 100%;
-    height: 3px;
-    background: rgb(29, 180, 137);
-  }
+.cardOveride {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 10px 0px;
 }
+
+.container {
+  display: grid;
+  justify-items: center;
+  overflow: hidden;
+  gap: 20px;
+}
+
+.cardHead {
+  display: grid;
+  grid-template-columns: 25px 1fr;
+  -webkit-box-align: center;
+  align-items: center;
+  font-size: 1.2rem;
+  color: rgb(99, 104, 126);
+  gap: 15px;
+}
+
+// .cardContent {
+//   display: grid;
+//   justify-items: center;
+//   gap: 15px;
+// }

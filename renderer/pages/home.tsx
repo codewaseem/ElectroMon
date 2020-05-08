@@ -9,7 +9,9 @@ const Home = () => {
   return (
     <Layout>
       <div style={{ padding: 50 }}>
-        <OptionsCard icon={WorkIcon} title="Hello" />
+        <OptionsCard icon={WorkIcon} title="Hello">
+          <h1>00:00:00</h1>
+        </OptionsCard>
       </div>
     </Layout>
   );
