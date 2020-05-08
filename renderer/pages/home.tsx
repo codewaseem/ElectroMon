@@ -1,6 +1,7 @@
-import React from 'react';
-import Head from 'next/head';
-import Link from 'next/link';
+import React from "react";
+import Head from "next/head";
+import Link from "next/link";
+import Layout from "../components/layout";
 
 const Home = () => {
   return (
@@ -8,6 +9,7 @@ const Home = () => {
       <Head>
         <title>Home - Nextron (with-typescript)</title>
       </Head>
+      <Layout />
       <div>
         <p>
           ⚡ Electron + Next.js ⚡ -
