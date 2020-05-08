@@ -11,8 +11,8 @@ const themeVariables = lessToJS(
 const isDev = process.env.NODE_ENV === "development";
 
 module.exports = withSass({
-  cssModules: true,
   cssLoaderOptions: {
+    modules: true,
     localIdentName: isDev
       ? "[path][name]__[local]___[hash:base64:6]"
       : "_[hash:base64:6]",
@@ -20,7 +20,6 @@ module.exports = withSass({
   webpack(config, options) {
     const { rules } = config.module;
     const { use } = rules[rules.length - 1];
-
     const loaders = options.isServer
       ? ["css-loader"]
       : use.slice(0, isDev ? 2 : 1).concat(["css-loader"]);
