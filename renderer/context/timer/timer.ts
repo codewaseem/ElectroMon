@@ -50,6 +50,21 @@ class Timer {
             duration: this.milliseconds
         });
 
+        this.milliseconds = 0;
+
+    }
+
+    toTimeObject(milliseconds: number) {
+        let time = moment(milliseconds).utc();
+        return {
+            hours: time.hours(),
+            minutes: time.minutes(),
+            seconds: time.seconds()
+        }
+    }
+
+    getCurrentTimeObject() {
+        return this.toTimeObject(this.milliseconds);
     }
 
     get currentTime() {
@@ -84,7 +99,17 @@ export class DailyTimer extends Timer {
         this.logsByDate[date] = this.getLaps();
     }
 
+    getTodaysTimeObject = () => {
+        let duration = 0;
+        this.logsByDate[this.getDateKey()]?.forEach(lap => duration += lap.duration);
+        return this.toTimeObject(duration + this.currentTime);
+    }
+
     getTodaysLogs = () => this.logsByDate[this.getDateKey()];
 
     getAllLogs = () => this.logsByDate;
+}
+
+class DailyTimers {
+
 }

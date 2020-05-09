@@ -25,6 +25,7 @@ h1.time {
   opacity: 0.8;
   font-size: 0.9rem;
   text-align: center;
+  margin: 0;
 }
 
 .timerState {
@@ -38,4 +39,9 @@ h1.time {
     color: $text-color-secondary;
     font-weight: bold;
   }
+}
+
+.mainContent {
+  justify-self: stretch;
+  text-align: center;
 }

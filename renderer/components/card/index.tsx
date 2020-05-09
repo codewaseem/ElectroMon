@@ -20,7 +20,7 @@ const CardHead = ({ icon: Icon, title = "" }) => {
 };
 
 const CardContent = ({ children }) => {
-  return <div>{children}</div>;
+  return <div className={styles.cardContent}>{children}</div>;
 };
 
 const OptionsCard: React.FC<CardProps & { icon: any; title: string }> = ({

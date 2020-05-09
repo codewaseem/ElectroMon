@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography, Switch } from "antd";
 import styles from "./timer.module.scss";
 
-const zeroPad = (number: number) => (number < 9 ? `0${number}` : number);
+const zeroPad = (number: number) => (number <= 9 ? `0${number}` : number);
 
 const Timer: React.FC<{
   onStart?: () => void;
@@ -21,6 +21,12 @@ const Timer: React.FC<{
   time = { hours: 0, minutes: 0, seconds: 0 },
   summaryText,
 }) => {
+  const handleChange = (checked) => {
+    console.log(checked);
+    if (checked) onStart();
+    else onStop();
+  };
+
   return (
     <div className={styles.timerContainer}>
       <div className={styles.mainContent}>
@@ -32,7 +38,7 @@ const Timer: React.FC<{
         {summaryText && <p className={styles.summaryText}>{summaryText}</p>}
       </div>
       <div className={styles.timerState}>
-        <Switch />
+        <Switch onChange={handleChange} />
         <span>{isActive ? "ON" : "OFF"}</span>
       </div>
     </div>
