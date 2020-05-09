@@ -7,6 +7,11 @@ interface Lap {
     duration: number
 }
 
+interface LogsByDate {
+    [key: string]: Lap[]
+}
+
+
 class Timer {
     private isRunning = false;
     private laps: Lap[] = [];
@@ -62,9 +67,6 @@ class Timer {
     }
 }
 
-interface LogsByDate {
-    [key: string]: Lap[]
-}
 
 export class DailyTimer extends Timer {
     private logsByDate: LogsByDate = {};
