@@ -2,6 +2,7 @@ import React from "react";
 import { Card, Typography, Switch } from "antd";
 import styles from "./styles.module.scss";
 import { CardProps } from "antd/lib/card";
+import useAsyncWithNotification from "../../hooks/useAsyncWithNotification";
 
 const CardHead = ({ icon: Icon, title = "" }) => {
   return (
@@ -29,6 +30,17 @@ const OptionsCard: React.FC<CardProps & { icon: any; title: string }> = ({
   children,
   ...props
 }) => {
+  const result = useAsyncWithNotification(
+    () => {
+      return Promise.resolve();
+    },
+    {
+      success: {
+        message: "Success",
+        description: "Well done",
+      },
+    }
+  );
   return (
     <Card
       hoverable={true}
@@ -39,7 +51,7 @@ const OptionsCard: React.FC<CardProps & { icon: any; title: string }> = ({
       <div className={styles.container}>
         <CardHead icon={Icon} title={title} />
         <CardContent>
-          <Switch />
+          <Switch onChange={() => {}} />
           {children}
         </CardContent>
       </div>
