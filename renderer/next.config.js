@@ -1,18 +1,68 @@
-const withLess = require("@zeit/next-less");
-const withSass = require("@zeit/next-sass");
-const lessToJS = require("less-vars-to-js");
-const fs = require("fs");
+const AntdScssThemePlugin = require("@codewaseem/antd-scss-theme-plugin");
 const path = require("path");
 const withPlugins = require("next-compose-plugins");
 const withSvgr = require("next-svgr");
-
+const withLess = require("@zeit/next-less");
+const withSass = require("@zeit/next-sass");
 // Where your antd-custom.less file lives
-const themeVariables = lessToJS(
-  fs.readFileSync(path.resolve(__dirname, "./less/antd-custom.less"), "utf8")
-);
+const themeVariables = path.resolve(__dirname, "./theme/antd-custom.scss");
 
 const nextConfig = {
   distDir: ".next",
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // Note: we provide webpack above so you should not `require` it
+    // Perform customizations to webpack config
+    // Important: return the modified config
+    config.plugins.push(new webpack.IgnorePlugin(/\/__tests__\//));
+    config.plugins.push(new AntdScssThemePlugin(themeVariables));
+
+    config.module.rules.unshift({
+      test: /\.less$/,
+      use: [
+        {
+          loader: "css-loader",
+          options: {
+            importLoaders: 1,
+            sourceMap: dev,
+          },
+        },
+        AntdScssThemePlugin.themify({
+          loader: "less-loader",
+          options: {
+            lessOptions: {
+              javascriptEnabled: true,
+            },
+          },
+        }),
+      ],
+    });
+
+    config.module.rules.unshift({
+      test: /\.s[ac]ss$/i,
+      use: [
+        {
+          loader: "css-loader",
+          options: {
+            importLoaders: 1,
+            sourceMap: dev,
+            modules: {
+              mode: "local",
+              exportGlobals: true,
+              localIdentName: "[path][name]__[local]--[hash:base64:5]",
+            },
+          },
+        },
+        AntdScssThemePlugin.themify({
+          loader: "sass-loader",
+          options: {
+            sourceMap: dev,
+          },
+        }),
+      ],
+    });
+
+    return config;
+  },
 };
 
 const plugins = [
@@ -20,9 +70,9 @@ const plugins = [
     cssModules: true,
     ...withLess({
       lessLoaderOptions: {
-        javascriptEnabled: true,
-        modifyVars: themeVariables, // make your antd custom effective
-        importLoaders: 0,
+        lessOptions: {
+          javascriptEnabled: true,
+        },
       },
       cssLoaderOptions: {
         importLoaders: 3,

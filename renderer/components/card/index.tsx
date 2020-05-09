@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Typography } from "antd";
+import { Card, Typography, Switch } from "antd";
 import styles from "./styles.module.scss";
 import { CardProps } from "antd/lib/card";
 
@@ -38,7 +38,10 @@ const OptionsCard: React.FC<CardProps & { icon: any; title: string }> = ({
     >
       <div className={styles.container}>
         <CardHead icon={Icon} title={title} />
-        <CardContent>{children}</CardContent>
+        <CardContent>
+          <Switch />
+          {children}
+        </CardContent>
       </div>
     </Card>
   );
