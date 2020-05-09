@@ -43,20 +43,18 @@ const plugins = [
 
         config.module.rules[config.module.rules.length - 1].use.pop();
 
-        config.module.rules[config.module.rules.length - 1].use.push(
-          AntdScssThemePlugin.themify({
-            loader: "less-loader",
-            options: {
-              lessOptions: {
-                javascriptEnabled: true,
-              },
-              appendData: fs
-                .readFileSync(path.resolve(themeVariables), "utf8")
-                .replace(/\$/gi, "@")
-                .toString(),
+        config.module.rules[config.module.rules.length - 1].use.push({
+          loader: "less-loader",
+          options: {
+            lessOptions: {
+              javascriptEnabled: true,
             },
-          })
-        );
+            appendData: fs
+              .readFileSync(path.resolve(themeVariables), "utf8")
+              .replace(/\$/gi, "@")
+              .toString(),
+          },
+        });
         // }
 
         if (isServer) {
@@ -79,7 +77,6 @@ const plugins = [
             use: "null-loader",
           });
         }
-        console.log(config.module.rules[config.module.rules.length - 1]);
         return config;
       },
     }),
