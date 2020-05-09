@@ -2,15 +2,14 @@ import React from "react";
 import Layout from "../components/layout";
 import OptionsCard from "../components/card";
 import { WorkIcon } from "../components/icons";
-
-const Timer = () => {};
+import Timer from "../components/timer";
 
 const Home = () => {
   return (
     <Layout>
       <div style={{ padding: 50 }}>
         <OptionsCard icon={WorkIcon} title="Hello">
-          <h1>00:00:00</h1>
+          <Timer summaryText="Worked Today" />
         </OptionsCard>
       </div>
     </Layout>

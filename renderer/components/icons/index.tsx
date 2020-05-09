@@ -5,7 +5,7 @@ import Coffee from "../../assets/icons/coffee.svg";
 import Lunch from "../../assets/icons/lunch.svg";
 import Leave from "../../assets/icons/leave.svg";
 import Exit from "../../assets/icons/exit.svg";
-import styles from "./styles.module.scss";
+import styles from "./icons.module.scss";
 
 const StyledIcon = ({ children }) => (
   <span className={styles.svgIconContainer}>{children}</span>

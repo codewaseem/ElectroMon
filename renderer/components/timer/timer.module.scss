@@ -1,0 +1,41 @@
+@import "../../theme/antd-custom.scss";
+
+.timerContainer {
+  display: grid;
+  grid-gap: 15px;
+  justify-items: center;
+}
+
+h1.time {
+  margin: 0;
+  font-size: 44px;
+  line-height: 1;
+  font-weight: bold;
+
+  .seconds {
+    font-size: 1rem;
+    font-weight: normal;
+    vertical-align: 3px;
+    color: $text-color-secondary;
+  }
+}
+
+.summaryText {
+  color: $text-color-secondary;
+  opacity: 0.8;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.timerState {
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  grid-gap: 15px;
+  align-items: center;
+  font-size: 0.9rem;
+
+  span {
+    color: $text-color-secondary;
+    font-weight: bold;
+  }
+}
