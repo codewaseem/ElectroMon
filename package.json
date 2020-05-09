@@ -36,8 +36,8 @@
     "next-plugin-svgr": "^0.0.6",
     "next-svgr": "^0.0.2",
     "nextron": "^5.14.5",
-    "node-sass": "^4.14.1",
     "null-loader": "^4.0.0",
+    "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "typescript": "^3.8.3"
   }
