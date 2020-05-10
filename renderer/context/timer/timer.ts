@@ -13,7 +13,7 @@ interface TimersByDate {
 
 
 class Timer {
-    private isRunning = false;
+    private _isRunning = false;
     private laps: Lap[] = [];
     private milliseconds = 0;
     private startTime: moment.Moment;
@@ -22,7 +22,7 @@ class Timer {
 
 
     private measure = () => {
-        if (!this.isRunning) return;
+        if (!this._isRunning) return;
 
         this.milliseconds = moment().diff(this.startTime);
 
@@ -40,19 +40,23 @@ class Timer {
         return this.laps;
     }
 
-    start() {
-        if (this.isRunning) return;
+    get isRunning() {
+        return this._isRunning;
+    }
 
-        this.isRunning = true;
+    start() {
+        if (this._isRunning) return;
+
+        this._isRunning = true;
         this.startTime = moment();
         this.measure();
 
     }
 
     stop() {
-        if (!this.isRunning) return;
+        if (!this._isRunning) return;
 
-        this.isRunning = false;
+        this._isRunning = false;
         clearTimeout(this.clearTimerId);
 
         this.laps.push({
@@ -95,7 +99,7 @@ class Timer {
         return this.calculateTotalRunningTime(this.laps);
     }
 
-    toObject() {
+    toJSON() {
         return {
             currentRunningTimeMs: this.milliseconds,
             currentRunningTimeObject: this.currentTimeObject,
@@ -103,6 +107,10 @@ class Timer {
             totalTimeMs: this.totalTime,
             totalTimeObject: this.toTimeObject,
         }
+    }
+
+    toObject() {
+        return this.toJSON();
     }
 
     toString() {
@@ -133,6 +141,10 @@ export class DatedTimer {
         return this.getTimer().totalTimeObject;
     }
 
+    get isRunning() {
+        return this.getTimer().isRunning;
+    }
+
     getTotalTimeOn(dateKey: string) {
         if (this.timers[dateKey]) return this.timers[dateKey].totalTime;
         return 0;
@@ -148,8 +160,56 @@ export class DatedTimer {
             this.timers[key] = new Timer();
         return this.timers[key];
     }
+
+    // getTimers() {
+    //     return this.timers;
+    // }
 }
 
-class DatedTimerWithStorage extends DatedTimer {
 
+export class TimersManager {
+    private timers: {
+        [key: string]: DatedTimer
+    } = {};
+    private activeTimerKey: string;
+
+
+    getActiveTimer() {
+        return this.timers[this.activeTimerKey];
+    }
+
+    getActiveTimerKey() {
+        return this.activeTimerKey;
+    }
+
+    startTimer(timerName: string) {
+        let newTimer = this.timers[timerName];
+        let activeTimer = this.getActiveTimer();
+
+        if (!newTimer) return;
+
+        if (activeTimer) activeTimer.stop();
+
+        this.activeTimerKey = timerName;
+        this.timers[timerName].start();
+    }
+
+    stopTimer() {
+        let activeTimer = this.getActiveTimer();
+        if (!activeTimer) return;
+
+        activeTimer.stop();
+
+        activeTimer = null;
+    }
+
+    getTimerByName(timerName: string) {
+        return this.timers[timerName];
+    }
+
+    addNewTimer(timerName: string) {
+        if (this.timers[timerName]) return;
+
+        this.timers[timerName] = new DatedTimer();
+    }
 }

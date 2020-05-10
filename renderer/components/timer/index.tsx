@@ -38,7 +38,7 @@ const Timer: React.FC<{
         {summaryText && <p className={styles.summaryText}>{summaryText}</p>}
       </div>
       <div className={styles.timerState}>
-        <Switch onChange={handleChange} />
+        <Switch onChange={handleChange} checked={isActive} />
         <span>{isActive ? "ON" : "OFF"}</span>
       </div>
     </div>

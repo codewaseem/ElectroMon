@@ -1,38 +1,27 @@
-import React, { useContext, useState, useEffect } from "react";
+import React from "react";
 import Layout from "../components/layout";
 import OptionsCard from "../components/card";
-import { WorkIcon } from "../components/icons";
-import Timer from "../components/timer";
+import { WorkIcon, LunchIcon, CoffeeIcon } from "../components/icons";
 import styles from "../styles/home.module.scss";
-import { TimerContext } from "../context";
+import { ALL_TIMERS } from "../../constants";
+import useTimer from "../hooks/useTimer";
 
 const Home = () => {
-  const timer = useContext(TimerContext);
-
-  const [currentTime, setCurrentTime] = useState(timer.totalTimeObject);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setCurrentTime(timer.totalTimeObject);
-    });
-  }, [currentTime]);
+  const WorkTimer = useTimer(ALL_TIMERS.WORK_TIMER, "Worked Today");
+  const LunchTimer = useTimer(ALL_TIMERS.LUNCH_TIMER, "Lunch Break");
+  const CoffeeTimer = useTimer(ALL_TIMERS.COFFEE_TIMER, "Coffee Break");
 
   return (
     <Layout>
       <div className={styles.optionsGrid}>
-        <OptionsCard icon={WorkIcon} title="Hello">
-          <Timer
-            time={currentTime}
-            summaryText="Worked Today"
-            onStart={() => timer.start()}
-            onStop={() => timer.stop()}
-          />
+        <OptionsCard icon={WorkIcon} title="Work">
+          {WorkTimer}
         </OptionsCard>
-        <OptionsCard icon={WorkIcon} title="Hello">
-          <Timer summaryText="Worked Today" />
+        <OptionsCard icon={LunchIcon} title="Lunch">
+          {LunchTimer}
         </OptionsCard>
-        <OptionsCard icon={WorkIcon} title="Hello">
-          <Timer summaryText="Worked Today" />
+        <OptionsCard icon={CoffeeIcon} title="Coffee">
+          {CoffeeTimer}
         </OptionsCard>
       </div>
     </Layout>

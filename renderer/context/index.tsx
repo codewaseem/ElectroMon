@@ -1,12 +1,16 @@
 import React, { useEffect } from "react";
-import { DatedTimer } from "./timer/timer";
+import { TimersManager } from "./timer/timer";
+import { ALL_TIMERS } from "../../constants";
 
-const timer = new DatedTimer();
+const timersManager = new TimersManager();
 
-export const TimerContext = React.createContext(timer);
+export const TimerContext = React.createContext(timersManager);
 
 export const TimerProvider = ({ children }) => {
+  console.log(timersManager);
   return (
-    <TimerContext.Provider value={timer}>{children}</TimerContext.Provider>
+    <TimerContext.Provider value={timersManager}>
+      {children}
+    </TimerContext.Provider>
   );
 };
