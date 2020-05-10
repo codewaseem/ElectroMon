@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Typography, Switch } from "antd";
 import styles from "./timer.module.scss";
 
