@@ -4,17 +4,17 @@ import OptionsCard from "../components/card";
 import { WorkIcon } from "../components/icons";
 import Timer from "../components/timer";
 import styles from "../styles/home.module.scss";
-import { DailyTimer } from "../context/timer/timer";
+import { DatedTimer } from "../context/timer/timer";
 import { TimerContext } from "../context";
 
 const Home = () => {
   const timer = useContext(TimerContext);
 
-  const [currentTime, setCurrentTime] = useState(timer.getTodaysTimeObject());
+  const [currentTime, setCurrentTime] = useState(timer.totalTimeObject);
 
   useEffect(() => {
     setTimeout(() => {
-      setCurrentTime(timer.getTodaysTimeObject());
+      setCurrentTime(timer.totalTimeObject);
     });
   }, [currentTime]);
 

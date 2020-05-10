@@ -7,8 +7,8 @@ interface Lap {
     duration: number
 }
 
-interface LogsByDate {
-    [key: string]: Lap[]
+interface TimersByDate {
+    [key: string]: Timer
 }
 
 
@@ -27,6 +27,17 @@ class Timer {
         this.milliseconds = moment().diff(this.startTime);
 
         this.clearTimerId = setTimeout(() => this.measure(), 10);
+    }
+
+
+    protected calculateTotalRunningTime(laps: Lap[]) {
+        let duration = 0;
+        laps?.forEach(lap => duration += lap.duration);
+        return this.toTimeObject(duration + this.currentTime);
+    }
+
+    protected getLaps = () => {
+        return this.laps;
     }
 
     start() {
@@ -54,8 +65,8 @@ class Timer {
 
     }
 
-    toTimeObject(milliseconds: number) {
-        let time = moment(milliseconds).utc();
+    toTimeObject(milliseconds?: number) {
+        let time = moment(milliseconds || this.milliseconds).utc();
         return {
             hours: time.hours(),
             minutes: time.minutes(),
@@ -63,53 +74,82 @@ class Timer {
         }
     }
 
-    getCurrentTimeObject() {
-        return this.toTimeObject(this.milliseconds);
-    }
-
+    // time of current running lap in ms
     get currentTime() {
         return this.milliseconds;
     }
 
+    // time object of current running lap
+    get currentTimeObject() {
+        return this.toTimeObject();
+    }
+
+    // Total time is current running time + all time in laps
     get totalTime() {
         let duration = 0;
         this.laps.forEach(lap => duration += lap.duration);
-        return duration;
+        return duration + this.milliseconds;
     }
 
-    getLaps = () => {
-        return this.laps;
+    get totalTimeObject() {
+        return this.calculateTotalRunningTime(this.laps);
+    }
+
+    toObject() {
+        return {
+            currentRunningTimeMs: this.milliseconds,
+            currentRunningTimeObject: this.currentTimeObject,
+            laps: this.laps,
+            totalTimeMs: this.totalTime,
+            totalTimeObject: this.toTimeObject,
+        }
+    }
+
+    toString() {
+        return JSON.stringify(this.toObject());
     }
 }
 
 
-export class DailyTimer extends Timer {
-    private logsByDate: LogsByDate = {};
+export class DatedTimer {
+    private timers: TimersByDate = {};
 
-    constructor() {
-        super();
 
+    private getDateKey = () => moment().toISOString().split('T')[0];
+
+    start() {
+        this.getTimer().start();
     }
-
-    private getDateKey = () => moment().toISOString().split('T')[0]
 
     stop() {
-        super.stop();
-        let date = this.getDateKey();
-        this.logsByDate[date] = this.getLaps();
+        this.getTimer().stop();
     }
 
-    getTodaysTimeObject = () => {
-        let duration = 0;
-        this.logsByDate[this.getDateKey()]?.forEach(lap => duration += lap.duration);
-        return this.toTimeObject(duration + this.currentTime);
+    get totalTime() {
+        return this.getTimer().totalTime;
     }
 
-    getTodaysLogs = () => this.logsByDate[this.getDateKey()];
+    get totalTimeObject() {
+        return this.getTimer().totalTimeObject;
+    }
 
-    getAllLogs = () => this.logsByDate;
+    getTotalTimeOn(dateKey: string) {
+        if (this.timers[dateKey]) return this.timers[dateKey].totalTime;
+        return 0;
+    }
+
+    getTotalTimeObjectOn(dateKey: string) {
+        if (this.timers[dateKey]) return this.timers[dateKey].totalTimeObject;
+    }
+
+    private getTimer(dateKey?) {
+        let key = dateKey || this.getDateKey();
+        if (!this.timers[key])
+            this.timers[key] = new Timer();
+        return this.timers[key];
+    }
 }
 
-class DailyTimers {
+class DatedTimerWithStorage extends DatedTimer {
 
 }

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { DailyTimer } from "./timer/timer";
+import { DatedTimer } from "./timer/timer";
 
-const timer = new DailyTimer();
+const timer = new DatedTimer();
 
 export const TimerContext = React.createContext(timer);
 
