@@ -22,7 +22,6 @@ const Timer: React.FC<{
   summaryText,
 }) => {
   const handleChange = (checked) => {
-    console.log(checked);
     if (checked) onStart();
     else onStop();
   };

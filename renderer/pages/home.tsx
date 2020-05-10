@@ -3,13 +3,13 @@ import Layout from "../components/layout";
 import OptionsCard from "../components/card";
 import { WorkIcon, LunchIcon, CoffeeIcon } from "../components/icons";
 import styles from "../styles/home.module.scss";
-import { ALL_TIMERS } from "../../constants";
-import useTimer from "../hooks/useTimer";
+import { WORK_TIMER, LUNCH_TIMER, COFFEE_TIMER } from "../../constants";
+import useTimer from "../hooks/useTimerComponent";
 
 const Home = () => {
-  const WorkTimer = useTimer(ALL_TIMERS.WORK_TIMER, "Worked Today");
-  const LunchTimer = useTimer(ALL_TIMERS.LUNCH_TIMER, "Lunch Break");
-  const CoffeeTimer = useTimer(ALL_TIMERS.COFFEE_TIMER, "Coffee Break");
+  const WorkTimer = useTimer(WORK_TIMER, "Worked Today");
+  const LunchTimer = useTimer(LUNCH_TIMER, "Lunch Break");
+  const CoffeeTimer = useTimer(COFFEE_TIMER, "Coffee Break");
 
   return (
     <Layout>

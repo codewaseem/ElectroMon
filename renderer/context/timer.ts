@@ -11,6 +11,16 @@ interface TimersByDate {
     [key: string]: Timer
 }
 
+interface TimerInitData {
+    laps: Lap[],
+    milliseconds: number,
+    isRunning: boolean,
+    startTimeISO?: string
+}
+
+interface DatedTimerInitData {
+    [key: string]: TimerInitData
+}
 
 class Timer {
     private _isRunning = false;
@@ -20,6 +30,14 @@ class Timer {
 
     private clearTimerId;
 
+    constructor(initialData?: TimerInitData) {
+        if (initialData) {
+            this.laps = initialData.laps;
+            this.milliseconds = initialData.milliseconds;
+            this._isRunning = initialData.isRunning;
+            this.startTime = initialData.startTimeISO && moment(initialData.startTimeISO);
+        }
+    }
 
     private measure = () => {
         if (!this._isRunning) return;
@@ -65,6 +83,7 @@ class Timer {
             duration: this.milliseconds
         });
 
+        this.startTime = undefined;
         this.milliseconds = 0;
 
     }
@@ -101,11 +120,10 @@ class Timer {
 
     toJSON() {
         return {
-            currentRunningTimeMs: this.milliseconds,
-            currentRunningTimeObject: this.currentTimeObject,
+            isRunning: this.isRunning,
+            milliseconds: this.milliseconds,
             laps: this.laps,
-            totalTimeMs: this.totalTime,
-            totalTimeObject: this.toTimeObject,
+            startTimeISO: this.startTime && this.startTime.toISOString(),
         }
     }
 
@@ -120,10 +138,19 @@ class Timer {
 
 
 export class DatedTimer {
-    private timers: TimersByDate = {};
+    private logsByDate: TimersByDate = {};
 
 
     private getDateKey = () => moment().toISOString().split('T')[0];
+
+    constructor(initialData?: DatedTimerInitData) {
+        // initialize timers by date with initial data
+        if (initialData) {
+            Object.keys(initialData).map(date => {
+                this.logsByDate[date] = new Timer(initialData[date]);
+            });
+        }
+    }
 
     start() {
         this.getTimer().start();
@@ -146,36 +173,54 @@ export class DatedTimer {
     }
 
     getTotalTimeOn(dateKey: string) {
-        if (this.timers[dateKey]) return this.timers[dateKey].totalTime;
+        if (this.logsByDate[dateKey]) return this.logsByDate[dateKey].totalTime;
         return 0;
     }
 
     getTotalTimeObjectOn(dateKey: string) {
-        if (this.timers[dateKey]) return this.timers[dateKey].totalTimeObject;
+        if (this.logsByDate[dateKey]) return this.logsByDate[dateKey].totalTimeObject;
     }
 
     private getTimer(dateKey?) {
         let key = dateKey || this.getDateKey();
-        if (!this.timers[key])
-            this.timers[key] = new Timer();
-        return this.timers[key];
+        if (!this.logsByDate[key])
+            this.logsByDate[key] = new Timer();
+        return this.logsByDate[key];
     }
 
-    // getTimers() {
-    //     return this.timers;
-    // }
+    toJSON() {
+        return this.logsByDate;
+    }
 }
 
 
+type TimersByName = {
+    [key: string]: DatedTimer
+}
+
 export class TimersManager {
-    private timers: {
-        [key: string]: DatedTimer
-    } = {};
+    private timers: TimersByName = {};
     private activeTimerKey: string;
 
 
     getActiveTimer() {
         return this.timers[this.activeTimerKey];
+    }
+
+    constructor(timersData?: {
+        [key: string]: DatedTimerInitData
+    }) {
+        if (timersData) {
+            Object.keys(timersData).map(timerName => {
+                this.timers[timerName] = new DatedTimer(timersData[timerName]);
+                this.timers[timerName].isRunning;
+                this.timers[timerName].stop();
+            });
+        }
+    }
+
+    getTimersData() {
+        return this.timers;
     }
 
     getActiveTimerKey() {
@@ -211,5 +256,9 @@ export class TimersManager {
         if (this.timers[timerName]) return;
 
         this.timers[timerName] = new DatedTimer();
+    }
+
+    toJSON() {
+        return this.timers;
     }
 }
