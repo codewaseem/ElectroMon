@@ -4,7 +4,6 @@ import OptionsCard from "../components/card";
 import { WorkIcon } from "../components/icons";
 import Timer from "../components/timer";
 import styles from "../styles/home.module.scss";
-import { DatedTimer } from "../context/timer/timer";
 import { TimerContext } from "../context";
 
 const Home = () => {
