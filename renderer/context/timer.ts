@@ -77,10 +77,12 @@ class Timer {
         this._isRunning = false;
         clearTimeout(this.clearTimerId);
 
+        // call measure manually to get accurate time duration.
+        this.measure();
         this.laps.push({
             startTime: this.startTime.toISOString(),
-            endTime: moment().toISOString(),
-            duration: this.milliseconds
+            duration: this.milliseconds,
+            endTime: moment(this.startTime).add(this.milliseconds).toISOString(), // should be always computed from startTime and duration
         });
 
         this.startTime = undefined;
