@@ -3,6 +3,12 @@ import styles from "./header.module.scss";
 import { TimerContext } from "../../context";
 import React, { useContext, useState, useEffect } from "react";
 import { WORK_TIMER } from "../../../constants";
+import ApplyLeaveModal from "../leave-model";
+import Logo from "../Logo";
+
+const Prefix = ({ children }) => {
+  return <span className={styles.prefix}>{children}</span>;
+};
 
 export default function AppHeader() {
   const timersManager = useContext(TimerContext);
@@ -12,6 +18,9 @@ export default function AppHeader() {
   const [allTimersTotal, setAllTimersTotal] = useState(
     timersManager.getTotalTimeObject()
   );
+
+  const [visible, setVisible] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
   useEffect(() => {
     let id = setTimeout(() => {
@@ -26,10 +35,12 @@ export default function AppHeader() {
     <div>
       <PageHeader
         className={styles.removeSpacing}
-        title="AiMonitor"
+        title={<Logo />}
         subTitle="Dashboard"
         extra={[
-          <Button key="3">Apply Leave</Button>,
+          <Button onClick={() => setVisible(true)} key="3">
+            Apply Leave
+          </Button>,
           <Button key="2">View Logs</Button>,
           <Button key="1" type="primary">
             Exit
@@ -45,16 +56,22 @@ export default function AppHeader() {
             2017-01-10
           </Descriptions.Item>
         </Descriptions> */}
+        <ApplyLeaveModal
+          visible={visible}
+          confirmLoading={confirmLoading}
+          onOk={() => {}}
+          onCancel={() => setVisible(false)}
+        />
         <Row>
           {/* <Statistic title="Status" value="Active" /> */}
           <Statistic
             title="Time Worked"
-            prefix="⧗"
+            prefix={<Prefix>⧗</Prefix>}
             value={`${totalWorkTime.hours}:${totalWorkTime.minutes}`}
           />
           <Statistic
             title="Total Time"
-            prefix="⧗"
+            prefix={<Prefix>⧗</Prefix>}
             value={`${allTimersTotal.hours}:${allTimersTotal.minutes}`}
             style={{
               margin: "0 32px",
