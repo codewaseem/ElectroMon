@@ -6,14 +6,14 @@
 
 .container {
   display: grid;
-  justify-items: center;
   overflow: hidden;
+  justify-items: center;
   gap: 20px;
 }
 
 .cardHead {
   display: grid;
-  grid-template-columns: 25px 1fr;
+  grid-template-columns: 30px 1fr;
   -webkit-box-align: center;
   align-items: center;
   font-size: 1.2rem;

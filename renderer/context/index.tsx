@@ -12,11 +12,14 @@ export const TimerProvider = ({ children }) => {
   timersManager = new TimersManager(timersData);
 
   useEffect(() => {
-    const id = setInterval(() => {
-      console.log("updating cache");
-      localStorage.setItem(TIMERS_STORAGE_KEY, JSON.stringify(timersManager));
-    }, 1000 * 10);
-
+    const cacheTimer = () => {
+      const id = setTimeout(() => {
+        localStorage.setItem(TIMERS_STORAGE_KEY, JSON.stringify(timersManager));
+        cacheTimer();
+      }, 1000);
+      return id;
+    };
+    const id = cacheTimer();
     return () => clearInterval(id);
   }, []);
 
