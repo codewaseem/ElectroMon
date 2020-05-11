@@ -31,8 +31,14 @@ const Timer: React.FC<{
       <div className={styles.mainContent}>
         <Typography.Title level={1} className={styles.time}>
           <span className={styles.hours}>{zeroPad(time.hours)}</span>
-          <span className={styles.minutes}>:{zeroPad(time.minutes)}</span>
-          <span className={styles.seconds}>:{zeroPad(time.seconds)}</span>
+          <span className={styles.minutes}>
+            <span className={isActive ? styles.blinker : ""}>:</span>
+            {zeroPad(time.minutes)}
+          </span>
+          <span className={styles.seconds}>
+            <span className={isActive ? styles.blinker : ""}>:</span>
+            {zeroPad(time.seconds)}
+          </span>
         </Typography.Title>
         {summaryText && <p className={styles.summaryText}>{summaryText}</p>}
       </div>

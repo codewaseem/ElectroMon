@@ -27,6 +27,25 @@ h1.time {
   margin: 0;
 }
 
+@keyframes blinking {
+  0% {
+    opacity: 0;
+  }
+  /* YOU CAN ADD MORE COLORS IN THE KEYFRAMES IF YOU WANT
+        50%{
+          background-color: #55d66b;
+          border: 5px solid #126620;
+        }
+        */
+  100% {
+    opacity: 0.8;
+  }
+}
+
+.blinker {
+  animation: blinking 1s infinite;
+}
+
 .timerState {
   display: grid;
   grid-template-columns: 50px 50px;
