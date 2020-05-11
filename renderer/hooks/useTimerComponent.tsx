@@ -10,9 +10,11 @@ const useTimer = (timerName: string, summaryText: string) => {
   const [currentTime, setCurrentTime] = useState(thisTimer.totalTimeObject);
 
   useEffect(() => {
-    setTimeout(() => {
+    let id = setTimeout(() => {
       setCurrentTime(thisTimer.totalTimeObject);
-    });
+    }, 1000);
+
+    return () => clearTimeout(id);
   }, [currentTime]);
 
   return (

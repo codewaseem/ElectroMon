@@ -2,16 +2,14 @@ import React from "react";
 import { Typography, Switch } from "antd";
 import styles from "./timer.module.scss";
 
-const zeroPad = (number: number) => (number <= 9 ? `0${number}` : number);
-
 const Timer: React.FC<{
   onStart?: () => void;
   onStop?: () => void;
   isActive?: boolean;
   time?: {
-    hours: number;
-    minutes: number;
-    seconds: number;
+    hours: number | string;
+    minutes: number | string;
+    seconds: number | string;
   };
   summaryText?: string;
 }> = ({
@@ -30,14 +28,14 @@ const Timer: React.FC<{
     <div className={styles.timerContainer}>
       <div className={styles.mainContent}>
         <Typography.Title level={1} className={styles.time}>
-          <span className={styles.hours}>{zeroPad(time.hours)}</span>
+          <span className={styles.hours}>{time.hours}</span>
           <span className={styles.minutes}>
             <span className={isActive ? styles.blinker : ""}>:</span>
-            {zeroPad(time.minutes)}
+            {time.minutes}
           </span>
           <span className={styles.seconds}>
             <span className={isActive ? styles.blinker : ""}>:</span>
-            {zeroPad(time.seconds)}
+            {time.seconds}
           </span>
         </Typography.Title>
         {summaryText && <p className={styles.summaryText}>{summaryText}</p>}

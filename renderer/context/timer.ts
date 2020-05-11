@@ -22,6 +22,9 @@ interface DatedTimerInitData {
     [key: string]: TimerInitData
 }
 
+export const zeroPad = (number: number) => (number <= 9 ? `0${number}` : number);
+
+
 class Timer {
     private _isRunning = false;
     private laps: Lap[] = [];
@@ -91,12 +94,8 @@ class Timer {
     }
 
     toTimeObject(milliseconds?: number) {
-        let time = moment(milliseconds || this.milliseconds).utc();
-        return {
-            hours: time.hours(),
-            minutes: time.minutes(),
-            seconds: time.seconds()
-        }
+        let ms = milliseconds || this.milliseconds;
+        return millisecondsToTimeObject(ms)
     }
 
     // time of current running lap in ms
@@ -221,6 +220,22 @@ export class TimersManager {
         }
     }
 
+    getTotalTimeObject() {
+        let total = 0;
+        Object.keys(this.timers).map(timerName => {
+            total += this.timers[timerName].totalTime
+        });
+        return millisecondsToTimeObject(total);
+    }
+
+    getTotalTimeFor(timerName) {
+        return this.timers[timerName].totalTime;
+    }
+
+    getTotalTimeObjectFor(timerName) {
+        return this.timers[timerName].totalTimeObject;
+    }
+
     getTimersData() {
         return this.timers;
     }
@@ -263,4 +278,13 @@ export class TimersManager {
     toJSON() {
         return this.timers;
     }
+}
+
+function millisecondsToTimeObject(milliseconds: number) {
+    let time = moment(milliseconds).utc();
+    return {
+        hours: zeroPad(time.hours()),
+        minutes: zeroPad(time.minutes()),
+        seconds: zeroPad(time.seconds())
+    };
 }

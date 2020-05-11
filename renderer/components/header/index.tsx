@@ -1,7 +1,27 @@
 import { PageHeader, Tag, Button, Statistic, Descriptions, Row } from "antd";
 import styles from "./header.module.scss";
+import { TimerContext } from "../../context";
+import React, { useContext, useState, useEffect } from "react";
+import { WORK_TIMER } from "../../../constants";
 
 export default function AppHeader() {
+  const timersManager = useContext(TimerContext);
+  const [totalWorkTime, setTotalWorkTime] = useState(
+    timersManager.getTotalTimeObjectFor(WORK_TIMER)
+  );
+  const [allTimersTotal, setAllTimersTotal] = useState(
+    timersManager.getTotalTimeObject()
+  );
+
+  useEffect(() => {
+    let id = setTimeout(() => {
+      setTotalWorkTime(timersManager.getTotalTimeObjectFor(WORK_TIMER));
+      setAllTimersTotal(timersManager.getTotalTimeObject());
+    });
+
+    return () => clearTimeout(id);
+  });
+
   return (
     <div>
       <PageHeader
@@ -26,16 +46,20 @@ export default function AppHeader() {
           </Descriptions.Item>
         </Descriptions> */}
         <Row>
-          <Statistic title="Status" value="Working" />
+          {/* <Statistic title="Status" value="Active" /> */}
           <Statistic
-            title="Price"
-            prefix="$"
-            value={568.08}
+            title="Time Worked"
+            prefix="⧗"
+            value={`${totalWorkTime.hours}:${totalWorkTime.minutes}`}
+          />
+          <Statistic
+            title="Total Time"
+            prefix="⧗"
+            value={`${allTimersTotal.hours}:${allTimersTotal.minutes}`}
             style={{
               margin: "0 32px",
             }}
           />
-          <Statistic title="Balance" prefix="$" value={3345.08} />
         </Row>
       </PageHeader>
     </div>
