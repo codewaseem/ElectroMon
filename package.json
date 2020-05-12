@@ -12,6 +12,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.1.0",
     "antd": "^4.2.0",
     "electron": "^8.2.5",
     "electron-serve": "^1.0.0",
