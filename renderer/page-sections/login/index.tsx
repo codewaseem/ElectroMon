@@ -10,9 +10,10 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
-const LoginForm = () => {
+const LoginForm = ({ onComplete }) => {
   const onFinish = (values) => {
     console.log("Success:", values);
+    onComplete();
   };
 
   const onFinishFailed = (errorInfo) => {

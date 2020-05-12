@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 
 const { Step } = Steps;
 
-export default function CheckForUpdates() {
+export default function CheckForUpdates({ onComplete }) {
   const [currentStep, setCurrentStep] = useState("check-update");
 
   useEffect(() => {
@@ -20,6 +20,10 @@ export default function CheckForUpdates() {
     }, 2000);
   }, []);
 
+  if (currentStep == "done") {
+    onComplete();
+  }
+    
   return (
     <div className={styles.container}>
       <Logo />
