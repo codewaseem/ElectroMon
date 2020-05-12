@@ -1,9 +1,8 @@
-import { PageHeader, Button, Descriptions, Row, Col } from "antd";
+import { PageHeader, Descriptions, Row, Col } from "antd";
 import styles from "./header.module.scss";
-import { TimerContext, AiMonitorContext } from "../../context";
+import { TimerContext } from "../../context";
 import React, { useContext, useState, useEffect } from "react";
 import { WORK_TIMER } from "../../../constants";
-import { ApplyLeaveModal, AddTimeModal } from "../form-model";
 import Logo from "../logo";
 import moment from "moment-timezone";
 
@@ -15,9 +14,7 @@ const Label = ({ children }) => {
 
 export default function AppHeader() {
   const timersManager = useContext(TimerContext);
-  const aiMonitorApi = useContext(AiMonitorContext);
 
-  const [canAddManualTime, setCanAddManualTime] = useState(false);
 
   const [totalWorkTime, setTotalWorkTime] = useState(
     timersManager.getTotalTimeObjectFor(WORK_TIMER)
@@ -26,11 +23,7 @@ export default function AppHeader() {
     timersManager.getTotalTimeObject()
   );
 
-  const [onApplyVisible, setApplyVisible] = useState(false);
-  const [confirmApplyLoading, setConfirmApplyLoading] = useState(false);
 
-  const [onAddTimeVisible, setAddTimeVisible] = useState(false);
-  const [confirmAddTimeLoading, setConfirmAddTimeLoading] = useState(false);
 
   const [estTime, setEstTime] = useState(getEstTime());
   useEffect(() => {
@@ -43,50 +36,11 @@ export default function AppHeader() {
     return () => clearTimeout(id);
   });
 
-  useEffect(() => {
-    aiMonitorApi.canAddManualTime().then((value) => {
-      setCanAddManualTime(value);
-    });
-  }, []);
 
   return (
     <div>
-      <PageHeader
-        className={styles.headerOveride}
-        title={<Logo />}
-        extra={[
-          canAddManualTime && (
-            <Button
-              key="2"
-              onClick={() => {
-                console.log("apply");
-                setAddTimeVisible(true);
-              }}
-            >
-              Add Time
-            </Button>
-          ),
-          <Button onClick={() => setApplyVisible(true)} key="3">
-            Apply Leave
-          </Button>,
-          <Button danger key="1" type="primary">
-            Exit
-          </Button>,
-        ]}
-      >
-        <AddTimeModal
-          visible={onAddTimeVisible}
-          confirmLoading={confirmAddTimeLoading}
-          onOk={() => {}}
-          onCancel={() => setAddTimeVisible(false)}
-        />
-        <ApplyLeaveModal
-          visible={onApplyVisible}
-          confirmLoading={confirmApplyLoading}
-          onOk={() => {}}
-          onCancel={() => setApplyVisible(false)}
-        />
-
+      <PageHeader className={styles.headerOveride} title={<Logo />}>
+        
         <Row align="middle" justify="space-between">
           <Col span={24}>
             <Descriptions size="small" column={4}>
