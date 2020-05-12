@@ -1,7 +1,8 @@
-import { Form, Input, Button, DatePicker, TimePicker } from "antd";
+import { Form, Input, Button, DatePicker, TimePicker, Select } from "antd";
 import { useState } from "react";
 const { RangePicker } = DatePicker;
 const { RangePicker: TimeRangePicker } = TimePicker;
+const { Option } = Select;
 
 export const ApplyLeaveForm = () => {
   const [form] = Form.useForm();
@@ -74,10 +75,16 @@ export const AddTimeForm = () => {
       name="add-time"
       onFinish={onFinish}
     >
-      <Form.Item name="what-done" rules={[{ required: true }]}>
+      {/* <Form.Item name="what-done" rules={[{ required: true }]}>
         <Input placeholder={"What did you do?"} />
+      </Form.Item> */}
+      <Form.Item name="log-type" rules={[{ required: true }]}>
+        <Select placeholder={"Log Type"}>
+          <Option value="work">Work</Option>
+          <Option value="lunch">Lunch</Option>
+          <Option value="break">Coffee</Option>
+        </Select>
       </Form.Item>
-
       <Form.Item name="time" rules={[{ required: true }]}>
         <TimeRangePicker
           picker="time"
