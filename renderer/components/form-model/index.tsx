@@ -22,7 +22,7 @@ export function ApplyLeaveModal({ visible, onOk, confirmLoading, onCancel }) {
 export function AddTimeModal({ visible, onOk, confirmLoading, onCancel }) {
   return (
     <Modal
-      title="Add Time Manually"
+      title="Add Manual Time"
       visible={visible}
       onOk={onOk}
       okText="Add"
