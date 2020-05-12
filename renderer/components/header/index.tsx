@@ -53,7 +53,7 @@ export default function AppHeader() {
           <Button onClick={() => setVisible(true)} key="3">
             Apply Leave
           </Button>,
-          <Button key="2">View Logs</Button>,
+          // <Button key="2">View Logs</Button>,
           <Button key="1" type="primary">
             Exit
           </Button>,

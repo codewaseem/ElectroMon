@@ -24,3 +24,29 @@
 .cardContent {
   width: 100%;
 }
+
+.invertColors {
+  background-color: $primary-color;
+
+  & .cardHead span,
+  & .cardContent p {
+    color: $white-bg;
+    opacity: 0.8;
+  }
+
+  & .cardHead svg {
+    fill: $white-bg;
+  }
+
+  & .cardContent h1,
+  & .cardContent h1 span {
+    color: $white-bg;
+  }
+
+  & .cardContent button {
+    background-color: $warning-color;
+  }
+  & .cardContent button + span {
+    color: $white-bg;
+  }
+}

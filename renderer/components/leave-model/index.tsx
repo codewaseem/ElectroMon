@@ -17,6 +17,7 @@ export default function ApplyLeaveModal({
       okText="Submit"
       confirmLoading={confirmLoading}
       onCancel={onCancel}
+      centered={true}
     >
       <ApplyLeaveForm />
     </Modal>

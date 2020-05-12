@@ -2,9 +2,11 @@ import React, { useEffect, useState, useContext } from "react";
 import Timer from "../components/timer";
 import { TimerContext } from "../context";
 
-const useTimer = (timerName: string, summaryText: string) => {
+const useTimer = (
+  timerName: string,
+  summaryText: string
+): [JSX.Element, boolean] => {
   const timersManager = useContext(TimerContext);
-  globalThis.timer = timersManager;
   timersManager.addNewTimer(timerName);
   const thisTimer = timersManager.getTimerByName(timerName);
   const [currentTime, setCurrentTime] = useState(thisTimer.totalTimeObject);
@@ -17,15 +19,16 @@ const useTimer = (timerName: string, summaryText: string) => {
     return () => clearTimeout(id);
   }, [currentTime]);
 
-  return (
+  return [
     <Timer
       isActive={thisTimer.isRunning}
       time={thisTimer.totalTimeObject}
       summaryText={summaryText}
       onStart={() => timersManager.startTimer(timerName)}
       onStop={() => timersManager.stopTimer()}
-    />
-  );
+    />,
+    thisTimer.isRunning,
+  ];
 };
 
 export default useTimer;

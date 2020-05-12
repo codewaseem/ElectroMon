@@ -23,18 +23,15 @@ const CardContent = ({ children }) => {
   return <div className={styles.cardContent}>{children}</div>;
 };
 
-const OptionsCard: React.FC<CardProps & { icon: any; title: string }> = ({
-  icon: Icon,
-  title,
-  children,
-  ...props
-}) => {
+const OptionsCard: React.FC<
+  CardProps & { icon: any; title: string; invert?: boolean }
+> = ({ icon: Icon, title, children, invert, ...props }) => {
   return (
     <Card
       hoverable={true}
       style={{ width: 210 }}
       {...props}
-      className={styles.cardOveride}
+      className={`${styles.cardOveride} ${invert && styles.invertColors}`}
     >
       <div className={styles.container}>
         <CardHead icon={Icon} title={title} />

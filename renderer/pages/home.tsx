@@ -9,9 +9,12 @@ import AppHeader from "../components/header";
 import { Space } from "antd";
 
 const Home = () => {
-  const WorkTimer = useTimer(WORK_TIMER, "Worked Today");
-  const LunchTimer = useTimer(LUNCH_TIMER, "Lunch Break");
-  const CoffeeTimer = useTimer(COFFEE_TIMER, "Coffee Break");
+  const [WorkTimer, isWorkTimerActive] = useTimer(WORK_TIMER, "Worked Today");
+  const [LunchTimer, isLunchTimerActive] = useTimer(LUNCH_TIMER, "Lunch Break");
+  const [CoffeeTimer, isCoffeeTimerActive] = useTimer(
+    COFFEE_TIMER,
+    "Coffee Break"
+  );
 
   return (
     <Layout>
@@ -25,13 +28,21 @@ const Home = () => {
       >
         <AppHeader />
         <div className={styles.optionsGrid}>
-          <OptionsCard icon={WorkIcon} title="Work">
+          <OptionsCard icon={WorkIcon} title="Work" invert={isWorkTimerActive}>
             {WorkTimer}
           </OptionsCard>
-          <OptionsCard icon={LunchIcon} title="Lunch">
+          <OptionsCard
+            icon={LunchIcon}
+            title="Lunch"
+            invert={isLunchTimerActive}
+          >
             {LunchTimer}
           </OptionsCard>
-          <OptionsCard icon={CoffeeIcon} title="Coffee">
+          <OptionsCard
+            icon={CoffeeIcon}
+            title="Coffee"
+            invert={isCoffeeTimerActive}
+          >
             {CoffeeTimer}
           </OptionsCard>
         </div>
