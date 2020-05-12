@@ -1,11 +1,11 @@
 import { AppProps } from "next/app";
-import { TimerProvider } from "../context";
+import { RootProvider } from "../context";
 
 function App({ Component, pageProps }: AppProps) {
   return (
-    <TimerProvider>
+    <RootProvider>
       <Component {...pageProps} />
-    </TimerProvider>
+    </RootProvider>
   );
 }
 
