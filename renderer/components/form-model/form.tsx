@@ -1,8 +1,9 @@
-import { Form, Input, Button, Select, DatePicker } from "antd";
+import { Form, Input, Button, DatePicker, TimePicker } from "antd";
 import { useState } from "react";
 const { RangePicker } = DatePicker;
+const { RangePicker: TimeRangePicker } = TimePicker;
 
-const ApplyLeaveForm = () => {
+export const ApplyLeaveForm = () => {
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
@@ -11,13 +12,6 @@ const ApplyLeaveForm = () => {
 
   const onReset = () => {
     form.resetFields();
-  };
-
-  const onFill = () => {
-    form.setFieldsValue({
-      note: "Hello world!",
-      gender: "male",
-    });
   };
 
   const [dates, setDates] = useState([]);
@@ -59,4 +53,46 @@ const ApplyLeaveForm = () => {
   );
 };
 
-export default ApplyLeaveForm;
+export const AddTimeForm = () => {
+  const [form] = Form.useForm();
+
+  const onFinish = (values) => {
+    console.log(values);
+  };
+
+  const onReset = () => {
+    form.resetFields();
+  };
+
+  const [times, setTimes] = useState([]);
+
+  return (
+    <Form
+      labelCol={{ span: 8 }}
+      wrapperCol={{ span: 16 }}
+      form={form}
+      name="add-time"
+      onFinish={onFinish}
+    >
+      <Form.Item name="what-done" rules={[{ required: true }]}>
+        <Input placeholder={"What did you do?"} />
+      </Form.Item>
+
+      <Form.Item name="time" rules={[{ required: true }]}>
+        <TimeRangePicker
+          picker="time"
+          format="HH:mm"
+          placeholder={["Start Time", "End Time"]}
+          onCalendarChange={(value) => {
+            console.log(value);
+            setTimes(value);
+          }}
+        />
+      </Form.Item>
+
+      <Button htmlType="button" onClick={onReset}>
+        Reset
+      </Button>
+    </Form>
+  );
+};

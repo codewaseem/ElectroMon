@@ -1,28 +1,24 @@
 import { PageHeader, Button, Statistic, Descriptions, Row, Col } from "antd";
 import styles from "./header.module.scss";
-import { TimerContext } from "../../context";
+import { TimerContext, AiMonitorContext } from "../../context";
 import React, { useContext, useState, useEffect } from "react";
 import { WORK_TIMER } from "../../../constants";
-import ApplyLeaveModal from "../leave-model";
+import { ApplyLeaveModal, AddTimeModal } from "../form-model";
 import Logo from "../Logo";
 import moment from "moment-timezone";
 
 const getEstTime = () => moment.tz("America/Panama").format("HH:mm:ss");
 
-const Prefix = ({ children }) => {
-  return <span className={styles.prefix}>{children}</span>;
-};
-
 const Label = ({ children }) => {
   return <span className={styles.label}>{children}</span>;
 };
 
-const StatsTitle = ({ children }) => {
-  return <span className={styles.statsTitle}>{children} </span>;
-};
-
 export default function AppHeader() {
   const timersManager = useContext(TimerContext);
+  const aiMonitorApi = useContext(AiMonitorContext);
+
+  const [canAddManualTime, setCanAddManualTime] = useState(false);
+
   const [totalWorkTime, setTotalWorkTime] = useState(
     timersManager.getTotalTimeObjectFor(WORK_TIMER)
   );
@@ -30,8 +26,11 @@ export default function AppHeader() {
     timersManager.getTotalTimeObject()
   );
 
-  const [visible, setVisible] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [onApplyVisible, setApplyVisible] = useState(false);
+  const [confirmApplyLoading, setConfirmApplyLoading] = useState(false);
+
+  const [onAddTimeVisible, setAddTimeVisible] = useState(false);
+  const [confirmAddTimeLoading, setConfirmAddTimeLoading] = useState(false);
 
   const [estTime, setEstTime] = useState(getEstTime());
   useEffect(() => {
@@ -44,27 +43,50 @@ export default function AppHeader() {
     return () => clearTimeout(id);
   });
 
+  useEffect(() => {
+    aiMonitorApi.canAddManualTime().then((value) => {
+      setCanAddManualTime(value);
+    });
+  }, []);
+
   return (
     <div>
       <PageHeader
         className={styles.headerOveride}
         title={<Logo />}
         extra={[
-          <Button onClick={() => setVisible(true)} key="3">
+          canAddManualTime && (
+            <Button
+              key="2"
+              onClick={() => {
+                console.log("apply");
+                setAddTimeVisible(true);
+              }}
+            >
+              Add Time
+            </Button>
+          ),
+          <Button onClick={() => setApplyVisible(true)} key="3">
             Apply Leave
           </Button>,
-          // <Button key="2">View Logs</Button>,
-          <Button key="1" type="primary">
+          <Button danger key="1" type="primary">
             Exit
           </Button>,
         ]}
       >
-        <ApplyLeaveModal
-          visible={visible}
-          confirmLoading={confirmLoading}
+        <AddTimeModal
+          visible={onAddTimeVisible}
+          confirmLoading={confirmAddTimeLoading}
           onOk={() => {}}
-          onCancel={() => setVisible(false)}
+          onCancel={() => setAddTimeVisible(false)}
         />
+        <ApplyLeaveModal
+          visible={onApplyVisible}
+          confirmLoading={confirmApplyLoading}
+          onOk={() => {}}
+          onCancel={() => setApplyVisible(false)}
+        />
+
         <Row align="middle" justify="space-between">
           <Col span={24}>
             <Descriptions size="small" column={4}>
