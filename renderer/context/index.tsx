@@ -10,7 +10,7 @@ let aiMonitorApi = new AiMonitorBackendAPI();
 export const TimerContext = React.createContext(timersManager);
 export const AiMonitorContext = React.createContext(aiMonitorApi);
 
-export const TimerProvider = ({ children }) => {
+export const RootProvider = ({ children }) => {
   const timersData = useTimerData();
   timersManager = new TimersManager(timersData);
 
