@@ -1,10 +1,10 @@
-import { PageHeader, Button, Statistic, Descriptions, Row, Col } from "antd";
+import { PageHeader, Button, Descriptions, Row, Col } from "antd";
 import styles from "./header.module.scss";
 import { TimerContext, AiMonitorContext } from "../../context";
 import React, { useContext, useState, useEffect } from "react";
 import { WORK_TIMER } from "../../../constants";
 import { ApplyLeaveModal, AddTimeModal } from "../form-model";
-import Logo from "../Logo";
+import Logo from "../logo";
 import moment from "moment-timezone";
 
 const getEstTime = () => moment.tz("America/Panama").format("HH:mm:ss");
