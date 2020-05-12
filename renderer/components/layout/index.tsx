@@ -8,7 +8,7 @@ export default function Layout({ children }) {
   return (
     <AppLayout className={styles.layout}>
       {/* <Header className={styles.header}></Header> */}
-      <Content style={{ padding: "50px" }}>{children}</Content>
+      <Content style={{ padding: "25px 30px" }}>{children}</Content>
       {/* <Footer style={{ textAlign: "center" }}>
         Ant Design ©2018 Created by Ant UED
       </Footer> */}
