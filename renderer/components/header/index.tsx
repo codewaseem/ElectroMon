@@ -13,6 +13,10 @@ const Prefix = ({ children }) => {
   return <span className={styles.prefix}>{children}</span>;
 };
 
+const Label = ({ children }) => {
+  return <span className={styles.label}>{children}</span>;
+};
+
 const StatsTitle = ({ children }) => {
   return <span className={styles.statsTitle}>{children} </span>;
 };
@@ -45,7 +49,6 @@ export default function AppHeader() {
       <PageHeader
         className={styles.removeSpacing}
         title={<Logo />}
-        subTitle="Dashboard"
         extra={[
           <Button onClick={() => setVisible(true)} key="3">
             Apply Leave
@@ -65,10 +68,10 @@ export default function AppHeader() {
         <Row align="middle" justify="space-between">
           <Col span={12}>
             <Descriptions size="small" column={2}>
-              <Descriptions.Item label="Date">
+              <Descriptions.Item label={<Label>Date</Label>}>
                 {new Date().toDateString()}
               </Descriptions.Item>
-              <Descriptions.Item label="Time (EST)">
+              <Descriptions.Item label={<Label>Time (EST)</Label>}>
                 {estTime}
               </Descriptions.Item>
             </Descriptions>

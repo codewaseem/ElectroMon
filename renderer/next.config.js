@@ -5,6 +5,7 @@ const withPlugins = require("next-compose-plugins");
 const withSvgr = require("next-svgr");
 const withLess = require("@zeit/next-less");
 const withSass = require("@zeit/next-sass");
+const optimizedImages = require("next-optimized-images");
 // Where your antd-custom.less file lives
 const themeVariables = path.resolve(__dirname, "./theme/antd-custom.scss");
 
@@ -81,6 +82,14 @@ const plugins = [
       },
     }),
   }),
+  [
+    optimizedImages,
+    {
+      /* config for next-optimized-images */
+      inlineImageLimit: -1,
+      handleImages: ["png"],
+    },
+  ],
   withSvgr,
 ];
 

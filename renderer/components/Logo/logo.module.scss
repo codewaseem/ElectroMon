@@ -1,13 +1,26 @@
 @import "../../theme/antd-custom.scss";
 
 .logo {
-  font-size: 1.8rem;
-}
+  font-size: 1.2rem;
+  line-height: 50px;
+  img {
+    width: 150px;
+    height: 50px;
+    transform: translateX(-15px);
+  }
 
-.ai {
-  color: $error-color;
-}
+  > span {
+    line-height: 50px;
+    vertical-align: middle;
+    display: inline-block;
+    transform: translate(-28px, 2px);
 
-.monitor {
-  color: $primary-color;
+    .ai {
+      color: $error-color;
+    }
+
+    .monitor {
+      color: $primary-color;
+    }
+  }
 }
