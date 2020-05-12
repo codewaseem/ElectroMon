@@ -1,13 +1,20 @@
-import { PageHeader, Tag, Button, Statistic, Descriptions, Row } from "antd";
+import { PageHeader, Button, Statistic, Descriptions, Row, Col } from "antd";
 import styles from "./header.module.scss";
 import { TimerContext } from "../../context";
 import React, { useContext, useState, useEffect } from "react";
 import { WORK_TIMER } from "../../../constants";
 import ApplyLeaveModal from "../leave-model";
 import Logo from "../Logo";
+import moment from "moment-timezone";
+
+const getEstTime = () => moment.tz("America/Panama").format("HH:mm:ss");
 
 const Prefix = ({ children }) => {
   return <span className={styles.prefix}>{children}</span>;
+};
+
+const StatsTitle = ({ children }) => {
+  return <span className={styles.statsTitle}>{children} </span>;
 };
 
 export default function AppHeader() {
@@ -22,10 +29,12 @@ export default function AppHeader() {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
+  const [estTime, setEstTime] = useState(getEstTime());
   useEffect(() => {
     let id = setTimeout(() => {
       setTotalWorkTime(timersManager.getTotalTimeObjectFor(WORK_TIMER));
       setAllTimersTotal(timersManager.getTotalTimeObject());
+      setEstTime(getEstTime());
     });
 
     return () => clearTimeout(id);
@@ -47,36 +56,42 @@ export default function AppHeader() {
           </Button>,
         ]}
       >
-        {/* <Descriptions size="small" column={3}>
-          <Descriptions.Item label="User">Name</Descriptions.Item>
-          <Descriptions.Item label="">
-            <a>421421</a>
-          </Descriptions.Item>
-          <Descriptions.Item label="Creation Time">
-            2017-01-10
-          </Descriptions.Item>
-        </Descriptions> */}
         <ApplyLeaveModal
           visible={visible}
           confirmLoading={confirmLoading}
           onOk={() => {}}
           onCancel={() => setVisible(false)}
         />
-        <Row>
+        <Row align="middle" justify="space-between">
+          <Col span={12}>
+            <Descriptions size="small" column={2}>
+              <Descriptions.Item label="Date">
+                {new Date().toDateString()}
+              </Descriptions.Item>
+              <Descriptions.Item label="Time (EST)">
+                {estTime}
+              </Descriptions.Item>
+            </Descriptions>
+          </Col>
           {/* <Statistic title="Status" value="Active" /> */}
-          <Statistic
-            title="Time Worked"
-            prefix={<Prefix>⧗</Prefix>}
-            value={`${totalWorkTime.hours}:${totalWorkTime.minutes}`}
-          />
-          <Statistic
-            title="Total Time"
-            prefix={<Prefix>⧗</Prefix>}
-            value={`${allTimersTotal.hours}:${allTimersTotal.minutes}`}
-            style={{
-              margin: "0 32px",
-            }}
-          />
+          <Col>
+            <Row className={styles.statsTitle}>
+              <Statistic
+                title={<StatsTitle>Time Worked</StatsTitle>}
+                prefix={<Prefix>⧗</Prefix>}
+                value={`${totalWorkTime.hours}:${totalWorkTime.minutes}`}
+                style={{
+                  marginRight: 36,
+                }}
+              />
+              <Statistic
+                title={<StatsTitle>Total Time</StatsTitle>}
+                prefix={<Prefix>⧗</Prefix>}
+                value={`${allTimersTotal.hours}:${allTimersTotal.minutes}`}
+                valueStyle={{ textAlign: "right" }}
+              />
+            </Row>
+          </Col>
         </Row>
       </PageHeader>
     </div>

@@ -17,6 +17,7 @@
     "electron-serve": "^1.0.0",
     "electron-store": "^5.1.1",
     "moment": "^2.25.3",
+    "moment-timezone": "^0.5.28",
     "next": "^9.3.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
