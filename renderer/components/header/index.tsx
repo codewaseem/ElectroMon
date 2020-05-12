@@ -66,34 +66,21 @@ export default function AppHeader() {
           onCancel={() => setVisible(false)}
         />
         <Row align="middle" justify="space-between">
-          <Col span={12}>
-            <Descriptions size="small" column={2}>
+          <Col span={24}>
+            <Descriptions size="small" column={4}>
               <Descriptions.Item label={<Label>Date</Label>}>
                 {new Date().toDateString()}
               </Descriptions.Item>
               <Descriptions.Item label={<Label>Time (EST)</Label>}>
                 {estTime}
               </Descriptions.Item>
+              <Descriptions.Item label={<Label>Time Worked</Label>}>
+                {`${totalWorkTime.hours}:${totalWorkTime.minutes}`}
+              </Descriptions.Item>
+              <Descriptions.Item label={<Label>Total Time</Label>}>
+                {`${allTimersTotal.hours}:${allTimersTotal.minutes}`}
+              </Descriptions.Item>
             </Descriptions>
-          </Col>
-          {/* <Statistic title="Status" value="Active" /> */}
-          <Col>
-            <Row className={styles.statsTitle}>
-              <Statistic
-                title={<StatsTitle>Time Worked</StatsTitle>}
-                prefix={<Prefix>⧗</Prefix>}
-                value={`${totalWorkTime.hours}:${totalWorkTime.minutes}`}
-                style={{
-                  marginRight: 36,
-                }}
-              />
-              <Statistic
-                title={<StatsTitle>Total Time</StatsTitle>}
-                prefix={<Prefix>⧗</Prefix>}
-                value={`${allTimersTotal.hours}:${allTimersTotal.minutes}`}
-                valueStyle={{ textAlign: "right" }}
-              />
-            </Row>
           </Col>
         </Row>
       </PageHeader>
