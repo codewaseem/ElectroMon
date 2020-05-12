@@ -47,7 +47,7 @@ export default function AppHeader() {
   return (
     <div>
       <PageHeader
-        className={styles.removeSpacing}
+        className={styles.headerOveride}
         title={<Logo />}
         extra={[
           <Button onClick={() => setVisible(true)} key="3">
