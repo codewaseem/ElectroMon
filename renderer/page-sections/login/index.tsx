@@ -1,7 +1,10 @@
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
 import styles from "./login.module.scss";
 import Logo from "../../components/logo";
 import { LoginOutlined } from "@ant-design/icons";
+import useAsyncCode from "../../hooks/useAsyncCode";
+import { AiMonitorContext } from "../../context";
+import { useContext, useState } from "react";
 
 const layout = {
   labelCol: { span: 8 },
@@ -11,10 +14,39 @@ const tailLayout = {
   wrapperCol: { offset: 12, span: 16 },
 };
 
+const LoginStates = {
+  initial: {
+    submitLoading: false,
+  },
+  logging: {
+    submitLoading: true,
+  },
+  done: {
+    submitLoading: false,
+  },
+  error: {
+    submitLoading: false,
+  },
+};
+
+const defaultState = LoginStates.initial;
+
 const LoginForm = ({ onComplete }) => {
+  const aiMonitorAPI = useContext(AiMonitorContext);
+  const [loginState, setLoginState] = useState(defaultState);
+
   const onFinish = (values) => {
-    console.log("Success:", values);
-    onComplete();
+    setLoginState(LoginStates.logging);
+    aiMonitorAPI
+      .login(values.email, values.password)
+      .then(() => {
+        setLoginState(LoginStates.done);
+        onComplete();
+      })
+      .catch(() => {
+        setLoginState(LoginStates.error);
+        message.error("Login Failed! Try again.", 5);
+      });
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -53,7 +85,11 @@ const LoginForm = ({ onComplete }) => {
       </Form.Item> */}
 
         <Form.Item {...tailLayout}>
-          <Button type="primary" htmlType="submit">
+          <Button
+            loading={loginState.submitLoading}
+            type="primary"
+            htmlType="submit"
+          >
             Login <LoginOutlined />
           </Button>
         </Form.Item>

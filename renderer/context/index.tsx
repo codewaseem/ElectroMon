@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { TimersManager } from "./timer";
 import useTimerData from "../hooks/useTimerData";
 import { TIMERS_STORAGE_KEY } from "../../constants";
-import { AiMonitorBackendAPI } from "./api";
+import { TestAiMonitorAPI } from "./api";
 
 let timersManager = new TimersManager();
-let aiMonitorApi = new AiMonitorBackendAPI();
+let aiMonitorApi = new TestAiMonitorAPI();
 
 export const TimerContext = React.createContext(timersManager);
 export const AiMonitorContext = React.createContext(aiMonitorApi);
