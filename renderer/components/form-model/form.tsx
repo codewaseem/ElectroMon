@@ -34,7 +34,11 @@ export const ApplyLeaveForm = () => {
       onFinish={onFinish}
     >
       <Form.Item name="reason" rules={[{ required: true }]}>
-        <Input placeholder={"Reason"} />
+        <Select placeholder={"Reason"}>
+          <Option value="sick">Sick</Option>
+          <Option value="vacation">Vacation</Option>
+          <Option value="unpaid">Unpaid</Option>
+        </Select>
       </Form.Item>
 
       <Form.Item name="time" rules={[{ required: true }]}>
