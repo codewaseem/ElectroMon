@@ -68,6 +68,7 @@ export default function CheckForUpdates({ onComplete }) {
 
     let id3 = setTimeout(() => {
       setCurrentStep(UpdateStates.step4);
+      onComplete();
     }, 4500);
 
     return () => {
@@ -76,10 +77,6 @@ export default function CheckForUpdates({ onComplete }) {
       clearTimeout(id3);
     };
   }, []);
-
-  if (currentStep.status.done == "finish") {
-    onComplete();
-  }
 
   return (
     <div className={styles.container}>
