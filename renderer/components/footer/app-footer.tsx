@@ -7,13 +7,22 @@ export default function AppFooter() {
   return (
     <footer className={styles.footer}>
       <Descriptions size="small" column={3}>
-        <Descriptions.Item label={<Label>Version</Label>}>
+        <Descriptions.Item
+          className={styles.smallerFonts}
+          label={<Label>Version</Label>}
+        >
           0.0.1
         </Descriptions.Item>
-        <Descriptions.Item label={<Label>Status</Label>}>
+        <Descriptions.Item
+          className={styles.smallerFonts}
+          label={<Label>Status</Label>}
+        >
           Online
         </Descriptions.Item>
-        <Descriptions.Item label={<Label>Last updated at</Label>}>
+        <Descriptions.Item
+          className={styles.smallerFonts}
+          label={<Label>Last updated</Label>}
+        >
           few seconds ago
         </Descriptions.Item>
       </Descriptions>
