@@ -46,7 +46,7 @@ const LoginForm = ({ onComplete }) => {
 
       //else set next state
       // setLoginState(LoginStates.no);
-    }, 2000);
+    }, 500);
 
     return () => clearTimeout(id);
   }, []);
