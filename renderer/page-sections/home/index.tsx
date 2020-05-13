@@ -7,7 +7,7 @@ import { WORK_TIMER, LUNCH_TIMER, COFFEE_TIMER } from "../../../constants";
 import useTimer from "../../hooks/useTimerComponent";
 import AppHeader from "../../components/header";
 import { Space, Divider } from "antd";
-import HomeFooter from "../../components/footer";
+import HomeSectionFooter from "../../components/footer";
 
 export default function HomeSection() {
   const [WorkTimer, isWorkTimerActive] = useTimer(WORK_TIMER, "Worked Today");
@@ -42,7 +42,7 @@ export default function HomeSection() {
           {CoffeeTimer}
         </OptionsCard>
       </div>
-      <HomeFooter />
+      <HomeSectionFooter />
     </Space>
   );
 }

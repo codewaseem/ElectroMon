@@ -4,7 +4,7 @@ import { Row, Button, Col } from "antd";
 import { ApplyLeaveModal, AddTimeModal } from "../form-model";
 import { AiMonitorContext } from "../../context";
 
-export default function HomeFooter() {
+export default function HomeSectionFooter() {
   const aiMonitorApi = useContext(AiMonitorContext);
   const [canAddManualTime, setCanAddManualTime] = useState(false);
 
