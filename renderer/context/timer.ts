@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { TIME_DIFFERENCE_DETECTED } from '../../constants';
 
 
 interface Lap {
@@ -199,6 +200,10 @@ export class DatedTimer {
     toJSON() {
         return this.logsByDate;
     }
+
+    get currentRunningDuration() {
+        return this.getTimer().currentTimeObject.seconds;
+    }
 }
 
 
@@ -216,7 +221,7 @@ interface LogHistory {
 
 export class TimersManager {
     private timers: TimersByName = {};
-    private activeTimerKey: string;
+    private activeTimerKey: string = "";
     private history: LogHistory[] = [];
     private counterId: any;
     private counterRunning: boolean = false;
@@ -333,6 +338,19 @@ export class TimersManager {
             endTime: lastLog.endTime,
             startTime: lastLog.startTime
         });
+    }
+
+    checkTimeDifference() {
+        let activeTimer = this.getActiveTimer();
+        if (!activeTimer) return;
+
+        let count = this.currentCount;
+        let duration = +activeTimer.currentRunningDuration; // convert to number
+        let diff = duration - count;
+        if (Math.abs(diff) > 30) {
+            throw new Error(TIME_DIFFERENCE_DETECTED);
+        }
+
     }
 
     private addRecentLogToHistory({
