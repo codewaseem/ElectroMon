@@ -1,6 +1,6 @@
 import { Steps } from "antd";
 import {
-  UserOutlined,
+  ScanOutlined,
   CloudDownloadOutlined,
   CheckOutlined,
   LoadingOutlined,
@@ -11,29 +11,96 @@ import { useState, useEffect } from "react";
 
 const { Step } = Steps;
 
+type Status = "process" | "wait" | "error" | "finish";
+
+interface StepStatus {
+  [key: string]: {
+    status: {
+      [key: string]: Status;
+    };
+  };
+}
+
+const UpdateStates: StepStatus = {
+  step1: {
+    status: {
+      check: "process",
+      update: "wait",
+      done: "wait",
+    },
+  },
+  step2: {
+    status: {
+      check: "finish",
+      update: "process",
+      done: "wait",
+    },
+  },
+  step3: {
+    status: {
+      check: "finish",
+      update: "finish",
+      done: "process",
+    },
+  },
+  step4: {
+    status: {
+      check: "finish",
+      update: "finish",
+      done: "finish",
+    },
+  },
+};
+
+const defaultState = UpdateStates.step1;
+
 export default function CheckForUpdates({ onComplete }) {
-  const [currentStep, setCurrentStep] = useState("check-update");
+  const [currentStep, setCurrentStep] = useState(defaultState);
 
   useEffect(() => {
-    setTimeout(() => {
-      setCurrentStep("done");
-    }, 2000);
+    let id1 = setTimeout(() => {
+      setCurrentStep(UpdateStates.step2);
+    }, 1500);
+
+    let id2 = setTimeout(() => {
+      setCurrentStep(UpdateStates.step3);
+    }, 3000);
+
+    let id3 = setTimeout(() => {
+      setCurrentStep(UpdateStates.step4);
+    }, 4500);
+
+    return () => {
+      clearTimeout(id1);
+      clearTimeout(id2);
+      clearTimeout(id3);
+    };
   }, []);
 
-  if (currentStep == "done") {
+  if (currentStep.status.done == "finish") {
     onComplete();
   }
-    
+
   return (
     <div className={styles.container}>
       <Logo />
       <Steps>
-        <Step status="finish" title="Login" icon={<UserOutlined />} />
         <Step
-          status={currentStep == "check-update" ? "process" : "finish"}
+          status={currentStep.status.check}
+          title="Checking For Updates"
+          icon={
+            currentStep.status.check == "process" ? (
+              <LoadingOutlined />
+            ) : (
+              <ScanOutlined />
+            )
+          }
+        />
+        <Step
+          status={currentStep.status.update}
           title="Updating"
           icon={
-            currentStep == "check-update" ? (
+            currentStep.status.update == "process" ? (
               <LoadingOutlined />
             ) : (
               <CloudDownloadOutlined />
@@ -41,7 +108,7 @@ export default function CheckForUpdates({ onComplete }) {
           }
         />
         <Step
-          status={currentStep == "done" ? "finish" : "wait"}
+          status={currentStep.status.done}
           title="Done"
           icon={<CheckOutlined />}
         />

@@ -10,14 +10,14 @@ const AppStates = {
   Home: "Home",
 };
 
-const defaultState = AppStates.Login;
+const defaultState = AppStates.Updates;
 
 const Home = () => {
   const [state, setState] = useState(defaultState);
 
-  const onLoginComplete = () => setState(AppStates.Updates);
+  const onLoginComplete = () => setState(AppStates.Home);
 
-  const onUpdateComplete = () => setState(AppStates.Home);
+  const onUpdateComplete = () => setState(AppStates.Login);
 
   return (
     <Layout>
