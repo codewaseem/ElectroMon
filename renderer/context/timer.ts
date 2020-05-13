@@ -103,6 +103,9 @@ class Timer {
         return this.milliseconds;
     }
 
+    get latestLog() {
+        return this.laps[this.laps.length - 1];
+    }
     // time object of current running lap
     get currentTimeObject() {
         return this.toTimeObject();
@@ -173,6 +176,10 @@ export class DatedTimer {
         return this.getTimer().isRunning;
     }
 
+    get latestLog() {
+        return this.getTimer().latestLog;
+    }
+
     getTotalTimeOn(dateKey: string) {
         if (this.logsByDate[dateKey]) return this.logsByDate[dateKey].totalTime;
         return 0;
@@ -199,25 +206,69 @@ type TimersByName = {
     [key: string]: DatedTimer
 }
 
+interface LogHistory {
+    startTime: string,
+    endTime: string,
+    logType: string,
+    duration: number,
+    durationByCount: number,
+}
+
 export class TimersManager {
     private timers: TimersByName = {};
     private activeTimerKey: string;
-
+    private history: LogHistory[] = [];
+    private counterId: any;
+    private counterRunning: boolean = false;
+    private currentCount: number = 0;
 
     getActiveTimer() {
         return this.timers[this.activeTimerKey];
     }
 
+    startCount() {
+        this.counterRunning = true;
+        this.counterId = setTimeout(() => {
+            this.currentCount += 0.5;
+            this.startCount();
+        }, 500);
+    }
+
+    stopCount() {
+        this.counterRunning = false;
+        this.currentCount = 0;
+        clearTimeout(this.counterId);
+    }
+
     constructor(timersData?: {
         [key: string]: DatedTimerInitData
-    }) {
+    }, history?: LogHistory[]) {
         if (timersData) {
             Object.keys(timersData).map(timerName => {
                 this.timers[timerName] = new DatedTimer(timersData[timerName]);
-                this.timers[timerName].isRunning;
-                this.timers[timerName].stop();
+                if (this.timers[timerName].isRunning) {
+                    console.log("deactivate obsolete running timer")
+                    this.timers[timerName].stop();
+
+                    const lastLog = this.timers[timerName].latestLog;
+                    this.addRecentLogToHistory({
+                        logType: timerName,
+                        duration: lastLog.duration,
+                        durationByCount: lastLog.duration,
+                        endTime: lastLog.endTime,
+                        startTime: lastLog.startTime
+                    })
+                }
             });
         }
+
+        if (history) {
+            this.history = history;
+        }
+    }
+
+    getHistory() {
+        return this.history;
     }
 
     getTotalTimeObject() {
@@ -247,22 +298,59 @@ export class TimersManager {
     startTimer(timerName: string) {
         let newTimer = this.timers[timerName];
         let activeTimer = this.getActiveTimer();
+        if (activeTimer) this.stopTimer();
 
         if (!newTimer) return;
-
-        if (activeTimer) activeTimer.stop();
+        if (this.counterId) clearTimeout(this.counterId);
 
         this.activeTimerKey = timerName;
         this.timers[timerName].start();
+
+        this.startCount();
     }
 
     stopTimer() {
         let activeTimer = this.getActiveTimer();
         if (!activeTimer) return;
-
         activeTimer.stop();
 
-        activeTimer = null;
+
+        // capture state before resetting
+        let currentCount = this.currentCount;
+
+        // should stop the activeTimer before this line!
+        let lastLog = activeTimer.latestLog;
+        let logType = this.activeTimerKey;
+
+        // reset state
+        this.stopCount();
+        this.activeTimerKey = "";
+
+        this.addRecentLogToHistory({
+            logType,
+            duration: lastLog.duration,
+            durationByCount: currentCount,
+            endTime: lastLog.endTime,
+            startTime: lastLog.startTime
+        });
+    }
+
+    private addRecentLogToHistory({
+        logType,
+        durationByCount,
+        duration,
+        startTime,
+        endTime
+    }) {
+
+        let log: LogHistory = {
+            logType,
+            durationByCount: Math.ceil(durationByCount),
+            duration: moment(duration).seconds(),
+            startTime,
+            endTime
+        };
+        this.history.push(log);
     }
 
     getTimerByName(timerName: string) {
