@@ -3,6 +3,7 @@ import Layout from "../components/layout";
 import HomeSection from "../page-sections/home";
 import LoginForm from "../page-sections/login";
 import CheckForUpdates from "../page-sections/check-update";
+import { AppFooter } from "../components/footer";
 
 const AppStates = {
   Login: "Login",
@@ -26,6 +27,8 @@ const Home = () => {
         <CheckForUpdates onComplete={onUpdateComplete} />
       )}
       {state == AppStates.Home && <HomeSection />}
+      
+      {state == AppStates.Home && <AppFooter />}
     </Layout>
   );
 };

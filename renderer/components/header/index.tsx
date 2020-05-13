@@ -5,16 +5,12 @@ import React, { useContext, useState, useEffect } from "react";
 import { WORK_TIMER } from "../../../constants";
 import Logo from "../logo";
 import moment from "moment-timezone";
+import { Label } from "../utils";
 
 const getEstTime = () => moment.tz("America/Panama").format("HH:mm:ss");
 
-const Label = ({ children }) => {
-  return <span className={styles.label}>{children}</span>;
-};
-
 export default function AppHeader() {
   const timersManager = useContext(TimerContext);
-
 
   const [totalWorkTime, setTotalWorkTime] = useState(
     timersManager.getTotalTimeObjectFor(WORK_TIMER)
@@ -22,8 +18,6 @@ export default function AppHeader() {
   const [allTimersTotal, setAllTimersTotal] = useState(
     timersManager.getTotalTimeObject()
   );
-
-
 
   const [estTime, setEstTime] = useState(getEstTime());
   useEffect(() => {
@@ -36,11 +30,9 @@ export default function AppHeader() {
     return () => clearTimeout(id);
   });
 
-
   return (
     <div>
       <PageHeader className={styles.headerOveride} title={<Logo />}>
-        
         <Row align="middle" justify="space-between">
           <Col span={24}>
             <Descriptions size="small" column={4}>
