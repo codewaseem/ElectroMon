@@ -1,7 +1,13 @@
+@import "../../theme/antd-custom.scss";
+
 .optionsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(190px, 210px));
   gap: 25px;
   justify-content: space-between;
   margin-bottom: 30px;
+}
+
+.dividerBackground {
+  background-color: $link-color;
 }

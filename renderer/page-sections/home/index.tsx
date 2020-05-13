@@ -6,7 +6,7 @@ import styles from "./home.module.scss";
 import { WORK_TIMER, LUNCH_TIMER, COFFEE_TIMER } from "../../../constants";
 import useTimer from "../../hooks/useTimerComponent";
 import AppHeader from "../../components/header";
-import { Space } from "antd";
+import { Space, Divider } from "antd";
 import HomeFooter from "../../components/footer";
 
 export default function HomeSection() {
@@ -26,6 +26,7 @@ export default function HomeSection() {
       size="large"
     >
       <AppHeader />
+      {/* <Divider className={styles.dividerBackground} /> */}
       <div className={styles.optionsGrid}>
         <OptionsCard icon={WorkIcon} title="Work" invert={isWorkTimerActive}>
           {WorkTimer}
