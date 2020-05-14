@@ -11,7 +11,7 @@ const AppStates = {
   Home: "Home",
 };
 
-const defaultState = AppStates.Home;
+const defaultState = AppStates.Updates;
 
 const Home = () => {
   const [state, setState] = useState(defaultState);

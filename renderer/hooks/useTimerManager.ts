@@ -13,12 +13,11 @@ export default function useTimerManager(aiMonitorApi: AiMonitorAPIInterface) {
 
 
     useEffect(() => {
-        console.log("called effect");
         const cacheTimer = () => {
             const id = setTimeout(() => {
                 saveTimerData(timersManager);
                 cacheTimer();
-            }, 1000 * 5);
+            }, 1000);
             return id;
         };
 
