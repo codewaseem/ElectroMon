@@ -52,7 +52,7 @@ export class TestAiMonitorAPI implements AiMonitorAPIInterface {
     }
 
     login(email: string, password: string) {
-        if (email.search(/bad/i) < 0) {
+        if (email.search('bad') >= 0) {
             return Promise.reject()
         }
         return Promise.resolve({
