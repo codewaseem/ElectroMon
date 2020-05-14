@@ -14,12 +14,14 @@ if (isProd) {
   await app.whenReady();
 
   const mainWindow = createWindow('main', {
+    height: 460,
+    width: 740,
     minWidth: 740,
     maxWidth: 840,
     minHeight: 460,
     maxHeight: 550,
     title: 'ApTask AiMonitor',
-    autoHideMenuBar: true
+    autoHideMenuBar: isProd ? true : false
   });
 
   if (isProd) {
