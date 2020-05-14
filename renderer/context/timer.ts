@@ -211,7 +211,7 @@ type TimersByName = {
     [key: string]: DatedTimer
 }
 
-interface LogHistory {
+export interface LogHistory {
     startTime: string,
     endTime: string,
     logType: string,

@@ -1,4 +1,5 @@
 import { MONITOR_API_URL } from "../../constants";
+import { LogHistory } from "./timer";
 
 export interface User {
     id: number | string,
@@ -21,15 +22,15 @@ export interface LogData {
     endTime: number
 }
 
-interface AiMonitorAPI {
+export interface AiMonitorAPIInterface {
     canAddManualTime(): Promise<boolean>;
     login(email: string, password: string): Promise<User>;
     verifyLogin(token: string): Promise<User>;
     addLeave(data: LeaveData): Promise<any>;
-
+    pushLogHistory(history: LogHistory[]): Promise<any>;
 }
 
-export class TestAiMonitorAPI implements AiMonitorAPI {
+export class TestAiMonitorAPI implements AiMonitorAPIInterface {
 
     addLeave(data: LeaveData) {
         return fetch(`${MONITOR_API_URL}/leaves`, {
@@ -72,7 +73,7 @@ export class TestAiMonitorAPI implements AiMonitorAPI {
         });
     }
 
-    pushLogHistory(history) {
+    pushLogHistory(history: LogHistory[]) {
         return fetch(`${MONITOR_API_URL}/logs`, {
             "method": "POST",
             "headers": {
