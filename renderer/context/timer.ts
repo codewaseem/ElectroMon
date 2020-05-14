@@ -212,11 +212,12 @@ type TimersByName = {
 }
 
 export interface LogHistory {
-    startTime: string,
-    endTime: string,
+    startTime: string | number,
+    endTime: string | number,
     logType: string,
-    duration: number,
-    durationByCount: number,
+    duration?: number,
+    durationByCount?: number,
+    manual?: boolean
 }
 
 export class TimersManager {

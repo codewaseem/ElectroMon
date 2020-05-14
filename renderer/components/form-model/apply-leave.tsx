@@ -1,4 +1,4 @@
-import { Form, Button, DatePicker, Select, Modal, message } from "antd";
+import { Form, Button, DatePicker, Select, Modal, message, Spin } from "antd";
 import { useState } from "react";
 import moment from "moment";
 import useAiMonitorAPI from "../../hooks/useAiMonitorAPI";
@@ -7,7 +7,7 @@ const { Option } = Select;
 
 export default function ApplyLeaveModal({ visible, onOk, onCancel }) {
   const [form] = Form.useForm();
-  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [spinning, setSpinning] = useState(false);
   const aiMonitorApi = useAiMonitorAPI();
 
   const onFinish = (values: {
@@ -19,7 +19,7 @@ export default function ApplyLeaveModal({ visible, onOk, onCancel }) {
       reason,
       time: [startTime, endTime],
     } = values;
-    setConfirmLoading(true);
+    setSpinning(true);
     aiMonitorApi
       .addLeave({
         reason,
@@ -27,13 +27,13 @@ export default function ApplyLeaveModal({ visible, onOk, onCancel }) {
         endTime: +endTime.endOf("date"),
       })
       .then(() => {
-        setConfirmLoading(false);
+        setSpinning(false);
         message.success("Applied Successfully", 5);
         form.resetFields();
         onCancel();
       })
       .catch(() => {
-        setConfirmLoading(false);
+        setSpinning(false);
         message.error("Something went wrong! Try again!");
       });
   };
@@ -57,48 +57,49 @@ export default function ApplyLeaveModal({ visible, onOk, onCancel }) {
     <Modal
       title="Apply For Leave"
       visible={visible}
-      confirmLoading={confirmLoading}
       onCancel={onCancel}
       centered={true}
       footer={false}
     >
-      <Form
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        form={form}
-        name="apply-leave"
-        onFinish={onFinish}
-      >
-        <Form.Item name="reason" rules={[{ required: true }]}>
-          <Select placeholder={"Reason"}>
-            <Option value="sick">Sick</Option>
-            <Option value="vacation">Vacation</Option>
-            <Option value="unpaid">Unpaid</Option>
-          </Select>
-        </Form.Item>
+      <Spin spinning={spinning}>
+        <Form
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          form={form}
+          name="apply-leave"
+          onFinish={onFinish}
+        >
+          <Form.Item name="reason" rules={[{ required: true }]}>
+            <Select placeholder={"Reason"}>
+              <Option value="sick">Sick</Option>
+              <Option value="vacation">Vacation</Option>
+              <Option value="unpaid">Unpaid</Option>
+            </Select>
+          </Form.Item>
 
-        <Form.Item name="time" rules={[{ required: true }]}>
-          <RangePicker
-            placeholder={["From", "To"]}
-            disabledDate={disabledDate}
-            onCalendarChange={(value) => {
-              setDates(value);
-            }}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Button
-            htmlType="button"
-            onClick={onReset}
-            style={{ marginRight: 8 }}
-          >
-            Reset
-          </Button>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
+          <Form.Item name="time" rules={[{ required: true }]}>
+            <RangePicker
+              placeholder={["From", "To"]}
+              disabledDate={disabledDate}
+              onCalendarChange={(value) => {
+                setDates(value);
+              }}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              htmlType="button"
+              onClick={onReset}
+              style={{ marginRight: 8 }}
+            >
+              Reset
+            </Button>
+            <Button loading={spinning} type="primary" htmlType="submit">
+              Apply
+            </Button>
+          </Form.Item>
+        </Form>
+      </Spin>
     </Modal>
   );
 }

@@ -23,7 +23,6 @@ export default function HomeSectionFooter() {
     <div>
       <AddTimeModal
         visible={onAddTimeVisible}
-        confirmLoading={confirmAddTimeLoading}
         onOk={() => {}}
         onCancel={() => setAddTimeVisible(false)}
       />

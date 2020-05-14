@@ -28,6 +28,7 @@ export interface AiMonitorAPIInterface {
     verifyLogin(token: string): Promise<User>;
     addLeave(data: LeaveData): Promise<any>;
     pushLogHistory(history: LogHistory[]): Promise<any>;
+    addManualTime(timeData: LogHistory): Promise<any>;
 }
 
 export class TestAiMonitorAPI implements AiMonitorAPIInterface {
@@ -71,6 +72,10 @@ export class TestAiMonitorAPI implements AiMonitorAPIInterface {
             // let canAdd = Math.random() >= 0.5
             setTimeout(() => resolve(true), 2000);
         });
+    }
+
+    addManualTime(data: LogHistory) {
+        return this.pushLogHistory([{ ...data, manual: true }]);
     }
 
     pushLogHistory(history: LogHistory[]) {
