@@ -276,6 +276,10 @@ export class TimersManager {
         return this.history;
     }
 
+    deleteHistory() {
+        this.history = [];
+    }
+
     getTotalTimeObject() {
         let total = 0;
         Object.keys(this.timers).map(timerName => {
