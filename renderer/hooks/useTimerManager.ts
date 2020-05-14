@@ -9,7 +9,6 @@ export default function useTimerManager(aiMonitorApi: AiMonitorAPIInterface) {
     const [timersData, historyData] = useTimerData();
     console.log("init timersManager");
     const timersManager = new TimersManager(timersData, historyData);
-    globalThis.timer = timersManager;
 
 
     useEffect(() => {
