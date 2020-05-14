@@ -29,7 +29,6 @@ export default function HomeSectionFooter() {
       />
       <ApplyLeaveModal
         visible={onApplyVisible}
-        confirmLoading={confirmApplyLoading}
         onOk={() => {}}
         onCancel={() => setApplyVisible(false)}
       />

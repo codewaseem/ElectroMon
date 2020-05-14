@@ -11,7 +11,7 @@ const AppStates = {
   Home: "Home",
 };
 
-const defaultState = AppStates.Updates;
+const defaultState = AppStates.Home;
 
 const Home = () => {
   const [state, setState] = useState(defaultState);
@@ -27,7 +27,7 @@ const Home = () => {
         <CheckForUpdates onComplete={onUpdateComplete} />
       )}
       {state == AppStates.Home && <HomeSection />}
-      
+
       {state == AppStates.Home && <AppFooter />}
     </Layout>
   );

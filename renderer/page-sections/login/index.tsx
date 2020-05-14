@@ -2,8 +2,8 @@ import { Form, Input, Button, message, Spin } from "antd";
 import styles from "./login.module.scss";
 import Logo from "../../components/logo";
 import { LoginOutlined } from "@ant-design/icons";
-import { AiMonitorContext } from "../../context";
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import useAiMonitorAPI from "../../hooks/useAiMonitorAPI";
 
 const layout = {
   labelCol: { span: 8 },
@@ -22,7 +22,7 @@ const LoginStates = {
   no: {
     ...defaultState,
   },
-  initial: {
+  loading: {
     ...defaultState,
     spinLoading: true,
   },
@@ -35,27 +35,26 @@ const LoginStates = {
 };
 
 const LoginForm = ({ onComplete }) => {
-  const aiMonitorAPI = useContext(AiMonitorContext);
-  const [loginState, setLoginState] = useState(LoginStates.initial);
+  const [loginState, setLoginState] = useState(LoginStates.loading);
+  const aiMonitorAPI = useAiMonitorAPI();
 
   useEffect(() => {
-    // loading user from local db
-    let id = setTimeout(() => {
-      // if user found call on complete
+    let user = JSON.parse(localStorage.getItem("user"));
+    if (user && user.id) {
       onComplete();
-
-      //else set next state
-      // setLoginState(LoginStates.no);
-    }, 500);
-
-    return () => clearTimeout(id);
+    } else {
+      setLoginState(LoginStates.no);
+    }
   }, []);
+
+  const saveUser = (user) => localStorage.setItem("user", JSON.stringify(user));
 
   const onFinish = (values) => {
     setLoginState(LoginStates.logging);
     aiMonitorAPI
       .login(values.email, values.password)
-      .then(() => {
+      .then((user) => {
+        saveUser(user);
         setLoginState(LoginStates.done);
         onComplete();
       })

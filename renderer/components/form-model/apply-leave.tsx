@@ -1,19 +1,41 @@
-import { Form, Button, DatePicker, Select, Modal } from "antd";
+import { Form, Button, DatePicker, Select, Modal, message } from "antd";
 import { useState } from "react";
 import moment from "moment";
+import useAiMonitorAPI from "../../hooks/useAiMonitorAPI";
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
-export default function ApplyLeaveModal({
-  visible,
-  onOk,
-  confirmLoading,
-  onCancel,
-}) {
+export default function ApplyLeaveModal({ visible, onOk, onCancel }) {
   const [form] = Form.useForm();
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const aiMonitorApi = useAiMonitorAPI();
 
-  const onFinish = (values) => {
+  const onFinish = (values: {
+    reason: string;
+    time: [moment.Moment, moment.Moment];
+  }) => {
     console.log(values);
+    let {
+      reason,
+      time: [startTime, endTime],
+    } = values;
+    setConfirmLoading(true);
+    aiMonitorApi
+      .addLeave({
+        reason,
+        startTime: +startTime.startOf("date"), // convert moment object to milliseconds
+        endTime: +endTime.endOf("date"),
+      })
+      .then(() => {
+        setConfirmLoading(false);
+        message.success("Applied Successfully", 5);
+        form.resetFields();
+        onCancel();
+      })
+      .catch(() => {
+        setConfirmLoading(false);
+        message.error("Something went wrong! Try again!");
+      });
   };
 
   const onReset = () => {
@@ -21,7 +43,7 @@ export default function ApplyLeaveModal({
   };
 
   const [dates, setDates] = useState([]);
-  
+
   const disabledDate = (current) => {
     if (!dates || dates.length === 0) {
       return current && current < moment().endOf("day");
