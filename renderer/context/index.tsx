@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { TimersManager } from "./timer";
-import useTimerData from "../hooks/useTimerData";
-import { TIMERS_STORAGE_KEY, TIMERS_HISTORY_KEY } from "../../constants";
 import { TestAiMonitorAPI } from "./api";
 import useTimerManager from "../hooks/useTimerManager";
 
