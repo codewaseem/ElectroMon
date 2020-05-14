@@ -16,11 +16,7 @@ export default function useTimerManager(aiMonitorApi: AiMonitorAPIInterface) {
         console.log("called effect");
         const cacheTimer = () => {
             const id = setTimeout(() => {
-                localStorage.setItem(TIMERS_STORAGE_KEY, JSON.stringify(timersManager));
-                localStorage.setItem(
-                    TIMERS_HISTORY_KEY,
-                    JSON.stringify(timersManager.getHistory())
-                );
+                saveTimerData(timersManager);
                 cacheTimer();
             }, 1000 * 5);
             return id;
@@ -60,4 +56,9 @@ export default function useTimerManager(aiMonitorApi: AiMonitorAPIInterface) {
     }, [timersManager]);
 
     return timersManager;
+}
+
+export function saveTimerData(timersManager: TimersManager) {
+    localStorage.setItem(TIMERS_STORAGE_KEY, JSON.stringify(timersManager));
+    localStorage.setItem(TIMERS_HISTORY_KEY, JSON.stringify(timersManager.getHistory()));
 }
