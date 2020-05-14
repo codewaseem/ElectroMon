@@ -3,7 +3,7 @@ import styles from "./login.module.scss";
 import Logo from "../../components/logo";
 import { LoginOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
-import useAiMonitorAPI from "../../hooks/useAiMonitorAPI";
+import { useAiMonitorAPI } from "../../hooks";
 
 const layout = {
   labelCol: { span: 8 },

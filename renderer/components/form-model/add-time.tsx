@@ -1,6 +1,6 @@
 import { Form, Button, TimePicker, Select, Modal, message, Spin } from "antd";
 import { useState, useEffect } from "react";
-import useAiMonitorAPI from "../../hooks/useAiMonitorAPI";
+import { useAiMonitorAPI } from "../../hooks";
 import { WORK_TIMER, LUNCH_TIMER, COFFEE_TIMER } from "../../../constants";
 const { RangePicker: TimeRangePicker } = TimePicker;
 const { Option } = Select;

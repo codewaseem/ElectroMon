@@ -1,7 +1,7 @@
 import { Form, Button, DatePicker, Select, Modal, message, Spin } from "antd";
 import { useState } from "react";
 import moment from "moment";
-import useAiMonitorAPI from "../../hooks/useAiMonitorAPI";
+import { useAiMonitorAPI } from "../../hooks";
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 

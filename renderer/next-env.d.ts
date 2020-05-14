@@ -4,3 +4,9 @@
 /// <reference types="next-optimized-images" />
 
 declare module '*.png';
+
+declare global {
+    interface Window {
+        require: any;
+    }
+}

@@ -3,7 +3,7 @@ import { Row, Button, Col } from "antd";
 import { ApplyLeaveModal, AddTimeModal } from "../form-model";
 import { AiMonitorContext } from "../../context";
 
-export default function HomeSectionFooter() {
+export default function HomeSectionFooter({ onExitClick }) {
   const aiMonitorApi = useContext(AiMonitorContext);
   const [canAddManualTime, setCanAddManualTime] = useState(false);
 
@@ -51,7 +51,7 @@ export default function HomeSectionFooter() {
           <Button onClick={() => setApplyVisible(true)}>Apply Leave</Button>
         </Col>
         <Col>
-          <Button danger type="primary">
+          <Button danger type="primary" onClick={onExitClick}>
             Exit
           </Button>
         </Col>

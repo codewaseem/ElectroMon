@@ -11,6 +11,9 @@ const themeVariables = path.resolve(__dirname, "./theme/antd-custom.scss");
 
 const nextConfig = {
   distDir: ".next",
+  webpack: (config) => {
+    config.target = "electron-renderer";
+  },
 };
 
 const plugins = [
