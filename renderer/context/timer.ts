@@ -263,7 +263,10 @@ export class TimersManager {
                         durationByCount: lastLog.duration,
                         endTime: lastLog.endTime,
                         startTime: lastLog.startTime
-                    })
+                    });
+
+                    // now re-start the timer
+                    this.startTimer(timerName);
                 }
             });
         }
