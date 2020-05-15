@@ -7,9 +7,10 @@ import { useAiMonitorAPI } from "../../hooks";
 
 const electron = eval("require('electron');");
 const remote = electron.remote || false;
+let auth = null;
 
 if (remote) {
-  console.log("Remote found", remote.require("./background"));
+  auth = remote.require("./background").auth;
 }
 
 const layout = {
@@ -46,12 +47,10 @@ const LoginForm = ({ onComplete }) => {
   const aiMonitorAPI = useAiMonitorAPI();
 
   useEffect(() => {
-    let user = JSON.parse(localStorage.getItem("user"));
-    if (user && user.id) {
+    auth.getToken().then((token) => {
+      console.log(token);
       onComplete();
-    } else {
-      setLoginState(LoginStates.no);
-    }
+    });
   }, []);
 
   const saveUser = (user) => localStorage.setItem("user", JSON.stringify(user));
