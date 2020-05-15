@@ -5,6 +5,13 @@ import { LoginOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import { useAiMonitorAPI } from "../../hooks";
 
+const electron = eval("require('electron');");
+const remote = electron.remote || false;
+
+if (remote) {
+  console.log("Remote found", remote.require("./background"));
+}
+
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
