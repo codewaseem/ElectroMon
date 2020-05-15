@@ -16,6 +16,16 @@ export const auth = new ElectronAuth0Login({
   redirectEndpoint: '/mobile'
 });
 
+/*
+  Add this to above config, once the redirectEndpoint is added by krishna
+  auth0Audience: 'https://aptask-pulse-dev.auth0.com/api/v2/',
+  auth0ClientId: '6Lr8ZLw4GFlH7zpOda0d4EZCTlZ5La1A',
+  auth0Domain: 'aptask-pulse-dev.auth0.com',
+  auth0Scopes: 'openid profile email user_metadata app_metadata offline_access', // add 'offline_access'
+  applicationName: 'ai-monitor', // add an application name
+  redirectEndpoint: '/auth'
+
+*/
 
 if (isProd) {
   serve({ directory: 'app' });
