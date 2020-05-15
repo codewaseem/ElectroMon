@@ -5,15 +5,15 @@ import { createWindow } from './helpers';
 const isProd: boolean = process.env.NODE_ENV === 'production';
 
 
-import ElectronAuth0Login from 'electron-auth0-login';
+import ElectronAuth0Login from 'electron-auth0-login-keytar';
 
 export const auth = new ElectronAuth0Login({
   auth0Audience: 'https://dev-18rd1ag0.auth0.com/api/v2/',
   auth0ClientId: 'nu8cw2jv4NIGdImgIfxu1qGsPEVWF8Sw',
   auth0Domain: 'dev-18rd1ag0.auth0.com',
-  auth0Scopes: 'given_name profile offline_access', // add 'offline_access'
-  applicationName: 'my-cool-app', // add an application name
-  useRefreshTokens: true // add useRefreshTokens: true
+  auth0Scopes: 'given_name openid profile email offline_access', // add 'offline_access'
+  applicationName: 'ai-monitor', // add an application name
+  redirectEndpoint: '/mobile'
 });
 
 

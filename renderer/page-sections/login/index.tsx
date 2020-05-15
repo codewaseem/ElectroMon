@@ -47,10 +47,14 @@ const LoginForm = ({ onComplete }) => {
   const aiMonitorAPI = useAiMonitorAPI();
 
   useEffect(() => {
-    auth.getToken().then((token) => {
-      console.log(token);
-      onComplete();
-    });
+    auth
+      .getToken()
+      .then(auth.getUserInfo)
+      .then((userInfo) => {
+        console.log(userInfo);
+        onComplete();
+      });
+    window["auth"] = auth;
   }, []);
 
   const saveUser = (user) => localStorage.setItem("user", JSON.stringify(user));
