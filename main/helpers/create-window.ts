@@ -8,6 +8,7 @@ import * as Store from 'electron-store';
 export default (windowName: string, options: BrowserWindowConstructorOptions): BrowserWindow => {
   const key = 'window-state';
   const name = `window-state-${windowName}`;
+  // @ts-ignore
   const store = new Store({ name });
   const defaultSize = {
     width: options.width,

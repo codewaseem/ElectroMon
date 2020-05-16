@@ -1,0 +1,6 @@
+{
+    "AUTH0_CLIENT_ID": "jaNKRYV53HzXVAk3enAeai8wHyVCK43o",
+    "AUTH0_DOMAIN": "aptask-pulse-dev.auth0.com",
+    "AUTH0_AUDIENCE": "https://aptask-pulse-dev.auth0.com/api/v2/",
+    "REDIRECT_ENDPOINT": "/auth"
+}

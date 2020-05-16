@@ -1,6 +1,6 @@
-appId: com.example.nextron
-productName: My Nextron App
-copyright: Copyright © 2018 Yoshihide Shiono
+appId: com.aptask.aimonitor
+productName: AiMonitor
+copyright: Copyright © 2020 ApTask AiMonitor
 directories:
   output: dist
   buildResources: resources

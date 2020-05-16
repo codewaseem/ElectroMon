@@ -5,7 +5,7 @@ const remote = electron.remote || false;
 let appVersion = '';
 
 if (remote) {
-    const mainProcess = remote.require('./background');
+    const mainProcess = remote.require('./main');
     appVersion = mainProcess.appVersion;
 }
 

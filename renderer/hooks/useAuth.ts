@@ -5,7 +5,7 @@ const remote = electron.remote || false;
 let auth = null;
 
 if (remote) {
-    auth = remote.require("./background").auth;
+    auth = remote.require("./auth").default;
 }
 
 export function useAuthData() {
