@@ -57,33 +57,32 @@ export default function PreCheckScreen({ onComplete }) {
   const auth = useAuth();
   const ipcRenderer = useIPCRenderer();
 
-  globalThis.auth = auth;
-
   useEffect(() => {
     // Display the current version
     // Listen for messages
     ipcRenderer.on("message", function (event, data) {
-      console.log(data);
+      console.log(event, data);
+      setMessage(data.text);
     });
     // let id1 = setTimeout(() => {
     //   setCurrentStep(UpdateStates.downloadUpdates);
     // }, 1500);
 
-    let id2 = setTimeout(async () => {
-      setCurrentStep(UpdateStates.login);
-      try {
-        const token = await auth.getToken();
-        console.log(token);
-        onComplete();
-      } catch (e) {
-        console.log("login failed");
-      }
-    }, 3000);
+    // let id2 = setTimeout(async () => {
+    //   setCurrentStep(UpdateStates.login);
+    //   try {
+    //     const token = await auth.getToken();
+    //     console.log(token);
+    //     onComplete();
+    //   } catch (e) {
+    //     console.log("login failed");
+    //   }
+    // }, 3000);
 
-    return () => {
-      // clearTimeout(id1);
-      clearTimeout(id2);
-    };
+    // return () => {
+    //   // clearTimeout(id1);
+    //   clearTimeout(id2);
+    // };
   }, []);
 
   return (
