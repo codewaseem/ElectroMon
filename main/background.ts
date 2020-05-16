@@ -8,12 +8,12 @@ const isProd: boolean = process.env.NODE_ENV === 'production';
 import ElectronAuth0Login from 'electron-auth0-login-keytar';
 
 export const auth = new ElectronAuth0Login({
-  auth0Audience: 'https://dev-18rd1ag0.auth0.com/api/v2/',
-  auth0ClientId: 'nu8cw2jv4NIGdImgIfxu1qGsPEVWF8Sw',
-  auth0Domain: 'dev-18rd1ag0.auth0.com',
-  auth0Scopes: 'given_name openid profile email offline_access', // add 'offline_access'
+  auth0Audience: 'https://aptask-pulse-dev.auth0.com/api/v2/',
+  auth0ClientId: 'jaNKRYV53HzXVAk3enAeai8wHyVCK43o',
+  auth0Domain: 'aptask-pulse-dev.auth0.com',
+  auth0Scopes: 'openid profile email user_metadata app_metadata offline_access', // add 'offline_access'
   applicationName: 'ai-monitor', // add an application name
-  redirectEndpoint: '/mobile'
+  redirectEndpoint: '/auth'
 });
 
 /*
