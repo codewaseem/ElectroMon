@@ -2,12 +2,13 @@ import { Steps } from "antd";
 import {
   ScanOutlined,
   CloudDownloadOutlined,
-  CheckOutlined,
   LoadingOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import Logo from "../../components/logo";
 import styles from "./styles.module.scss";
 import { useState, useEffect } from "react";
+import useAuth from "../../hooks/useAuth";
 
 const { Step } = Steps;
 
@@ -22,59 +23,54 @@ interface StepStatus {
 }
 
 const UpdateStates: StepStatus = {
-  step1: {
+  checkUpdates: {
     status: {
       check: "process",
       update: "wait",
-      done: "wait",
+      login: "wait",
     },
   },
-  step2: {
+  downloadUpdates: {
     status: {
       check: "finish",
       update: "process",
-      done: "wait",
+      login: "wait",
     },
   },
-  step3: {
+  login: {
     status: {
       check: "finish",
       update: "finish",
-      done: "process",
-    },
-  },
-  step4: {
-    status: {
-      check: "finish",
-      update: "finish",
-      done: "finish",
+      login: "process",
     },
   },
 };
 
-const defaultState = UpdateStates.step1;
+const defaultState = UpdateStates.checkUpdates;
 
 export default function CheckForUpdates({ onComplete }) {
   const [currentStep, setCurrentStep] = useState(defaultState);
+  const auth = useAuth();
 
   useEffect(() => {
     let id1 = setTimeout(() => {
-      setCurrentStep(UpdateStates.step2);
+      setCurrentStep(UpdateStates.downloadUpdates);
     }, 1500);
 
-    let id2 = setTimeout(() => {
-      setCurrentStep(UpdateStates.step3);
+    let id2 = setTimeout(async () => {
+      setCurrentStep(UpdateStates.login);
+      try {
+        const token = await auth.getToken();
+        console.log(token);
+        onComplete();
+      } catch (e) {
+        console.log("login failed");
+      }
     }, 3000);
-
-    let id3 = setTimeout(() => {
-      setCurrentStep(UpdateStates.step4);
-      onComplete();
-    }, 4500);
 
     return () => {
       clearTimeout(id1);
       clearTimeout(id2);
-      clearTimeout(id3);
     };
   }, []);
 
@@ -105,9 +101,15 @@ export default function CheckForUpdates({ onComplete }) {
           }
         />
         <Step
-          status={currentStep.status.done}
-          title="Done"
-          icon={<CheckOutlined />}
+          status={currentStep.status.login}
+          title="Login"
+          icon={
+            currentStep.status.login == "process" ? (
+              <LoadingOutlined />
+            ) : (
+              <UserOutlined />
+            )
+          }
         />
       </Steps>
     </div>
