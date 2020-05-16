@@ -83,7 +83,7 @@ export default function PreCheckScreen({ onComplete }) {
     //   // clearTimeout(id1);
     //   clearTimeout(id2);
     // };
-  }, []);
+  }, [message]);
 
   return (
     <div className={styles.container}>

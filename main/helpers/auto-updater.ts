@@ -31,6 +31,11 @@ export function sendUpdateEventsToWindow(win: BrowserWindow) {
         }
 
         if (event === UPDATER_EVENTS.ERROR) {
+            win.webContents.send('message', { event, eventData, text: 'Error while updating.' });
+
+        }
+
+        if (event === UPDATER_EVENTS.DOWNLOAD_PROGRESS) {
             let text = "Download speed: " + eventData.bytesPerSecond;
             text = text + ' - Downloaded ' + eventData.percent + '%';
             text = text + ' (' + eventData.transferred + "/" + eventData.total + ')';
@@ -39,13 +44,9 @@ export function sendUpdateEventsToWindow(win: BrowserWindow) {
 
         }
 
-        if (event === UPDATER_EVENTS.DOWNLOAD_PROGRESS) {
+        if (event === UPDATER_EVENTS.UPDATE_DOWNLOADED) {
             win.webContents.send('message', { event, eventData, text: 'Update downloaded.' });
 
-        }
-
-        if (event === UPDATER_EVENTS.UPDATE_DOWNLOADED) {
-            win.webContents.send('message', { event, eventData, text: 'Update available.' });
         }
     }
 
@@ -65,5 +66,6 @@ export default class AutoUpdater {
             });
             autoUpdater.checkForUpdatesAndNotify();
         }
+        return autoUpdater;
     }
 }

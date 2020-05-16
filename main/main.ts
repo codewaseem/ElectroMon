@@ -1,7 +1,8 @@
 import { app } from 'electron';
 import serve from 'electron-serve';
 import { createWindow } from './helpers';
-// import AutoUpdater, { sendUpdateEventsToWindow } from './helpers/auto-updater';
+import AutoUpdater, { sendUpdateEventsToWindow } from './helpers/auto-updater';
+import { UPDATER_EVENTS } from '../constants';
 
 const isProd: boolean = process.env.NODE_ENV === 'production';
 
@@ -34,7 +35,13 @@ if (isProd) {
   }
 
   console.log("Calling updater");
-  // AutoUpdater.start(sendUpdateEventsToWindow(mainWindow));
+  let autoUpdater = AutoUpdater.start(sendUpdateEventsToWindow(mainWindow));
+
+  autoUpdater.on(UPDATER_EVENTS.UPDATE_DOWNLOADED, () => {
+    console.log("Relaunching app");
+    app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
+    app.exit(0);
+  })
 
 })();
 
