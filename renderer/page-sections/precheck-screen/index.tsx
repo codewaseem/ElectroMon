@@ -10,6 +10,7 @@ import styles from "./styles.module.scss";
 import { useState, useEffect } from "react";
 import useAuth from "../../hooks/useAuth";
 import useIPCRenderer from "../../hooks/useIPCRenderer";
+import useAppVersion from "../../hooks/useAppVersion";
 
 const { Step } = Steps;
 
@@ -51,16 +52,13 @@ const defaultState = UpdateStates.checkUpdates;
 
 export default function PreCheckScreen({ onComplete }) {
   const [currentStep, setCurrentStep] = useState(defaultState);
-  const [version, setVersion] = useState("");
+  const version = useAppVersion();
   const [message, setMessage] = useState("");
   const auth = useAuth();
   const ipcRenderer = useIPCRenderer();
 
   useEffect(() => {
     // Display the current version
-    let version = window.location.hash.substring(1);
-    setVersion(version);
-
     // Listen for messages
     ipcRenderer.on("message", function (event, text) {
       setMessage(text);

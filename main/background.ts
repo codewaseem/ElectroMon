@@ -8,6 +8,7 @@ const isProd: boolean = process.env.NODE_ENV === 'production';
 
 
 autoUpdater.logger = log;
+// ts-ignore
 autoUpdater.logger.transports.file.level = 'info';
 log.info('App starting...');
 
@@ -100,3 +101,5 @@ app.on('ready', function () {
 app.on('window-all-closed', () => {
   app.quit();
 });
+
+export const appVersion = app.getVersion();
