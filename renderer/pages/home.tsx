@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import Layout from "../components/layout";
 import HomeSection from "../page-sections/home";
-// import LoginForm from "../page-sections/login";
-import CheckForUpdates from "../page-sections/check-update";
+import PreCheckScreen from "../page-sections/precheck-screen";
 import { AppFooter } from "../components/footer";
 
 const AppStates = {
-  Login: "Login",
+  // Login: "Login",
   Updates: "Updates",
   Home: "Home",
 };
@@ -18,13 +17,13 @@ const Home = () => {
 
   // const onLoginComplete = () => setState(AppStates.Home);
 
-  const onUpdateComplete = () => setState(AppStates.Home);
+  const onPreCheckComplete = () => setState(AppStates.Home);
 
   return (
     <Layout>
       {/* {state == AppStates.Login && <LoginForm onComplete={onLoginComplete} />} */}
       {state == AppStates.Updates && (
-        <CheckForUpdates onComplete={onUpdateComplete} />
+        <PreCheckScreen onComplete={onPreCheckComplete} />
       )}
       {/* TODO: merge below to Components */}
       {state == AppStates.Home && <HomeSection />}

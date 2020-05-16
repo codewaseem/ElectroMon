@@ -48,7 +48,7 @@ const UpdateStates: StepStatus = {
 
 const defaultState = UpdateStates.checkUpdates;
 
-export default function CheckForUpdates({ onComplete }) {
+export default function PreCheckScreen({ onComplete }) {
   const [currentStep, setCurrentStep] = useState(defaultState);
   const auth = useAuth();
 
