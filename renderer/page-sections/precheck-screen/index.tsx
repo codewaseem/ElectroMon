@@ -9,6 +9,7 @@ import Logo from "../../components/logo";
 import styles from "./styles.module.scss";
 import { useState, useEffect } from "react";
 import useAuth from "../../hooks/useAuth";
+import useIPCRenderer from "../../hooks/useIPCRenderer";
 
 const { Step } = Steps;
 
@@ -50,33 +51,46 @@ const defaultState = UpdateStates.checkUpdates;
 
 export default function PreCheckScreen({ onComplete }) {
   const [currentStep, setCurrentStep] = useState(defaultState);
+  const [version, setVersion] = useState("");
+  const [message, setMessage] = useState("");
   const auth = useAuth();
+  const ipcRenderer = useIPCRenderer();
 
   useEffect(() => {
-    let id1 = setTimeout(() => {
-      setCurrentStep(UpdateStates.downloadUpdates);
-    }, 1500);
+    // Display the current version
+    let version = window.location.hash.substring(1);
+    setVersion(version);
 
-    let id2 = setTimeout(async () => {
-      setCurrentStep(UpdateStates.login);
-      try {
-        const token = await auth.getToken();
-        console.log(token);
-        onComplete();
-      } catch (e) {
-        console.log("login failed");
-      }
-    }, 3000);
+    // Listen for messages
+    ipcRenderer.on("message", function (event, text) {
+      setMessage(text);
+    });
+    // let id1 = setTimeout(() => {
+    //   setCurrentStep(UpdateStates.downloadUpdates);
+    // }, 1500);
+
+    // let id2 = setTimeout(async () => {
+    //   setCurrentStep(UpdateStates.login);
+    //   try {
+    //     const token = await auth.getToken();
+    //     console.log(token);
+    //     onComplete();
+    //   } catch (e) {
+    //     console.log("login failed");
+    //   }
+    // }, 3000);
 
     return () => {
-      clearTimeout(id1);
-      clearTimeout(id2);
+      // clearTimeout(id1);
+      // clearTimeout(id2);
     };
   }, []);
 
   return (
     <div className={styles.container}>
       <Logo />
+      <h2>{version}</h2>
+      <h3>{message}</h3>
       <Steps>
         <Step
           status={currentStep.status.check}
