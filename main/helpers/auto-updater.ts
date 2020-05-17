@@ -16,6 +16,8 @@ function defaultUpdateEventHandler(event, eventData) {
 
 export function sendUpdateEventsToWindow(win: BrowserWindow) {
     return (event, eventData) => {
+        log.info(`Event: ${event}`, typeof eventData == "object" ? JSON.stringify(eventData, null, 2) : eventData);
+
         if (event === UPDATER_EVENTS.CHECK_FOR_UPDATES) {
             win.webContents.send('message', { event, eventData, text: 'Checking for update...' });
         }
