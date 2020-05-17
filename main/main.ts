@@ -36,7 +36,7 @@ if (isProd) {
 
   let autoUpdater = AutoUpdater.start(sendUpdateEventsToWindow(mainWindow));
   autoUpdater.on(UPDATER_EVENTS.UPDATE_DOWNLOADED, () => {
-    autoUpdater.quitAndInstall(true, true);
+    // autoUpdater.quitAndInstall(true, true);
   });
 
 })();

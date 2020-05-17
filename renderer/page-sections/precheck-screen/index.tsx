@@ -75,7 +75,11 @@ export default function PreCheckScreen({ onComplete }) {
 
   useEffect(() => {
     ipcRenderer.on("message", async function (event, data) {
-      if (event == UPDATER_EVENTS.UPDATE_NOT_AVAILABLE) {
+      if (data.event == UPDATER_EVENTS.DOWNLOAD_PROGRESS) {
+        setCurrentStep(UpdateStates.downloadUpdates);
+      }
+
+      if (data.event == UPDATER_EVENTS.UPDATE_NOT_AVAILABLE) {
         setCurrentStep(UpdateStates.login);
         try {
           const token = await auth.getToken();
@@ -86,12 +90,13 @@ export default function PreCheckScreen({ onComplete }) {
           setCurrentStep(UpdateStates.loginError);
         }
       }
-      if (event == UPDATER_EVENTS.ERROR) {
+
+      if (data.event == UPDATER_EVENTS.ERROR) {
         setCurrentStep(UpdateStates.downloadUpdatesError);
       }
       setMessage(data.text);
     });
-  }, [message]);
+  });
 
   return (
     <div className={styles.container}>
