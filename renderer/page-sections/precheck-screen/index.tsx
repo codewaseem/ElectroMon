@@ -79,7 +79,10 @@ export default function PreCheckScreen({ onComplete }) {
         setCurrentStep(UpdateStates.downloadUpdates);
       }
 
-      if (data.event == UPDATER_EVENTS.UPDATE_NOT_AVAILABLE) {
+      if (
+        data.event == UPDATER_EVENTS.UPDATE_NOT_AVAILABLE ||
+        data.event == UPDATER_EVENTS.UPDATE_DOWNLOADED
+      ) {
         setCurrentStep(UpdateStates.login);
         try {
           const token = await auth.getToken();
