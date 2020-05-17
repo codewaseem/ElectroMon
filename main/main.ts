@@ -38,6 +38,9 @@ if (isProd) {
   autoUpdater.on(UPDATER_EVENTS.UPDATE_DOWNLOADED, () => {
     autoUpdater.quitAndInstall(true, true);
   });
+  if (!isProd) {
+    autoUpdater.emit(UPDATER_EVENTS.UPDATE_NOT_AVAILABLE);
+  }
 
 })();
 

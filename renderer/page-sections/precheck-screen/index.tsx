@@ -10,7 +10,6 @@ import styles from "./styles.module.scss";
 import { useState, useEffect } from "react";
 import useAuth from "../../hooks/useAuth";
 import useIPCRenderer from "../../hooks/useIPCRenderer";
-import useAppVersion from "../../hooks/useAppVersion";
 import { UPDATER_EVENTS } from "../../../constants";
 
 const { Step } = Steps;
@@ -68,37 +67,40 @@ const defaultState = UpdateStates.checkUpdates;
 
 export default function PreCheckScreen({ onComplete }) {
   const [currentStep, setCurrentStep] = useState(defaultState);
-  const version = useAppVersion();
   const [message, setMessage] = useState("");
   const auth = useAuth();
   const ipcRenderer = useIPCRenderer();
 
   useEffect(() => {
-    ipcRenderer.on("message", async function (event, data) {
-      if (data.event == UPDATER_EVENTS.DOWNLOAD_PROGRESS) {
-        setCurrentStep(UpdateStates.downloadUpdates);
-      }
-
-      if (
-        data.event == UPDATER_EVENTS.UPDATE_NOT_AVAILABLE ||
-        data.event == UPDATER_EVENTS.UPDATE_DOWNLOADED
-      ) {
-        setCurrentStep(UpdateStates.login);
-        try {
-          const token = await auth.getToken();
-          console.log(token);
-          onComplete();
-        } catch (e) {
-          console.log("login failed");
-          setCurrentStep(UpdateStates.loginError);
+    ipcRenderer.on(
+      "message",
+      async function (event, data) {
+        if (data.event == UPDATER_EVENTS.DOWNLOAD_PROGRESS) {
+          setCurrentStep(UpdateStates.downloadUpdates);
         }
-      }
 
-      if (data.event == UPDATER_EVENTS.ERROR) {
-        setCurrentStep(UpdateStates.downloadUpdatesError);
-      }
-      setMessage(data.text);
-    });
+        if (
+          data.event == UPDATER_EVENTS.UPDATE_NOT_AVAILABLE ||
+          data.event == UPDATER_EVENTS.UPDATE_DOWNLOADED
+        ) {
+          setCurrentStep(UpdateStates.login);
+          try {
+            const token = await auth.getToken();
+            console.log(token);
+            onComplete();
+          } catch (e) {
+            console.log("login failed");
+            setCurrentStep(UpdateStates.loginError);
+          }
+        }
+
+        if (data.event == UPDATER_EVENTS.ERROR) {
+          setCurrentStep(UpdateStates.downloadUpdatesError);
+        }
+        setMessage(data.text);
+      },
+      []
+    );
   });
 
   return (
