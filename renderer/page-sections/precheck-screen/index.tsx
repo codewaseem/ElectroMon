@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import useAuth from "../../hooks/useAuth";
 import useIPCRenderer from "../../hooks/useIPCRenderer";
 import useAppVersion from "../../hooks/useAppVersion";
+import { UPDATER_EVENTS } from "../../../constants";
 
 const { Step } = Steps;
 
@@ -32,10 +33,18 @@ const UpdateStates: StepStatus = {
       login: "wait",
     },
   },
+
   downloadUpdates: {
     status: {
       check: "finish",
       update: "process",
+      login: "wait",
+    },
+  },
+  downloadUpdatesError: {
+    status: {
+      check: "finish",
+      update: "error",
       login: "wait",
     },
   },
@@ -44,6 +53,13 @@ const UpdateStates: StepStatus = {
       check: "finish",
       update: "finish",
       login: "process",
+    },
+  },
+  loginError: {
+    status: {
+      check: "finish",
+      update: "finish",
+      login: "error",
     },
   },
 };
@@ -58,38 +74,29 @@ export default function PreCheckScreen({ onComplete }) {
   const ipcRenderer = useIPCRenderer();
 
   useEffect(() => {
-    // Display the current version
-    // Listen for messages
-    ipcRenderer.on("message", function (event, data) {
-      console.log(event, data);
+    ipcRenderer.on("message", async function (event, data) {
+      if (event == UPDATER_EVENTS.UPDATE_NOT_AVAILABLE) {
+        setCurrentStep(UpdateStates.login);
+        try {
+          const token = await auth.getToken();
+          console.log(token);
+          onComplete();
+        } catch (e) {
+          console.log("login failed");
+          setCurrentStep(UpdateStates.loginError);
+        }
+      }
+      if (event == UPDATER_EVENTS.ERROR) {
+        setCurrentStep(UpdateStates.downloadUpdatesError);
+      }
       setMessage(data.text);
     });
-    // let id1 = setTimeout(() => {
-    //   setCurrentStep(UpdateStates.downloadUpdates);
-    // }, 1500);
-
-    // let id2 = setTimeout(async () => {
-    //   setCurrentStep(UpdateStates.login);
-    //   try {
-    //     const token = await auth.getToken();
-    //     console.log(token);
-    //     onComplete();
-    //   } catch (e) {
-    //     console.log("login failed");
-    //   }
-    // }, 3000);
-
-    // return () => {
-    //   // clearTimeout(id1);
-    //   clearTimeout(id2);
-    // };
   }, [message]);
 
   return (
     <div className={styles.container}>
       <Logo />
-      <h2>{version}</h2>
-      <h3>{message}</h3>
+
       <Steps>
         <Step
           status={currentStep.status.check}
@@ -125,6 +132,7 @@ export default function PreCheckScreen({ onComplete }) {
           }
         />
       </Steps>
+      <h3>{message}</h3>
     </div>
   );
 }

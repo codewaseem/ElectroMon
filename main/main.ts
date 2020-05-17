@@ -34,8 +34,10 @@ if (isProd) {
     mainWindow.webContents.openDevTools();
   }
 
-  console.log("Calling updater");
-  AutoUpdater.start();
+  let autoUpdater = AutoUpdater.start(sendUpdateEventsToWindow(mainWindow));
+  autoUpdater.on(UPDATER_EVENTS.UPDATE_DOWNLOADED, () => {
+    autoUpdater.quitAndInstall(true, true);
+  });
 
 })();
 
