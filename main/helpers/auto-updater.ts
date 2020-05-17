@@ -62,6 +62,7 @@ export default class AutoUpdater {
         if (!this.started) {
             this.started = true;
             Object.values(UPDATER_EVENTS).forEach(event => () => {
+                console.log('Adding event', event);
                 autoUpdater.on(event, (eventData) => {
                     onEventCallback(event, eventData);
                 });

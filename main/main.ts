@@ -35,7 +35,7 @@ if (isProd) {
   }
 
   console.log("Calling updater");
-  AutoUpdater.start(sendUpdateEventsToWindow(mainWindow));
+  AutoUpdater.start();
 
 })();
 
