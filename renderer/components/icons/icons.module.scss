@@ -1,0 +1,10 @@
+@import "../../theme/antd-custom.scss";
+
+.svgIconContainer {
+  svg {
+    display: block;
+    height: 25px;
+    width: 25px;
+    fill: $primary-color;
+  }
+}
