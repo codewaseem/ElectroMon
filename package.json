@@ -14,6 +14,7 @@
     "build:mac": "nextron build --mac --x64",
     "build:linux": "nextron build --linux",
     "publish": "nextron build --all -- -p onTag",
+    "publish:win64": "nextron build --win --x64 -- -p always",
     "publish:linux": "nextron build --linux -- -p always",
     "postinstall": "electron-builder install-app-deps",
     "rebuild": "electron-rebuild",
