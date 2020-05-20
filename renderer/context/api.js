@@ -1,34 +1,5 @@
 import { MONITOR_API_URL } from "../../constants";
 
-// export interface User {
-//     id: number | string,
-//     access_token: string,
-//     name: string,
-//     email: string
-// }
-
-// export interface LeaveData {
-//     reason: string,
-//     startTime: number,
-//     endTime: number,
-// }
-
-// export interface LogData {
-//     logType: string,
-//     notes?: string,
-//     startTime: number,
-//     endTime: number
-// }
-
-// export interface AiMonitorAPIInterface {
-//     canAddManualTime(): Promise<boolean>;
-//     login(email: string, password: string): Promise<User>;
-//     verifyLogin(token: string): Promise<User>;
-//     addLeave(data: LeaveData): Promise<any>;
-//     pushLogHistory(history: LogHistory[]): Promise<any>;
-//     addManualTime(timeData: LogHistory): Promise<any>;
-// }
-
 export class TestAiMonitorAPI {
   addLeave(data) {
     return fetch(`${MONITOR_API_URL}/leaves`, {
