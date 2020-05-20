@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { Steps } from "antd";
 import {
   ScanOutlined,
@@ -9,8 +9,11 @@ import {
 import Logo from "../../components/logo";
 import styles from "./styles.module.scss";
 import { useState, useEffect } from "react";
-import useAuth from "../../hooks/useAuth";
-import useIPCRenderer from "../../hooks/useIPCRenderer";
+import {
+  useIPCRenderer,
+  useAuthLogin,
+  isDev,
+} from "../../hooks/useMainProcess";
 import { UPDATER_EVENTS } from "../../../constants";
 import PropTypes from "prop-types";
 
@@ -60,42 +63,48 @@ const defaultState = UpdateStates.checkUpdates;
 export default function PreCheckScreen({ onComplete }) {
   const [currentStep, setCurrentStep] = useState(defaultState);
   const [message, setMessage] = useState("");
-  const auth = useAuth();
   const ipcRenderer = useIPCRenderer();
+  const login = useAuthLogin();
 
-  const updateStatus = useCallback(
-    async (event, data) => {
-      if (data.event == UPDATER_EVENTS.DOWNLOAD_PROGRESS) {
-        setCurrentStep(UpdateStates.downloadUpdates);
-      }
+  async function tryLogin() {
+    setCurrentStep(UpdateStates.login);
+    try {
+      const token = await login();
+      console.log(token);
+      onComplete();
+    } catch (e) {
+      console.log("login failed");
+      setCurrentStep(UpdateStates.loginError);
+    }
+  }
 
-      if (
-        data.event == UPDATER_EVENTS.UPDATE_NOT_AVAILABLE ||
-        data.event == UPDATER_EVENTS.UPDATE_DOWNLOADED
-      ) {
-        setCurrentStep(UpdateStates.login);
-        try {
-          const token = await auth.getToken();
-          console.log(token);
-          onComplete();
-        } catch (e) {
-          console.log("login failed");
-          setCurrentStep(UpdateStates.loginError);
-        }
-      }
+  const updateStatus = async (_, data) => {
+    if (data.event == UPDATER_EVENTS.DOWNLOAD_PROGRESS) {
+      setCurrentStep(UpdateStates.downloadUpdates);
+    }
 
-      if (data.event == UPDATER_EVENTS.ERROR) {
-        setCurrentStep(UpdateStates.downloadUpdatesError);
-      }
-      setMessage(data.text);
-    },
-    [auth, onComplete]
-  );
+    if (
+      data.event == UPDATER_EVENTS.UPDATE_NOT_AVAILABLE ||
+      data.event == UPDATER_EVENTS.UPDATE_DOWNLOADED
+    ) {
+      await tryLogin();
+    }
+
+    if (data.event == UPDATER_EVENTS.ERROR) {
+      setCurrentStep(UpdateStates.downloadUpdatesError);
+    }
+    setMessage(data.text);
+  };
 
   useEffect(() => {
-    ipcRenderer.on("message", updateStatus);
-    return () => ipcRenderer.removeListener("message", updateStatus);
-  }, [ipcRenderer, updateStatus]);
+    if (isDev()) {
+      console.log("In dev mode, skip checking for update");
+      tryLogin();
+    } else {
+      ipcRenderer.on("message", updateStatus);
+      return () => ipcRenderer.removeListener("message", updateStatus);
+    }
+  });
 
   return (
     <div className={styles.container}>
