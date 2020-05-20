@@ -4,7 +4,7 @@ import { createWindow } from "./helpers";
 import AutoUpdater, { sendUpdateEventsToWindow } from "./helpers/auto-updater";
 import { UPDATER_EVENTS } from "../constants";
 
-const isProd = process.env.NODE_ENV === "production";
+export const isProd = process.env.NODE_ENV === "production";
 
 if (isProd) {
   serve({ directory: "app" });

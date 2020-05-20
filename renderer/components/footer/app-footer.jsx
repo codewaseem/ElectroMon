@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./app-footer.module.scss";
 import { Descriptions } from "antd";
 import { Label } from "../utils";
-import useAppVersion from "../../hooks/useAppVersion";
+import { useAppVersion } from "../../hooks/useMainProcess";
 
 export default function AppFooter() {
   const appVersion = useAppVersion();
