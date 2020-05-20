@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Typography } from "antd";
 import styles from "./card.module.scss";
-import { CardProps } from "antd/lib/card";
+import PropTypes from "prop-types";
 
 const CardHead = ({ icon: Icon, title = "" }) => {
   return (
@@ -19,6 +19,11 @@ const CardHead = ({ icon: Icon, title = "" }) => {
   );
 };
 
+CardHead.propTypes = {
+  icon: PropTypes.elementType,
+  title: PropTypes.string,
+};
+
 const CardContent = ({ children }) => {
   return <div className={styles.cardContent}>{children}</div>;
 };
@@ -26,7 +31,6 @@ const CardContent = ({ children }) => {
 const OptionsCard = ({ icon: Icon, title, children, invert, ...props }) => {
   return (
     <Card
-      hoverable={true}
       style={{ width: 210 }}
       {...props}
       className={`${styles.cardOveride} ${invert && styles.invertColors}`}
@@ -37,6 +41,13 @@ const OptionsCard = ({ icon: Icon, title, children, invert, ...props }) => {
       </div>
     </Card>
   );
+};
+
+OptionsCard.propTypes = {
+  icon: PropTypes.elementType,
+  title: PropTypes.string,
+  children: PropTypes.element.isRequired,
+  invert: PropTypes.bool,
 };
 
 export default OptionsCard;
