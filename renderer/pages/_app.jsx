@@ -1,4 +1,6 @@
 import { RootProvider } from "../context";
+import PropTypes from "prop-types";
+import React from "react";
 
 function App({ Component, pageProps }) {
   return (
@@ -7,5 +9,10 @@ function App({ Component, pageProps }) {
     </RootProvider>
   );
 }
+
+App.propTypes = {
+  Component: PropTypes.elementType,
+  pageProps: PropTypes.any,
+};
 
 export default App;

@@ -1,6 +1,7 @@
+// eslint-disable-next-line no-undef
 module.exports = {
   // specify an alternate main src directory, defaults to 'main'
-  webpack: (defaultConfig, env) =>
+  webpack: (defaultConfig) =>
     Object.assign(defaultConfig, {
       entry: {
         // electron main process

@@ -1,11 +1,16 @@
 import { Form, Button, TimePicker, Select, Modal, message, Spin } from "antd";
-import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import React, { useState } from "react";
 import { useAiMonitorAPI } from "../../hooks";
 import { WORK_TIMER, LUNCH_TIMER, COFFEE_TIMER } from "../../../constants";
 const { RangePicker: TimeRangePicker } = TimePicker;
 const { Option } = Select;
 
-export default function AddTimeModal({ visible, onOk, onCancel }) {
+export default function AddTimeModal({
+  visible,
+  onOk = () => {},
+  onCancel = () => {},
+}) {
   const [form] = Form.useForm();
   const [spinning, setSpinning] = useState(false);
   const aiMonitorApi = useAiMonitorAPI();
@@ -40,11 +45,12 @@ export default function AddTimeModal({ visible, onOk, onCancel }) {
     form.resetFields();
   };
 
-  const [times, setTimes] = useState([]);
+  const [, setTimes] = useState([]);
   return (
     <Modal
       title="Add Manual Time"
       visible={visible}
+      onOk={onOk}
       onCancel={onCancel}
       centered={true}
       footer={false}
@@ -96,3 +102,9 @@ export default function AddTimeModal({ visible, onOk, onCancel }) {
     </Modal>
   );
 }
+
+AddTimeModal.propTypes = {
+  visible: PropTypes.bool,
+  onOk: PropTypes.func,
+  onCancel: PropTypes.func,
+};

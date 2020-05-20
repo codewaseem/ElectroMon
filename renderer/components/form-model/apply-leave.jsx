@@ -1,11 +1,16 @@
 import { Form, Button, DatePicker, Select, Modal, message, Spin } from "antd";
-import { useState } from "react";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import moment from "moment";
 import { useAiMonitorAPI } from "../../hooks";
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
-export default function ApplyLeaveModal({ visible, onOk, onCancel }) {
+export default function ApplyLeaveModal({
+  visible,
+  onOk = () => {},
+  onCancel = () => {},
+}) {
   const [form] = Form.useForm();
   const [spinning, setSpinning] = useState(false);
   const aiMonitorApi = useAiMonitorAPI();
@@ -54,6 +59,7 @@ export default function ApplyLeaveModal({ visible, onOk, onCancel }) {
       title="Apply For Leave"
       visible={visible}
       onCancel={onCancel}
+      onOk={onOk}
       centered={true}
       footer={false}
     >
@@ -99,3 +105,9 @@ export default function ApplyLeaveModal({ visible, onOk, onCancel }) {
     </Modal>
   );
 }
+
+ApplyLeaveModal.propTypes = {
+  visible: PropTypes.bool,
+  onOk: PropTypes.func,
+  onCancel: PropTypes.func,
+};

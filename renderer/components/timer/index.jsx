@@ -1,5 +1,6 @@
 import React from "react";
 import { Typography, Switch } from "antd";
+import PropTypes from "prop-types";
 import styles from "./timer.module.scss";
 
 const Timer = ({
@@ -36,6 +37,18 @@ const Timer = ({
       </div>
     </div>
   );
+};
+
+Timer.propTypes = {
+  onStart: PropTypes.func,
+  onStop: PropTypes.func,
+  isActive: PropTypes.bool,
+  time: PropTypes.shape({
+    hours: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    minutes: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    seconds: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  }),
+  summaryText: PropTypes.string,
 };
 
 export default Timer;

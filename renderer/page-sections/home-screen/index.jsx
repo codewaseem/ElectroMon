@@ -18,8 +18,6 @@ export default function HomeScreen() {
   });
   const timersManager = useTimerManagerContext();
 
-  console.log("updated");
-
   const safelyExit = () => {
     const remote = electron.remote || false;
     if (remote) {

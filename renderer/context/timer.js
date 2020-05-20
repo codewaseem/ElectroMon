@@ -1,27 +1,6 @@
 import moment from "moment";
 import { TIME_DIFFERENCE_DETECTED } from "../../constants";
 
-// interface Lap {
-//     startTime,
-//     endTime: string,
-//     duration: number
-// }
-
-// interface TimersByDate {
-//     [key: string]: Timer
-// }
-
-// interface TimerInitData {
-//     laps: Lap[],
-//     milliseconds: number,
-//     isRunning: boolean,
-//     startTimeISO?: string
-// }
-
-// interface DatedTimerInitData {
-//     [key: string]: TimerInitData
-// }
-
 export const zeroPad = (number) => (number <= 9 ? `0${number}` : number);
 
 class Timer {

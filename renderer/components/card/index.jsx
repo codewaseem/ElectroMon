@@ -28,6 +28,10 @@ const CardContent = ({ children }) => {
   return <div className={styles.cardContent}>{children}</div>;
 };
 
+CardContent.propTypes = {
+  children: PropTypes.element.isRequired,
+};
+
 const OptionsCard = ({ icon: Icon, title, children, invert, ...props }) => {
   return (
     <Card

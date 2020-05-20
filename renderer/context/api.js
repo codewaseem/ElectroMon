@@ -20,7 +20,7 @@ export class TestAiMonitorAPI {
   }
 
   async canAddManualTime() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       // let canAdd = Math.random() >= 0.5
       setTimeout(() => resolve(true), 2000);
     });

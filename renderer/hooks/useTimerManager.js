@@ -2,7 +2,6 @@ import useTimerData from "./useTimerData";
 import { TimersManager } from "../context/timer";
 import { useEffect } from "react";
 import { TIMERS_STORAGE_KEY, TIMERS_HISTORY_KEY } from "../../constants";
-import { AiMonitorAPIInterface } from "../context/api";
 
 export default function useTimerManager(aiMonitorApi) {
   const [timersData, historyData] = useTimerData();
@@ -30,6 +29,7 @@ export default function useTimerManager(aiMonitorApi) {
 
               timersManager.deleteHistory();
             })
+            // eslint-disable-next-line no-unused-vars
             .catch((e) => {
               console.log("report error here");
             });
@@ -49,7 +49,7 @@ export default function useTimerManager(aiMonitorApi) {
       clearTimeout(timerId);
       clearTimeout(syncHistoryId);
     };
-  }, [timersManager]);
+  }, [aiMonitorApi, timersManager]);
 
   return timersManager;
 }

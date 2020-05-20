@@ -15,19 +15,19 @@ const asyncStates = {
 
 export default function useAsyncCode(asyncFunc) {
   const [state, updateState] = useState(asyncStates.loading);
-  const doAsync = async () => {
-    try {
-      const results = await asyncFunc();
-      updateState({ ...asyncStates.success, results: results && results });
-    } catch (error) {
-      // TODO: Error Reporting
-      updateState(asyncStates.error);
-    }
-  };
 
   useEffect(() => {
+    const doAsync = async () => {
+      try {
+        const results = await asyncFunc();
+        updateState({ ...asyncStates.success, results: results && results });
+      } catch (error) {
+        // TODO: Error Reporting
+        updateState(asyncStates.error);
+      }
+    };
     doAsync();
-  }, []);
+  }, [asyncFunc]);
 
   return state;
 }

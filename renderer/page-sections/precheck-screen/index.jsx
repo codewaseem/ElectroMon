@@ -1,3 +1,4 @@
+import React, { useCallback } from "react";
 import { Steps } from "antd";
 import {
   ScanOutlined,
@@ -11,6 +12,7 @@ import { useState, useEffect } from "react";
 import useAuth from "../../hooks/useAuth";
 import useIPCRenderer from "../../hooks/useIPCRenderer";
 import { UPDATER_EVENTS } from "../../../constants";
+import PropTypes from "prop-types";
 
 const { Step } = Steps;
 
@@ -61,36 +63,39 @@ export default function PreCheckScreen({ onComplete }) {
   const auth = useAuth();
   const ipcRenderer = useIPCRenderer();
 
-  async function updateStatus(event, data) {
-    if (data.event == UPDATER_EVENTS.DOWNLOAD_PROGRESS) {
-      setCurrentStep(UpdateStates.downloadUpdates);
-    }
-
-    if (
-      data.event == UPDATER_EVENTS.UPDATE_NOT_AVAILABLE ||
-      data.event == UPDATER_EVENTS.UPDATE_DOWNLOADED
-    ) {
-      setCurrentStep(UpdateStates.login);
-      try {
-        const token = await auth.getToken();
-        console.log(token);
-        onComplete();
-      } catch (e) {
-        console.log("login failed");
-        setCurrentStep(UpdateStates.loginError);
+  const updateStatus = useCallback(
+    async (event, data) => {
+      if (data.event == UPDATER_EVENTS.DOWNLOAD_PROGRESS) {
+        setCurrentStep(UpdateStates.downloadUpdates);
       }
-    }
 
-    if (data.event == UPDATER_EVENTS.ERROR) {
-      setCurrentStep(UpdateStates.downloadUpdatesError);
-    }
-    setMessage(data.text);
-  }
+      if (
+        data.event == UPDATER_EVENTS.UPDATE_NOT_AVAILABLE ||
+        data.event == UPDATER_EVENTS.UPDATE_DOWNLOADED
+      ) {
+        setCurrentStep(UpdateStates.login);
+        try {
+          const token = await auth.getToken();
+          console.log(token);
+          onComplete();
+        } catch (e) {
+          console.log("login failed");
+          setCurrentStep(UpdateStates.loginError);
+        }
+      }
+
+      if (data.event == UPDATER_EVENTS.ERROR) {
+        setCurrentStep(UpdateStates.downloadUpdatesError);
+      }
+      setMessage(data.text);
+    },
+    [auth, onComplete]
+  );
 
   useEffect(() => {
     ipcRenderer.on("message", updateStatus);
     return () => ipcRenderer.removeListener("message", updateStatus);
-  }, []);
+  }, [ipcRenderer, updateStatus]);
 
   return (
     <div className={styles.container}>
@@ -135,3 +140,7 @@ export default function PreCheckScreen({ onComplete }) {
     </div>
   );
 }
+
+PreCheckScreen.propTypes = {
+  onComplete: PropTypes.func,
+};

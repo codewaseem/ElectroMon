@@ -2,16 +2,15 @@ import React, { useContext, useState, useEffect } from "react";
 import { Row, Button, Col } from "antd";
 import { ApplyLeaveModal, AddTimeModal } from "../form-model";
 import { AiMonitorContext } from "../../context";
+import PropTypes from "prop-types";
 
 export default function HomeSectionFooter({ onExitClick }) {
   const aiMonitorApi = useContext(AiMonitorContext);
   const [canAddManualTime, setCanAddManualTime] = useState(false);
 
   const [onApplyVisible, setApplyVisible] = useState(false);
-  const [confirmApplyLoading, setConfirmApplyLoading] = useState(false);
 
   const [onAddTimeVisible, setAddTimeVisible] = useState(false);
-  const [confirmAddTimeLoading, setConfirmAddTimeLoading] = useState(false);
 
   useEffect(() => {
     aiMonitorApi.canAddManualTime().then((value) => {
@@ -59,3 +58,7 @@ export default function HomeSectionFooter({ onExitClick }) {
     </div>
   );
 }
+
+HomeSectionFooter.propTypes = {
+  onExitClick: PropTypes.func,
+};
