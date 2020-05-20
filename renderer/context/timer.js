@@ -209,6 +209,10 @@ export class TimersManager {
   }
 
   constructor(timersData, history) {
+    if (history) {
+      this.history = history;
+    }
+
     if (timersData) {
       Object.keys(timersData).map((timerName) => {
         this.timers[timerName] = new DatedTimer(timersData[timerName]);
@@ -217,6 +221,7 @@ export class TimersManager {
           this.timers[timerName].stop();
 
           const lastLog = this.timers[timerName].latestLog;
+
           this.addRecentLogToHistory({
             logType: timerName,
             duration: lastLog.duration,
@@ -225,14 +230,10 @@ export class TimersManager {
             startTime: lastLog.startTime,
           });
 
-          // now re-start the timer
+          // now re-start the timer,
           this.startTimer(timerName);
         }
       });
-    }
-
-    if (history) {
-      this.history = history;
     }
   }
 
