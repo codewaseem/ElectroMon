@@ -10,7 +10,4 @@ files:
       - package.json
       - app
 publish: github
-#   provider: s3
-#   bucket: updates
-#   endpoint: http://127.0.0.1:9000
 generateUpdatesFilesForAllChannels: true

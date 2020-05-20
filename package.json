@@ -5,6 +5,10 @@
   "version": "0.0.9",
   "author": "Waseem Ahmed <codewaseem@gmail.com>",
   "main": "app/main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codewaseem/ElectroMon.git"
+  },
   "scripts": {
     "dev": "nextron",
     "build": "nextron build",
