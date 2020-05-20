@@ -1,41 +1,10 @@
-<p align="center"><img src="https://i.imgur.com/NZfsD1p.png"></p>
+## Introduction
 
-## Usage
+The project uses starter code from ![nextron](https://github.com/saltyshiomix/nextron)
 
-### Create an App
+Currently, there is only one main page at `renderer/pages/home`. This will either render `PreCheckScreen` or `HomeScreen`.
 
-```zsh
-# with `nextron`
-$ nextron init my-app --example with-typescript
+- `PreCheckScreen`: Handles checking for updates and logging in the user with Auth0.
+- `Home`: Renders the main app. This screen should only be shown if the user is logged in.
 
-# with npx
-$ npx create-nextron-app my-app --example with-typescript
 
-# with yarn
-$ yarn create nextron-app my-app --example with-typescript
-
-# with pnpx
-$ pnpx create-nextron-app my-app --example with-typescript
-```
-
-### Install Dependencies
-
-```zsh
-$ cd my-app
-
-# using yarn or npm
-$ yarn (or `npm install`)
-
-# using pnpm
-$ pnpm install --shamefully-hoist
-```
-
-### Use it
-
-```zsh
-# development mode
-$ yarn dev (or `npm run dev` or `pnpm run dev`)
-
-# production build
-$ yarn build (or `npm run build` or `pnpm run build`)
-```
