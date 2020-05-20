@@ -11,7 +11,7 @@ import CoffeeTimer from "./CoffeeTimer";
 
 const electron = eval("require('electron')");
 
-export default function HomeSection() {
+export default function HomeScreen() {
   const [spinner, setSpinner] = useState({
     spinning: false,
     tip: "",

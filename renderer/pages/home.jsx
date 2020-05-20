@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../components/layout";
-import HomeSection from "../page-sections/home";
+import HomeScreen from "../page-sections/home-screen";
 import PreCheckScreen from "../page-sections/precheck-screen";
 
 const AppStates = {
@@ -21,7 +21,7 @@ const Home = () => {
         <PreCheckScreen onComplete={onPreCheckComplete} />
       )}
       {/* TODO: merge below to Components */}
-      {state == AppStates.Home && <HomeSection />}
+      {state == AppStates.Home && <HomeScreen />}
     </Layout>
   );
 };
