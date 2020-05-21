@@ -149,7 +149,7 @@ export default function PreCheckScreen({ onComplete }) {
       </Steps>
       <h3>{message}</h3>
       {loginFailed && (
-        <Button type="button" onClick={tryLogin}>
+        <Button type="primary" htmlType="submit" onClick={tryLogin}>
           Login{" "}
         </Button>
       )}
