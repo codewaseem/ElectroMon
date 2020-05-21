@@ -13,7 +13,7 @@ export default function AppFooter() {
           className={styles.smallerFonts}
           label={<Label>Version</Label>}
         >
-          {appVersion}
+          {appVersion || "0.0.0"}
         </Descriptions.Item>
         {/* <Descriptions.Item
           className={styles.smallerFonts}
