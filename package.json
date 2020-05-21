@@ -2,7 +2,7 @@
   "private": true,
   "name": "aitask-monitor",
   "description": "My application description",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "author": "Waseem Ahmed <codewaseem@gmail.com>",
   "main": "app/main.js",
   "repository": {
