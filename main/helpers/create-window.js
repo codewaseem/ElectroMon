@@ -1,14 +1,10 @@
-import {
-  screen,
-  BrowserWindow,
-  BrowserWindowConstructorOptions,
-} from "electron";
+import { screen, BrowserWindow } from "electron";
 import * as Store from "electron-store";
 
 export default (windowName, options) => {
   const key = "window-state";
   const name = `window-state-${windowName}`;
-  // @ts-ignore
+
   const store = new Store({ name });
   const defaultSize = {
     width: options.width,
