@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./home.module.scss";
 import AppHeader from "../../components/header";
 import { Space, Spin } from "antd";
-import { HomeSectionFooter, AppFooter } from "../../components/footer";
+import { HomeSectionFooter } from "../../components/footer";
 import { useTimerManagerContext } from "../../hooks";
 import { useCloseWindow } from "../../hooks/useMainProcess";
 import { saveTimerData } from "../../hooks/useTimerManager";
@@ -51,7 +51,6 @@ export default function HomeScreen() {
           <HomeSectionFooter onExitClick={safelyExit} />
         </Spin>
       </Space>
-      <AppFooter />
     </div>
   );
 }
