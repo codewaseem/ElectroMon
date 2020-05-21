@@ -2,17 +2,15 @@ import { PageHeader, Avatar } from "antd";
 import styles from "./header.module.scss";
 import React from "react";
 import Logo from "../logo";
-import { useAuthData } from "../../hooks/useMainProcess";
 import TimeInfo from "./TimeInfo";
+import { AUTH_DATA_KEY } from "../../../constants";
 
 export default function AppHeader() {
-  const authData = useAuthData();
-  console.log(authData);
-
+  const userInfo = JSON.parse(localStorage.getItem(AUTH_DATA_KEY)).userInfo;
   const extras = [];
 
-  if (authData && authData.user) {
-    extras.push(<Avatar size="large" src={authData.user.picture} />);
+  if (userInfo && userInfo.picture) {
+    extras.push(<Avatar size="large" src={userInfo.picture} />);
   }
 
   return (

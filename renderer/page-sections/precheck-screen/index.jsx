@@ -11,7 +11,7 @@ import styles from "./styles.module.scss";
 import { useState, useEffect } from "react";
 import {
   getIpcRenderer,
-  useAuthLogin,
+  useAuth0Login,
   isDev,
   getLogoutFunction,
 } from "../../hooks/useMainProcess";
@@ -66,13 +66,12 @@ export default function PreCheckScreen({ onComplete }) {
   const [loginFailed, setLoginFailed] = useState(false);
   const [message, setMessage] = useState("");
   const ipcRenderer = getIpcRenderer();
-  const login = useAuthLogin();
+  const login = useAuth0Login();
 
   async function tryLogin() {
     setCurrentStep(UpdateStates.login);
     try {
-      const token = await login();
-      console.log(token);
+      await login();
       onComplete();
     } catch (e) {
       console.log("login failed");

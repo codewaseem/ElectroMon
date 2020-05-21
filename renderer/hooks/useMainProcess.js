@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { useAiMonitorAPI } from "./index";
+import { AUTH_DATA_KEY } from "../../constants";
+
 const { remote, ipcRenderer } = eval(`require('electron')`);
 
 let mainModule = null;
@@ -45,8 +48,24 @@ export function useAuthData() {
   return authData;
 }
 
-export function useAuthLogin() {
-  return () => authModule.getToken();
+export function useAuth0Login() {
+  const api = useAiMonitorAPI();
+
+  return async () => {
+    let token = await authModule.getToken();
+    let authUserData = await authModule.getUserInfo(token);
+    let userInfo = await api.fetchUserDetails(token, authUserData.sub);
+
+    localStorage.setItem(
+      AUTH_DATA_KEY,
+      JSON.stringify({ token, authUserData, userInfo })
+    );
+
+    return {
+      token,
+      authUserData,
+    };
+  };
 }
 
 export function getLogoutFunction() {

@@ -1,9 +1,9 @@
 import React from "react";
 import { TimersManager } from "./timer";
-import { TestAiMonitorAPI } from "./api";
+import { AiMonitorAPI } from "./api";
 import useTimerManager from "../hooks/useTimerManager";
 
-let aiMonitorApi = new TestAiMonitorAPI();
+let aiMonitorApi = new AiMonitorAPI();
 
 export const TimerContext = React.createContext(new TimersManager());
 export const AiMonitorContext = React.createContext(aiMonitorApi);

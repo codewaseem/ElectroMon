@@ -1,17 +1,44 @@
-import { MONITOR_API_URL } from "../../constants";
+import {
+  MONITOR_API_URL,
+  AUTH_DATA_KEY,
+  APTASK_BASE_URL,
+} from "../../constants";
 
-export class TestAiMonitorAPI {
+export class AiMonitorAPI {
+  fetchUserDetails(token, subAuthId) {
+    let options = this._getAuthOptions(token);
+
+    return fetch(`${APTASK_BASE_URL}/api/v1/users/me/${subAuthId}`, options)
+      .then((r) => r.json())
+      .then((res) => res.data)
+      .catch(console.log);
+  }
+
+  _getAuthOptions(token) {
+    let options = {};
+    options.headers = {};
+    options.headers["Authorization"] =
+      "Bearer " + token ||
+      JSON.parse(localStorage.getItem(AUTH_DATA_KEY)).token;
+    options.headers["Accept"] = "application/json, text/plain, */*";
+    options.headers["Content-Type"] = "application/json;charset=utf-8";
+    return options;
+  }
+
+  _getUserId() {
+    return JSON.parse(localStorage.getItem(AUTH_DATA_KEY)).userInfo.id;
+  }
+
   addLeave(data) {
+    let userId = this._getUserId();
+    let options = this._getAuthOptions();
     return fetch(`${MONITOR_API_URL}/leaves`, {
+      ...options,
       method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify([data]),
+      body: JSON.stringify([{ ...data, userId }]),
     })
       .then((response) => {
-        console.log(response);
-        return response;
+        return response.json();
       })
       .catch((err) => {
         console.log(err);
@@ -31,16 +58,18 @@ export class TestAiMonitorAPI {
   }
 
   pushLogHistory(history) {
+    let userId = this._getUserId();
+    let options = this._getAuthOptions();
+    history.forEach((log) => (log.userId = userId));
+
     return fetch(`${MONITOR_API_URL}/logs`, {
+      ...options,
       method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
       body: JSON.stringify(history),
     })
       .then((data) => {
         console.log("history pushed, deleting current history");
-        return data;
+        return data.json();
       })
       .catch((err) => {
         console.log("failed to sync history with server");

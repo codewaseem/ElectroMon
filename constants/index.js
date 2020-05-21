@@ -5,7 +5,7 @@ export const COFFEE_TIMER = "COFFEE";
 export const TIMERS_STORAGE_KEY = "timers--data";
 export const TIMERS_HISTORY_KEY = "logs-history";
 export const TIME_DIFFERENCE_DETECTED = "Time difference detected!";
-export const AUTH_KEY = "auth--data";
+export const AUTH_DATA_KEY = "auth--data";
 
 export const UPDATER_EVENTS = {
   CHECK_FOR_UPDATES: "checking-for-update",

@@ -94,7 +94,7 @@ export default function AddTimeModal({
           >
             Reset
           </Button>
-          <Button loading={spinning} htmlType="submit">
+          <Button loading={spinning} type="primary" htmlType="submit">
             Add Time Log
           </Button>
         </Form>
