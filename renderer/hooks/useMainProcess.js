@@ -49,6 +49,10 @@ export function useAuthLogin() {
   return () => authModule.getToken();
 }
 
+export function useAuthLogout() {
+  return () => authModule.logout();
+}
+
 export function isDev() {
   return !mainModule.isProd;
 }

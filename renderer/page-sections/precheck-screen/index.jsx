@@ -1,5 +1,5 @@
 import React from "react";
-import { Steps } from "antd";
+import { Steps, Button } from "antd";
 import {
   ScanOutlined,
   CloudDownloadOutlined,
@@ -62,6 +62,7 @@ const defaultState = UpdateStates.checkUpdates;
 
 export default function PreCheckScreen({ onComplete }) {
   const [currentStep, setCurrentStep] = useState(defaultState);
+  const [loginFailed, setLoginFailed] = useState(false);
   const [message, setMessage] = useState("");
   const ipcRenderer = useIPCRenderer();
   const login = useAuthLogin();
@@ -75,6 +76,7 @@ export default function PreCheckScreen({ onComplete }) {
     } catch (e) {
       console.log("login failed");
       setCurrentStep(UpdateStates.loginError);
+      setLoginFailed(true);
     }
   }
 
@@ -104,7 +106,7 @@ export default function PreCheckScreen({ onComplete }) {
       ipcRenderer.on("message", updateStatus);
       return () => ipcRenderer.removeListener("message", updateStatus);
     }
-  });
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -146,6 +148,11 @@ export default function PreCheckScreen({ onComplete }) {
         />
       </Steps>
       <h3>{message}</h3>
+      {loginFailed && (
+        <Button type="button" onClick={tryLogin}>
+          Login{" "}
+        </Button>
+      )}
     </div>
   );
 }
