@@ -10,7 +10,7 @@ export default function AppHeader() {
   const extras = [];
 
   if (userInfo && userInfo.picture) {
-    extras.push(<Avatar size="large" src={userInfo.picture} />);
+    extras.push(<Avatar key="avatar" size="large" src={userInfo.picture} />);
   }
 
   return (
@@ -18,7 +18,7 @@ export default function AppHeader() {
       <PageHeader
         className={styles.headerOveride}
         title={<Logo />}
-        extra={extras}
+        extra={extras.length ? extras : undefined}
       >
         <TimeInfo />
       </PageHeader>

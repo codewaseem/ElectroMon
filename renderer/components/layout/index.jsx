@@ -1,7 +1,6 @@
 import React from "react";
 import { Layout as AppLayout } from "antd";
 import styles from "./style.module.scss";
-import PropTypes from "prop-types";
 import { AppFooter } from "../footer";
 
 const { Content, Footer } = AppLayout;
@@ -17,10 +16,3 @@ export default function Layout({ children }) {
     </AppLayout>
   );
 }
-
-Layout.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element),
-  ]),
-};
