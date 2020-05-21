@@ -9,14 +9,14 @@ if (remote) {
   authModule = remote.require("./auth").default;
 }
 
-export function useAppVersion() {
+export function getAppVersion() {
   if (mainModule) {
     return mainModule.appVersion;
   }
   return null;
 }
 
-export function useIPCRenderer() {
+export function getIpcRenderer() {
   return ipcRenderer;
 }
 
@@ -49,7 +49,7 @@ export function useAuthLogin() {
   return () => authModule.getToken();
 }
 
-export function useAuthLogout() {
+export function getLogoutFunction() {
   return () => authModule.logout();
 }
 

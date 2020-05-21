@@ -10,9 +10,10 @@ import Logo from "../../components/logo";
 import styles from "./styles.module.scss";
 import { useState, useEffect } from "react";
 import {
-  useIPCRenderer,
+  getIpcRenderer,
   useAuthLogin,
   isDev,
+  getLogoutFunction,
 } from "../../hooks/useMainProcess";
 import { UPDATER_EVENTS } from "../../../constants";
 import PropTypes from "prop-types";
@@ -64,7 +65,7 @@ export default function PreCheckScreen({ onComplete }) {
   const [currentStep, setCurrentStep] = useState(defaultState);
   const [loginFailed, setLoginFailed] = useState(false);
   const [message, setMessage] = useState("");
-  const ipcRenderer = useIPCRenderer();
+  const ipcRenderer = getIpcRenderer();
   const login = useAuthLogin();
 
   async function tryLogin() {
@@ -101,6 +102,8 @@ export default function PreCheckScreen({ onComplete }) {
   useEffect(() => {
     if (isDev()) {
       console.log("In dev mode, skip checking for update");
+      // authData = useAuthData();
+      window.logout = getLogoutFunction();
       tryLogin();
     } else {
       ipcRenderer.on("message", updateStatus);
@@ -149,9 +152,12 @@ export default function PreCheckScreen({ onComplete }) {
       </Steps>
       <h3>{message}</h3>
       {loginFailed && (
-        <Button type="primary" htmlType="submit" onClick={tryLogin}>
-          Login{" "}
-        </Button>
+        <>
+          <h3>Login Failed! Try again.</h3>
+          <Button type="primary" htmlType="submit" onClick={tryLogin}>
+            Login{" "}
+          </Button>
+        </>
       )}
     </div>
   );
