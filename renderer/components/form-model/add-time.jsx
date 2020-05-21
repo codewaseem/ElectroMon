@@ -1,8 +1,19 @@
-import { Form, Button, TimePicker, Select, Modal, message, Spin } from "antd";
+import {
+  Form,
+  Button,
+  TimePicker,
+  DatePicker,
+  Select,
+  Modal,
+  message,
+  Spin,
+} from "antd";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useAiMonitorAPI } from "../../hooks";
 import { WORK_TIMER, LUNCH_TIMER, COFFEE_TIMER } from "../../../constants";
+import moment from "moment";
+
 const { RangePicker: TimeRangePicker } = TimePicker;
 const { Option } = Select;
 
@@ -15,11 +26,29 @@ export default function AddTimeModal({
   const [spinning, setSpinning] = useState(false);
   const aiMonitorApi = useAiMonitorAPI();
 
+  function disabledDate(current) {
+    // Can not select days before today and today
+    return current && current > moment().endOf("day");
+  }
+
   const onFinish = (values) => {
     let {
       logType,
       time: [startTime, endTime],
+      date,
     } = values;
+    startTime.set({
+      year: date.get("year"),
+      month: date.get("month"),
+      date: date.get("date"),
+    });
+
+    endTime.set({
+      year: date.get("year"),
+      month: date.get("month"),
+      date: date.get("date"),
+    });
+
     setSpinning(true);
     aiMonitorApi.canAddManualTime().then(() => {
       aiMonitorApi
@@ -72,6 +101,13 @@ export default function AddTimeModal({
               <Option value={LUNCH_TIMER}>Lunch</Option>
               <Option value={COFFEE_TIMER}>Coffee</Option>
             </Select>
+          </Form.Item>
+          <Form.Item name="date" rules={[{ required: true }]}>
+            <DatePicker
+              disabledDate={disabledDate}
+              placeholder="Date"
+              format="YYYY-MM-DD"
+            />
           </Form.Item>
           <Form.Item name="time" rules={[{ required: true }]}>
             <TimeRangePicker
