@@ -29,7 +29,6 @@ export function useAuth0Login() {
     let token = await authModule.getToken();
     let authUserData = await authModule.getUserInfo(token);
     let userInfo = await api.fetchUserDetails(token, authUserData.sub);
-
     localStorage.setItem(
       AUTH_DATA_KEY,
       JSON.stringify({ token, authUserData, userInfo })
@@ -45,7 +44,8 @@ export function useAuth0Login() {
 export function useLogout() {
   return async () => {
     localStorage.setItem(AUTH_DATA_KEY, null);
-    authModule.logout();
+    await authModule.logout();
+    return true;
   };
 }
 
@@ -54,6 +54,8 @@ export function isDev() {
 }
 
 export function useCloseWindow() {
-  let window = remote.getCurrentWindow();
-  return () => window.close();
+  if (remote) {
+    let window = remote.getCurrentWindow();
+    return () => window.close();
+  }
 }
