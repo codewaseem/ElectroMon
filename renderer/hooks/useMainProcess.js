@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { useAiMonitorAPI } from "./index";
 import { AUTH_DATA_KEY } from "../../constants";
 
@@ -23,31 +22,6 @@ export function getIpcRenderer() {
   return ipcRenderer;
 }
 
-export function useAuthData() {
-  const [authData, setAuthData] = useState({
-    token: null,
-    user: null,
-  });
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        let token = await authModule.getToken();
-        let user = await authModule.getUserInfo(token);
-        setAuthData({
-          token,
-          user,
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    getData();
-  }, []);
-
-  return authData;
-}
-
 export function useAuth0Login() {
   const api = useAiMonitorAPI();
 
@@ -68,8 +42,11 @@ export function useAuth0Login() {
   };
 }
 
-export function getLogoutFunction() {
-  return () => authModule.logout();
+export function useLogout() {
+  return async () => {
+    localStorage.setItem(AUTH_DATA_KEY, null);
+    authModule.logout();
+  };
 }
 
 export function isDev() {

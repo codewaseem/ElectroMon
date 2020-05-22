@@ -13,7 +13,7 @@ import {
   getIpcRenderer,
   useAuth0Login,
   isDev,
-  getLogoutFunction,
+  useLogout,
 } from "../../hooks/useMainProcess";
 import { UPDATER_EVENTS } from "../../../constants";
 import PropTypes from "prop-types";
@@ -67,13 +67,18 @@ export default function PreCheckScreen({ onComplete }) {
   const [message, setMessage] = useState("");
   const ipcRenderer = getIpcRenderer();
   const login = useAuth0Login();
+  const logout = useLogout();
 
   async function tryLogin() {
     setCurrentStep(UpdateStates.login);
     try {
+      if (!isDev()) {
+        await logout();
+      }
       await login();
       onComplete();
     } catch (e) {
+      console.log(e);
       console.log("login failed");
       setCurrentStep(UpdateStates.loginError);
       setLoginFailed(true);
@@ -81,7 +86,10 @@ export default function PreCheckScreen({ onComplete }) {
   }
 
   const updateStatus = async (_, data) => {
-    if (data.event == UPDATER_EVENTS.DOWNLOAD_PROGRESS) {
+    if (
+      data.event == UPDATER_EVENTS.DOWNLOAD_PROGRESS ||
+      data.event == UPDATER_EVENTS.UPDATE_AVAILABLE
+    ) {
       setCurrentStep(UpdateStates.downloadUpdates);
     }
 
@@ -100,9 +108,8 @@ export default function PreCheckScreen({ onComplete }) {
 
   useEffect(() => {
     if (isDev()) {
+      window.logout = logout;
       console.log("In dev mode, skip checking for update");
-      // authData = useAuthData();
-      window.logout = getLogoutFunction();
       tryLogin();
     } else {
       ipcRenderer.on("message", updateStatus);
