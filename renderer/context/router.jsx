@@ -7,10 +7,9 @@ export const useRouterContext = () => {
   return routerContext;
 };
 
-export const ExactRoute = ({ children: Children, match }) => {
+export const ExactRoute = ({ children, match }) => {
   const { path } = useRouterContext();
-  console.log(path, match);
-  return path === match ? Children : null;
+  return path === match ? children : null;
 };
 
 export const RouterProvider = ({ children }) => {

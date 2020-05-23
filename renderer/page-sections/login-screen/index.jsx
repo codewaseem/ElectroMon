@@ -1,10 +1,9 @@
-import { Form, Input, Button, message, Spin } from "antd";
+import { Form, Input, Button, Spin } from "antd";
 import styles from "./login.module.scss";
 import React from "react";
 import Logo from "../../components/logo";
 import { LoginOutlined } from "@ant-design/icons";
-import { useState, useEffect } from "react";
-import { useAiMonitorAPI } from "../../hooks";
+import { useState } from "react";
 
 const layout = {
   labelCol: { span: 8 },
@@ -35,34 +34,12 @@ const LoginStates = {
   error: defaultState,
 };
 
-const LoginForm = ({ onComplete }) => {
-  const [loginState, setLoginState] = useState(LoginStates.loading);
-  const aiMonitorAPI = useAiMonitorAPI();
-
-  useEffect(() => {
-    let user = JSON.parse(localStorage.getItem("user"));
-    if (user && user.id) {
-      onComplete();
-    } else {
-      setLoginState(LoginStates.no);
-    }
-  }, []);
-
-  const saveUser = (user) => localStorage.setItem("user", JSON.stringify(user));
+const LoginForm = () => {
+  const [loginState, setLoginState] = useState(defaultState);
 
   const onFinish = (values) => {
+    console.log(values);
     setLoginState(LoginStates.logging);
-    aiMonitorAPI
-      .login(values.email, values.password)
-      .then((user) => {
-        saveUser(user);
-        setLoginState(LoginStates.done);
-        onComplete();
-      })
-      .catch(() => {
-        setLoginState(LoginStates.error);
-        message.error("Login Failed! Try again.", 5);
-      });
   };
 
   const onFinishFailed = (errorInfo) => {

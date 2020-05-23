@@ -3,6 +3,7 @@ import Layout from "../components/layout";
 import HomeScreen from "../page-sections/home-screen";
 import PreCheckScreen from "../page-sections/precheck-screen";
 import { ExactRoute } from "../context/router";
+import LoginForm from "../page-sections/login-screen";
 
 const Home = () => {
   return (
@@ -12,6 +13,9 @@ const Home = () => {
       </ExactRoute>
       <ExactRoute match="/home">
         <HomeScreen />
+      </ExactRoute>
+      <ExactRoute match="/login">
+        <LoginForm />
       </ExactRoute>
     </Layout>
   );
