@@ -16,5 +16,11 @@ export const UPDATER_EVENTS = {
   UPDATE_DOWNLOADED: "update-downloaded",
 };
 
+export const ROUTES = {
+  LOGIN: "/login",
+  UPDATE: "/update",
+  HOME: "/home",
+};
+
 export const APTASK_BASE_URL = "https://api.dev.aptask.com";
 export const MONITOR_API_URL = `${APTASK_BASE_URL}/api/v1/apps/monitor`;

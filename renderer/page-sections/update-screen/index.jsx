@@ -11,7 +11,7 @@ import styles from "./styles.module.scss";
 import { useState, useEffect } from "react";
 import { getIpcRenderer, isDev } from "../../hooks/useMainProcess";
 import { useRouterContext } from "../../context/router";
-import { UPDATER_EVENTS } from "../../../constants";
+import { UPDATER_EVENTS, ROUTES } from "../../../constants";
 
 const { Step } = Steps;
 
@@ -49,7 +49,7 @@ const UpdateStates = {
 
 const defaultState = UpdateStates.checkUpdates;
 
-export default function PreCheckScreen() {
+export default function UpdateScreen() {
   const [currentStep, setCurrentStep] = useState(defaultState);
   const [message, setMessage] = useState("");
   const ipcRenderer = getIpcRenderer();
@@ -67,7 +67,7 @@ export default function PreCheckScreen() {
       data.event == UPDATER_EVENTS.UPDATE_NOT_AVAILABLE ||
       data.event == UPDATER_EVENTS.UPDATE_DOWNLOADED
     ) {
-      setPath("/login");
+      setPath(ROUTES.LOGIN);
     }
 
     if (data.event == UPDATER_EVENTS.ERROR) {
@@ -79,7 +79,7 @@ export default function PreCheckScreen() {
   useEffect(() => {
     if (isDev()) {
       console.log("In dev mode, skip checking for update");
-      setPath("/login");
+      setPath(ROUTES.LOGIN);
     } else {
       ipcRenderer.on("message", updateStatus);
       return () => ipcRenderer.removeListener("message", updateStatus);

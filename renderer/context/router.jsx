@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ROUTES } from "../../constants";
 
 const RouterContext = React.createContext();
 
@@ -13,7 +14,7 @@ export const ExactRoute = ({ children, match }) => {
 };
 
 export const RouterProvider = ({ children }) => {
-  const [path, setPath] = useState("/precheck");
+  const [path, setPath] = useState(ROUTES.UPDATE);
 
   return (
     <RouterContext.Provider

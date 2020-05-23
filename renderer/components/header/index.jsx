@@ -4,6 +4,7 @@ import React from "react";
 import Logo from "../logo";
 import TimeInfo from "./TimeInfo";
 import { useRouterContext } from "../../context/router";
+import { ROUTES } from "../../../constants";
 // import { AUTH_DATA_KEY } from "../../../constants";
 // import { useLogout } from "../../hooks/useMainProcess";
 
@@ -15,7 +16,7 @@ export default function AppHeader() {
 
   async function handleLogoutClick() {
     // await logout();
-    setPath("/login");
+    setPath(ROUTES.LOGIN);
     console.log("logout done!");
   }
 

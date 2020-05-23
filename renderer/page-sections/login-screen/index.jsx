@@ -5,6 +5,7 @@ import Logo from "../../components/logo";
 import { LoginOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useRouterContext } from "../../context/router";
+import { ROUTES } from "../../../constants";
 
 const layout = {
   labelCol: { span: 8 },
@@ -43,7 +44,7 @@ const LoginForm = () => {
     console.log(values);
     setLoginState(LoginStates.logging);
     setTimeout(() => {
-      setPath("/home");
+      setPath(ROUTES.HOME);
     }, 5000);
   };
 
