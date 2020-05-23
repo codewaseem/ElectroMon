@@ -1,27 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import Layout from "../components/layout";
 import HomeScreen from "../page-sections/home-screen";
 import PreCheckScreen from "../page-sections/precheck-screen";
-
-const AppStates = {
-  Updates: "Updates",
-  Home: "Home",
-};
-
-const defaultState = AppStates.Updates;
+import { ExactRoute } from "../context/router";
 
 const Home = () => {
-  const [state, setState] = useState(defaultState);
-
-  const onPreCheckComplete = () => setState(AppStates.Home);
-
   return (
     <Layout>
-      {state == AppStates.Updates && (
-        <PreCheckScreen onComplete={onPreCheckComplete} />
-      )}
-      {/* TODO: merge below to Components */}
-      {state == AppStates.Home && <HomeScreen />}
+      <ExactRoute match="/precheck">
+        <PreCheckScreen />
+      </ExactRoute>
+      <ExactRoute match="/home">
+        <HomeScreen />
+      </ExactRoute>
     </Layout>
   );
 };
