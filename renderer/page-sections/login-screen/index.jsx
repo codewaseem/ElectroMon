@@ -4,6 +4,7 @@ import React from "react";
 import Logo from "../../components/logo";
 import { LoginOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import { useRouterContext } from "../../context/router";
 
 const layout = {
   labelCol: { span: 8 },
@@ -36,10 +37,14 @@ const LoginStates = {
 
 const LoginForm = () => {
   const [loginState, setLoginState] = useState(defaultState);
+  const { setPath } = useRouterContext();
 
   const onFinish = (values) => {
     console.log(values);
     setLoginState(LoginStates.logging);
+    setTimeout(() => {
+      setPath("/home");
+    }, 5000);
   };
 
   const onFinishFailed = (errorInfo) => {

@@ -44,7 +44,6 @@ export function useAuth0Login() {
 export function useLogout() {
   return async () => {
     localStorage.setItem(AUTH_DATA_KEY, null);
-    await authModule.logout();
     return true;
   };
 }
