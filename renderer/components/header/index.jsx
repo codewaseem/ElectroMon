@@ -5,8 +5,7 @@ import Logo from "../logo";
 import TimeInfo from "./TimeInfo";
 import { useRouterContext } from "../../context/router";
 import { ROUTES } from "../../../constants";
-// import { AUTH_DATA_KEY } from "../../../constants";
-// import { useLogout } from "../../hooks/useMainProcess";
+import { aiMonitorApi } from "ai-monitor-core";
 
 export default function AppHeader() {
   const { setPath } = useRouterContext();
@@ -16,12 +15,18 @@ export default function AppHeader() {
 
   async function handleLogoutClick() {
     // await logout();
+    aiMonitorApi.logout();
     setPath(ROUTES.LOGIN);
-    console.log("logout done!");
   }
 
   extras.push(
-    <div key="avatar">
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+      }}
+      key="avatar"
+    >
       <Button
         style={{
           marginRight: 10,
@@ -33,7 +38,7 @@ export default function AppHeader() {
       >
         Log out
       </Button>
-      <Avatar size="large" />
+      <Avatar size="large" src={aiMonitorApi.getUser().picture} />
     </div>
   );
 

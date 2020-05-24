@@ -56,9 +56,14 @@ describe("PulseApi", () => {
         logType: "WORK",
     };
 
-    it("Login: should resolve given correct username and password and have called setAuthInfo", async () => {
+    it("before logging in getUser should return falsy value", () => {
+        expect(pulseApi.getUser()).toBeFalsy();
+    })
+
+    it("Login: should resolve given correct username and password and have called set user info", async () => {
 
         const setAuthInfo = jest.spyOn(pulseApi, 'setAuthInfo');
+        const setUser = jest.spyOn(pulseApi, 'setUser');
 
         let userData = await pulseApi.login(VALID_DATA.userName, VALID_DATA.password);
         expect(axios).toHaveBeenCalledWith({
@@ -74,6 +79,22 @@ describe("PulseApi", () => {
         expect(setAuthInfo).toHaveBeenCalledWith({
             token,
             userId
+        });
+        expect(setUser).toHaveBeenCalledWith({
+            email: VALID_DATA.userName,
+            id: userId,
+            pulseTwoContext: {
+                token
+            }
+        });
+    });
+
+    it("should be able to get the logged in user", () => {
+        expect(pulseApi.getUser()).toMatchObject({
+            email: VALID_DATA.userName,
+            pulseTwoContext: {
+                token
+            }
         })
     });
 
@@ -141,5 +162,20 @@ describe("PulseApi", () => {
     it("calling add time without setting authInfo should", () => {
         pulseApi.setAuthInfo({} as any);
         expect(pulseApi.addTime([timeData])).rejects.toMatchSnapshot();
+    });
+
+    it("calling logout should unset the user and authInfo", () => {
+        const setAuthInfo = jest.spyOn(pulseApi, 'setAuthInfo');
+        const setUser = jest.spyOn(pulseApi, 'setUser');
+
+        expect(pulseApi.getUser()).toBeTruthy();
+
+
+        pulseApi.logout();
+
+        expect(setAuthInfo).toHaveBeenLastCalledWith(null);
+        expect(setUser).toHaveBeenLastCalledWith(null);
+
+        expect(pulseApi.getUser()).toBeFalsy();
     });
 });

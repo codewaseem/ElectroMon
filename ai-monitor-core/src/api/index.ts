@@ -14,16 +14,22 @@ export interface PulseTwoContext {
     token: string
 }
 
+export interface UserInfo {
+    id: string,
+    email: string,
+    pulseTwoId: number,
+    pulseTwoContext: PulseTwoContext
+}
+
 export interface PulseLoginResponse {
     data: {
-        data: {
-            id: string,
-            email: string,
-            pulseTwoId: number,
+        data: UserInfo & {
             pulseTwoContext: string
         }
     }
 }
+
+
 
 export interface Leave {
     reason: string,
@@ -46,22 +52,31 @@ export interface TimeLog {
 
 class AiMonitorApi {
 
-    #authInfo!: AuthUserInfo;
+    #authInfo!: AuthUserInfo | null;
+    #user!: UserInfo | null;
 
     #getAuthHeaders = () => {
         return {
-            Authorization: `Bearer ${this.#authInfo.token}`,
+            Authorization: `Bearer ${this.#authInfo!.token}`,
             Accept: `application/json, text/plain, */*`,
             "Content-Type": `application/json;charset=utf-8`
         }
     }
 
     #isAuthInfoSet = () => {
-        return this.#authInfo.userId && this.#authInfo.token;
+        return this.#authInfo?.userId && this.#authInfo.token;
     }
 
     setAuthInfo(info: AuthUserInfo) {
         this.#authInfo = info;
+    }
+
+    setUser(userInfo: UserInfo) {
+        this.#user = userInfo;
+    }
+
+    getUser(): UserInfo | null {
+        return this.#user;
     }
 
     async login(userName: string, password: string): Promise<any> {
@@ -75,13 +90,26 @@ class AiMonitorApi {
             }
         }).then((r: PulseLoginResponse) => r.data.data);
 
+        const pulseTwoContext = (JSON.parse(user.pulseTwoContext) as PulseTwoContext);
+
         this.setAuthInfo({
             userId: user.id,
-            token: (JSON.parse(user.pulseTwoContext) as PulseTwoContext).token
+            token: pulseTwoContext.token
+        });
+
+        this.setUser({
+            ...user,
+            pulseTwoContext
         });
 
         return user;
     }
+
+    logout() {
+        this.setAuthInfo(null as any);
+        this.setUser(null as any);
+    }
+
 
     async addLeave(leave: Leave): Promise<any> {
 
@@ -91,7 +119,7 @@ class AiMonitorApi {
             url: ADD_LEAVE_URL,
             method: "POST",
             headers: this.#getAuthHeaders(),
-            data: [{ userId: this.#authInfo.userId, ...leave }]
+            data: [{ userId: this.#authInfo!.userId, ...leave }]
         })
     }
 
@@ -99,7 +127,7 @@ class AiMonitorApi {
 
         if (!this.#isAuthInfoSet()) return Promise.reject();
 
-        timeLogs.forEach(log => (log as TimeLog & { userId: string }).userId = this.#authInfo.userId);
+        timeLogs.forEach(log => (log as TimeLog & { userId: string }).userId = this.#authInfo!.userId);
 
         return axios({
             url: ADD_TIME_LOG,
