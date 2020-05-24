@@ -1,12 +1,7 @@
 import { useContext } from "react";
-import { AiMonitorContext, TimerContext } from "../context";
-
-export function useAiMonitorAPI() {
-    const aiMonitorAPI = useContext(AiMonitorContext);
-    return aiMonitorAPI;
-}
+import { TimerContext } from "../context";
 
 export function useTimerManagerContext() {
-    const timerManager = useContext(TimerContext);
-    return timerManager;
+  const timerManager = useContext(TimerContext);
+  return timerManager;
 }

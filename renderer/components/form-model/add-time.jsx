@@ -10,9 +10,9 @@ import {
 } from "antd";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import { useAiMonitorAPI } from "../../hooks";
 import { WORK_TIMER, LUNCH_TIMER, COFFEE_TIMER } from "../../../constants";
 import moment from "moment";
+import { aiMonitorApi } from "ai-monitor-core";
 
 const { RangePicker: TimeRangePicker } = TimePicker;
 const { Option } = Select;
@@ -24,7 +24,6 @@ export default function AddTimeModal({
 }) {
   const [form] = Form.useForm();
   const [spinning, setSpinning] = useState(false);
-  const aiMonitorApi = useAiMonitorAPI();
 
   function disabledDate(current) {
     // Can not select days before today and today
@@ -50,24 +49,26 @@ export default function AddTimeModal({
     });
 
     setSpinning(true);
-    aiMonitorApi.canAddManualTime().then(() => {
-      aiMonitorApi
-        .addManualTime({
+    aiMonitorApi
+      .addTime([
+        {
           logType,
           startTime: +startTime, // convert moment object to milliseconds
           endTime: +endTime,
-        })
-        .then(() => {
-          setSpinning(false);
-          message.success("Time added successfully", 5);
-          form.resetFields();
-          onCancel();
-        })
-        .catch(() => {
-          setSpinning(false);
-          message.error("Something went wrong! Try again!");
-        });
-    });
+          duration: +endTime - +startTime,
+          manual: true,
+        },
+      ])
+      .then(() => {
+        setSpinning(false);
+        message.success("Time added successfully", 5);
+        form.resetFields();
+        onCancel();
+      })
+      .catch(() => {
+        setSpinning(false);
+        message.error("Something went wrong! Try again!");
+      });
   };
 
   const onReset = () => {

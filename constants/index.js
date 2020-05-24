@@ -21,6 +21,3 @@ export const ROUTES = {
   UPDATE: "/update",
   HOME: "/home",
 };
-
-export const APTASK_BASE_URL = "https://api.dev.aptask.com";
-export const MONITOR_API_URL = `${APTASK_BASE_URL}/api/v1/apps/monitor`;

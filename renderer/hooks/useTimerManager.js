@@ -2,8 +2,9 @@ import useTimerData from "./useTimerData";
 import { TimersManager } from "../context/timer";
 import { useEffect } from "react";
 import { TIMERS_STORAGE_KEY, TIMERS_HISTORY_KEY } from "../../constants";
+import { aiMonitorApi } from "ai-monitor-core";
 
-export default function useTimerManager(aiMonitorApi) {
+export default function useTimerManager() {
   const [timersData, historyData] = useTimerData();
   console.log("init timersManager");
   const timersManager = new TimersManager(timersData, historyData);
@@ -22,7 +23,7 @@ export default function useTimerManager(aiMonitorApi) {
         let history = timersManager.getHistory();
         if (history.length > 0) {
           aiMonitorApi
-            .pushLogHistory(history)
+            .addTime(history)
             .then(() => {
               console.log("History Pushed");
               console.log("deleting current history");
@@ -44,6 +45,7 @@ export default function useTimerManager(aiMonitorApi) {
 
     const timerId = cacheTimer();
     const syncHistoryId = syncHistoryWithServer();
+
     return () => {
       console.log("timer cleared");
       clearTimeout(timerId);

@@ -6,6 +6,7 @@ import { LoginOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useRouterContext } from "../../context/router";
 import { ROUTES } from "../../../constants";
+import { aiMonitorApi } from "ai-monitor-core";
 
 const layout = {
   labelCol: { span: 8 },
@@ -40,12 +41,15 @@ const LoginForm = () => {
   const [loginState, setLoginState] = useState(defaultState);
   const { setPath } = useRouterContext();
 
-  const onFinish = (values) => {
-    console.log(values);
+  const onFinish = async (values) => {
     setLoginState(LoginStates.logging);
-    setTimeout(() => {
+    try {
+      let user = await aiMonitorApi.login(values.email, values.password);
+      console.log(user);
       setPath(ROUTES.HOME);
-    }, 5000);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const onFinishFailed = (errorInfo) => {

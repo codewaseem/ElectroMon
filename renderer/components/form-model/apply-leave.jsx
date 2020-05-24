@@ -2,7 +2,8 @@ import { Form, Button, DatePicker, Select, Modal, message, Spin } from "antd";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { useAiMonitorAPI } from "../../hooks";
+import { aiMonitorApi } from "ai-monitor-core";
+
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
@@ -13,7 +14,6 @@ export default function ApplyLeaveModal({
 }) {
   const [form] = Form.useForm();
   const [spinning, setSpinning] = useState(false);
-  const aiMonitorApi = useAiMonitorAPI();
 
   const onFinish = (values) => {
     let {

@@ -1,22 +1,14 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Row, Button, Col } from "antd";
 import { ApplyLeaveModal, AddTimeModal } from "../form-model";
-import { AiMonitorContext } from "../../context";
 import PropTypes from "prop-types";
 
 export default function HomeSectionFooter({ onExitClick }) {
-  const aiMonitorApi = useContext(AiMonitorContext);
-  const [canAddManualTime, setCanAddManualTime] = useState(false);
+  const [canAddManualTime] = useState(true);
 
   const [onApplyVisible, setApplyVisible] = useState(false);
 
   const [onAddTimeVisible, setAddTimeVisible] = useState(false);
-
-  useEffect(() => {
-    aiMonitorApi.canAddManualTime().then((value) => {
-      setCanAddManualTime(value);
-    });
-  }, []);
 
   return (
     <div>

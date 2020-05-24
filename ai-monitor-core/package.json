@@ -1,0 +1,22 @@
+{
+  "name": "ai-monitor-core",
+  "version": "0.0.1",
+  "description": "Core bussiness logic of ai-monitor",
+  "main": "dist/index.js",
+  "author": "codewaseem <codewaseem@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -rf dist & tsc",
+    "test": "jest",
+    "postinstall": "yarn build"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.3",
+    "jest": "^26.0.1",
+    "ts-jest": "^26.0.0",
+    "typescript": "^3.9.3"
+  },
+  "dependencies": {
+    "axios": "^0.19.2"
+  }
+}
