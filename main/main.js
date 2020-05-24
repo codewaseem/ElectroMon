@@ -41,7 +41,7 @@ app.on("window-all-closed", () => {
   app.quit();
 });
 
-ipcMain.once(EMIT_CHECK_FOR_UPDATES, () => {
+ipcMain.on(EMIT_CHECK_FOR_UPDATES, () => {
   console.log("called");
 
   let autoUpdater = AutoUpdater.start(sendUpdateEventsToWindow(mainWindow));
