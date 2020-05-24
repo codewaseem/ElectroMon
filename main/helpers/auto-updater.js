@@ -1,6 +1,5 @@
 import log from "electron-log";
 import { autoUpdater } from "electron-updater";
-import { BrowserWindow } from "electron";
 import { UPDATER_EVENTS } from "../../constants";
 
 autoUpdater.logger = log;
@@ -76,19 +75,15 @@ export function sendUpdateEventsToWindow(win) {
 }
 
 export default class AutoUpdater {
-  static started = false;
-
   static start(onEventCallback = defaultUpdateEventHandler) {
-    if (!this.started) {
-      this.started = true;
-      autoUpdater.checkForUpdatesAndNotify();
-      Object.values(UPDATER_EVENTS).forEach((event) => {
-        autoUpdater.on(event, (eventData) => {
-          log.info("EVENT: ", event, eventData);
-          onEventCallback(event, eventData);
-        });
+    this.started = true;
+    autoUpdater.checkForUpdatesAndNotify();
+    Object.values(UPDATER_EVENTS).forEach((event) => {
+      autoUpdater.on(event, (eventData) => {
+        log.info("EVENT: ", event, eventData);
+        onEventCallback(event, eventData);
       });
-    }
+    });
     return autoUpdater;
   }
 }
