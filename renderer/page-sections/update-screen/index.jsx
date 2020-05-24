@@ -11,7 +11,11 @@ import styles from "./styles.module.scss";
 import { useState, useEffect } from "react";
 import { getIpcRenderer, isDev } from "../../hooks/useMainProcess";
 import { useRouterContext } from "../../context/router";
-import { UPDATER_EVENTS, ROUTES } from "../../../constants";
+import {
+  UPDATER_EVENTS,
+  ROUTES,
+  EMIT_CHECK_FOR_UPDATES,
+} from "../../../constants";
 
 const { Step } = Steps;
 
@@ -75,6 +79,11 @@ export default function UpdateScreen() {
     }
     setMessage(data.text);
   };
+
+  if (ipcRenderer) {
+    console.log("ipcRenderer, check for updates");
+    ipcRenderer.send(EMIT_CHECK_FOR_UPDATES);
+  }
 
   useEffect(() => {
     if (isDev()) {
