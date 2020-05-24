@@ -10,7 +10,7 @@ import Logo from "../../components/logo";
 import styles from "./styles.module.scss";
 import { useState, useEffect } from "react";
 import { getIpcRenderer, isDev } from "../../hooks/useMainProcess";
-import { useRouterContext } from "../../context/router";
+import { useRouterContext } from "../../context-providers/router";
 import {
   UPDATER_EVENTS,
   ROUTES,

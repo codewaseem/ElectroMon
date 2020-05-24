@@ -1,14 +1,14 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Descriptions, Row, Col } from "antd";
 import { Label } from "../utils";
-import { TimerContext } from "../../context";
 import { WORK_TIMER } from "../../../constants";
 import moment from "moment-timezone";
+import { useTimerHandlerContext } from "../../context-providers/timerHandler";
 
 const getEstTime = () => moment.tz("America/New_York").format("HH:mm:ss");
 
 export default function TimerInfo() {
-  const timersManager = useContext(TimerContext);
+  const { timersManager } = useTimerHandlerContext();
 
   const [totalWorkTime, setTotalWorkTime] = useState(
     timersManager.getTotalTimeObjectFor(WORK_TIMER)

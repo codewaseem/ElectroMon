@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ROUTES } from "../../constants";
+import PropTypes from "prop-types";
 
 const RouterContext = React.createContext();
 
@@ -26,4 +27,8 @@ export const RouterProvider = ({ children }) => {
       {children}
     </RouterContext.Provider>
   );
+};
+
+RouterProvider.propTypes = {
+  children: PropTypes.node,
 };

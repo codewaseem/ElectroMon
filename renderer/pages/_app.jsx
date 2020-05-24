@@ -1,4 +1,4 @@
-import { RootProvider } from "../context";
+import { RootProvider } from "../context-providers";
 import PropTypes from "prop-types";
 import React from "react";
 

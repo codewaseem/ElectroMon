@@ -3,7 +3,7 @@ import styles from "./header.module.scss";
 import React from "react";
 import Logo from "../logo";
 import TimeInfo from "./TimeInfo";
-import { useRouterContext } from "../../context/router";
+import { useRouterContext } from "../../context-providers/router";
 import { ROUTES } from "../../../constants";
 import { aiMonitorApi } from "ai-monitor-core";
 

@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import Timer from "../components/timer";
-import { TimerContext } from "../context";
+import { useTimerHandlerContext } from "../context-providers/timerHandler";
 
 const useTimer = (timerName, summaryText) => {
-  const timersManager = useContext(TimerContext);
+  const { timersManager } = useTimerHandlerContext();
   timersManager.addNewTimer(timerName);
   const thisTimer = timersManager.getTimerByName(timerName);
   const [, setCurrentTime] = useState(thisTimer.totalTimeObject);

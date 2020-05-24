@@ -1,13 +1,37 @@
 import useTimerData from "./useTimerData";
-import { TimersManager } from "../context/timer";
+import { TimersManager } from "../context-providers/timer";
 import { useEffect } from "react";
 import { TIMERS_STORAGE_KEY, TIMERS_HISTORY_KEY } from "../../constants";
 import { aiMonitorApi } from "ai-monitor-core";
 
-export default function useTimerManager() {
+export default function useTimerHandler() {
   const [timersData, historyData] = useTimerData();
-  console.log("init timersManager");
   const timersManager = new TimersManager(timersData, historyData);
+
+  const pushTimerData = () => {
+    let history = timersManager.getHistory();
+    if (history.length > 0) {
+      return (
+        aiMonitorApi
+          .addTime(history)
+          .then(() => {
+            console.log("History Pushed");
+            console.log("deleting current history");
+            timersManager.deleteHistory();
+            return true;
+          })
+          // eslint-disable-next-line no-unused-vars
+          .catch((e) => {
+            console.log(e);
+            console.log("report error here");
+            return false;
+          })
+      );
+    } else {
+      console.log("nothing to update");
+      return Promise.resolve(true);
+    }
+  };
 
   useEffect(() => {
     const cacheTimer = () => {
@@ -20,25 +44,9 @@ export default function useTimerManager() {
 
     const syncHistoryWithServer = () => {
       const id = setTimeout(() => {
-        let history = timersManager.getHistory();
-        if (history.length > 0) {
-          aiMonitorApi
-            .addTime(history)
-            .then(() => {
-              console.log("History Pushed");
-              console.log("deleting current history");
-
-              timersManager.deleteHistory();
-            })
-            // eslint-disable-next-line no-unused-vars
-            .catch((e) => {
-              console.log("report error here");
-            });
-        } else {
-          console.log("nothing to update");
-        }
+        pushTimerData();
         syncHistoryWithServer();
-      }, 1000 * 5);
+      }, 1000 * 60 * 5);
 
       return id;
     };
@@ -51,9 +59,15 @@ export default function useTimerManager() {
       clearTimeout(timerId);
       clearTimeout(syncHistoryId);
     };
-  }, [aiMonitorApi, timersManager]);
+  }, [aiMonitorApi, timersManager, pushTimerData]);
 
-  return timersManager;
+  return {
+    timersManager,
+    stopAndPushTimerData: async () => {
+      timersManager.stopTimer();
+      return pushTimerData();
+    },
+  };
 }
 
 export function saveTimerData(timersManager) {

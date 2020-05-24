@@ -3,7 +3,7 @@ import styles from "./home.module.scss";
 import AppHeader from "../../components/header";
 import { Space, Spin } from "antd";
 import { HomeSectionFooter } from "../../components/footer";
-import { useTimerManagerContext } from "../../hooks";
+import { useTimerHandlerContext } from "../../context-providers/timerHandler";
 import { useCloseWindow } from "../../hooks/useMainProcess";
 import { saveTimerData } from "../../hooks/useTimerManager";
 import WorkTimer from "./WorkTimer";
@@ -15,19 +15,25 @@ export default function HomeScreen() {
     spinning: false,
     tip: "",
   });
-  const timersManager = useTimerManagerContext();
+  const { timersManager, stopAndPushTimerData } = useTimerHandlerContext();
   const closeWindow = useCloseWindow();
 
-  const safelyExit = () => {
+  const safelyExit = async () => {
     setSpinner({
       spinning: true,
       tip: "Stopping timers, saving data..",
     });
-    timersManager.stopTimer();
+
+    await stopAndPushTimerData();
+
     saveTimerData(timersManager);
-    setTimeout(() => {
-      closeWindow();
-    }, 1000 * 5);
+
+    setSpinner({
+      spinning: true,
+      tip: "Done..Closing",
+    });
+
+    closeWindow();
   };
 
   return (
