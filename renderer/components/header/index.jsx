@@ -1,20 +1,26 @@
 import { PageHeader, Avatar, Button } from "antd";
 import styles from "./header.module.scss";
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../logo";
 import TimeInfo from "./TimeInfo";
 import { useRouterContext } from "../../context-providers/router";
+import { useTimerHandlerContext } from "../../context-providers/timerHandler";
+
 import { ROUTES } from "../../../constants";
 import { aiMonitorApi } from "ai-monitor-core";
 
 export default function AppHeader() {
   const { setPath } = useRouterContext();
+  const { stopAndPushTimerData } = useTimerHandlerContext();
+  const [loading, setLoading] = useState(false);
 
   const extras = [];
   // const logout = useLogout();
 
   async function handleLogoutClick() {
-    // await logout();
+    setLoading(true);
+    await stopAndPushTimerData();
+    setLoading(false);
     aiMonitorApi.logout();
     setPath(ROUTES.LOGIN);
   }
@@ -28,6 +34,7 @@ export default function AppHeader() {
       key="avatar"
     >
       <Button
+        loading={loading}
         style={{
           marginRight: 10,
         }}
