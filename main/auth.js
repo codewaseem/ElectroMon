@@ -1,6 +1,7 @@
 import ElectronAuth0Login from "electron-auth0";
 import config from "../constants/config.json";
 
+// TODO: Remove
 const auth = new ElectronAuth0Login({
   auth0Audience: config.AUTH0_AUDIENCE,
   auth0ClientId: config.AUTH0_CLIENT_ID,
