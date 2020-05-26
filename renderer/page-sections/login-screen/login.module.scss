@@ -1,3 +1,5 @@
+@import "../../theme/antd-custom.scss";
+
 .formContainer {
   max-width: 550px;
   margin: 10% auto 0;
@@ -5,4 +7,15 @@
   justify-content: center;
   justify-items: center;
   grid-gap: 30px;
+}
+
+.errorMessage {
+  max-width: 350px;
+  margin: auto;
+  color: $error-color;
+  text-align: center;
+
+  span {
+    font-weight: bold;
+  }
 }

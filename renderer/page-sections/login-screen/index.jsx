@@ -40,14 +40,16 @@ const LoginStates = {
 const LoginForm = () => {
   const [loginState, setLoginState] = useState(defaultState);
   const { setPath } = useRouterContext();
+  const [loginError, setLoginError] = useState(false);
 
   const onFinish = async (values) => {
     setLoginState(LoginStates.logging);
     try {
-      let user = await aiMonitorApi.login(values.email, values.password);
-      console.log(user);
+      await aiMonitorApi.login(values.email, values.password);
       setPath(ROUTES.HOME);
     } catch (e) {
+      setLoginState(LoginStates.error);
+      setLoginError(true);
       console.log(e);
     }
   };
@@ -79,14 +81,12 @@ const LoginForm = () => {
           <Form.Item
             label="Password"
             name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
+            rules={[
+              { required: true, message: "Please input your password!" },
+            ]}
           >
             <Input.Password placeholder="pas5w0rd" />
           </Form.Item>
-
-          {/* <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-        <Checkbox>Remember me</Checkbox>
-      </Form.Item> */}
 
           <Form.Item {...tailLayout}>
             <Button
@@ -98,6 +98,12 @@ const LoginForm = () => {
             </Button>
           </Form.Item>
         </Form>
+        {loginError && (
+          <p className={styles.errorMessage}>
+            <span>Login Failed!</span> Please check your Pulse email and/or
+            password or send an email to support@aptask.com
+          </p>
+        )}
       </div>
     </Spin>
   );
