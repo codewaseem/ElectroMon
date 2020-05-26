@@ -21,7 +21,7 @@ let mainWindow;
     height: 480,
     width: 800,
     minWidth: 760,
-    maxWidth: 800,
+    maxWidth: 780,
     minHeight: 480,
     maxHeight: 500,
     title: `ApTask AiMonitor - v${app.getVersion()}`,
