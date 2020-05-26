@@ -1,7 +1,7 @@
 jest.mock("axios");
 
 import axios, { AxiosRequestConfig } from "axios";
-import pulseApi, { LOGIN_URL, ADD_LEAVE_URL, ADD_TIME_LOG, TimeLog, PulseLoginResponse } from "./index";
+import pulseApi, { LOGIN_URL, ADD_LEAVE_URL, ADD_TIME_LOG, TimeLog, PulseLoginResponse, PulseLoginErrorResponse } from "./index";
 
 const VALID_DATA = {
     userName: "taj@aptask.com",
@@ -23,19 +23,22 @@ let userId = `4`;
                         pulseTwoContext: JSON.stringify({
                             token: token
                         })
-                    }
-                }
-            } as PulseLoginResponse);
+                    },
+                    code: 200
+                } as PulseLoginResponse
+            });
         } else {
-            return Promise.reject();
+            return Promise.resolve({
+                data: {
+                    message: "",
+                    code: 500
+                } as PulseLoginErrorResponse
+            });
         }
     }
 });
 
-
 describe("PulseApi", () => {
-
-
 
     let authHeaders = {
         Authorization: `Bearer ${token}`,
@@ -116,7 +119,6 @@ describe("PulseApi", () => {
             }]
         } as AxiosRequestConfig)
     });
-
 
     it("Add Time Logs: should be able to add time logs", async () => {
 

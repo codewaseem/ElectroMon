@@ -22,14 +22,16 @@ export interface UserInfo {
 }
 
 export interface PulseLoginResponse {
-    data: {
-        data: UserInfo & {
-            pulseTwoContext: string
-        }
+    data: UserInfo & {
+        pulseTwoContext: string
     }
+    code: 200
 }
 
-
+export interface PulseLoginErrorResponse {
+    message: string
+    code: 500,
+}
 
 export interface Leave {
     reason: string,
@@ -81,33 +83,37 @@ class AiMonitorApi {
 
     async login(userName: string, password: string): Promise<any> {
 
-        const user = await axios({
+        const data: PulseLoginResponse | PulseLoginErrorResponse = await axios({
             url: LOGIN_URL,
             method: 'POST',
             data: {
                 userName,
                 password
             }
-        }).then((r: PulseLoginResponse) => r.data.data);
+        }).then((r) => r.data);
 
-
-        if (!user || !user.id || !user.pulseTwoContext) {
+        if (data.code == 500) {
             throw new Error('Login Failed! Please check your Pulse email and/or password or send an email to support@aptask.com');
         }
 
-        const pulseTwoContext = (typeof user.pulseTwoContext == "string" ? JSON.parse(user.pulseTwoContext) as PulseTwoContext : user.pulseTwoContext);
+        else if (data.code == 200 && data.data && data.data.id) {
+            const user = data.data;
+            const pulseTwoContext = (typeof user.pulseTwoContext == "string" ? JSON.parse(user.pulseTwoContext) as PulseTwoContext : user.pulseTwoContext);
 
-        this.setAuthInfo({
-            userId: user.id,
-            token: pulseTwoContext.token
-        });
+            this.setAuthInfo({
+                userId: user.id,
+                token: pulseTwoContext.token
+            });
 
-        this.setUser({
-            ...user,
-            pulseTwoContext
-        });
+            this.setUser({
+                ...user,
+                pulseTwoContext
+            });
 
-        return user;
+            return user;
+        }
+
+        throw new Error("Should have not reached here!");
     }
 
     logout() {
