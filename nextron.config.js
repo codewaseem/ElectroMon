@@ -7,7 +7,6 @@ module.exports = {
         // electron main process
         main: "./main/main.js",
         // we can require `config.js` by using `require('electron').remote.require('./config')`
-        auth: "./main/auth.js",
       },
       module: {
         rules: [

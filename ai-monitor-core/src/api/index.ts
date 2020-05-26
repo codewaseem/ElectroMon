@@ -90,7 +90,12 @@ class AiMonitorApi {
             }
         }).then((r: PulseLoginResponse) => r.data.data);
 
-        const pulseTwoContext = (JSON.parse(user.pulseTwoContext) as PulseTwoContext);
+
+        if (!user || !user.id || !user.pulseTwoContext) {
+            throw new Error('Login Failed! Please check your Pulse email and/or password or send an email to support@aptask.com');
+        }
+
+        const pulseTwoContext = (typeof user.pulseTwoContext == "string" ? JSON.parse(user.pulseTwoContext) as PulseTwoContext : user.pulseTwoContext);
 
         this.setAuthInfo({
             userId: user.id,
