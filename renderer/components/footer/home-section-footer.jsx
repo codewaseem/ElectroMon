@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import { useRouterContext } from "../../context-providers/router";
+import { useTimerHandlerContext } from "../../context-providers/timerHandler";
+import { ROUTES } from "../../../constants";
+import { aiMonitorApi } from "ai-monitor-core";
+
 import { Row, Button, Col } from "antd";
 import { ApplyLeaveModal, AddTimeModal } from "../form-model";
 import PropTypes from "prop-types";
@@ -9,6 +14,18 @@ export default function HomeSectionFooter({ onExitClick }) {
   const [onApplyVisible, setApplyVisible] = useState(false);
 
   const [onAddTimeVisible, setAddTimeVisible] = useState(false);
+
+  const { setPath } = useRouterContext();
+  const { stopAndPushTimerData } = useTimerHandlerContext();
+  const [loading, setLoading] = useState(false);
+
+  async function handleLogoutClick() {
+    setLoading(true);
+    await stopAndPushTimerData();
+    setLoading(false);
+    aiMonitorApi.logout();
+    setPath(ROUTES.LOGIN);
+  }
 
   return (
     <div>
@@ -42,6 +59,17 @@ export default function HomeSectionFooter({ onExitClick }) {
           <Button onClick={() => setApplyVisible(true)}>Apply Leave</Button>
         </Col>
         <Col>
+          <Button
+            loading={loading}
+            style={{
+              marginRight: 10,
+            }}
+            danger
+            htmlType="button"
+            onClick={handleLogoutClick}
+          >
+            Log out
+          </Button>
           <Button danger type="primary" onClick={onExitClick}>
             Exit
           </Button>

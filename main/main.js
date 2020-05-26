@@ -1,8 +1,8 @@
-import { app, ipcMain } from "electron";
+import { app } from "electron";
 import serve from "electron-serve";
 import { createWindow } from "./helpers";
 import AutoUpdater, { sendUpdateEventsToWindow } from "./helpers/auto-updater";
-import { UPDATER_EVENTS, EMIT_CHECK_FOR_UPDATES } from "../constants";
+import { UPDATER_EVENTS } from "../constants";
 
 export const isProd = process.env.NODE_ENV === "production";
 
@@ -18,13 +18,13 @@ let mainWindow;
   await app.whenReady();
 
   mainWindow = createWindow("main", {
-    height: 540,
+    height: 480,
     width: 800,
-    minWidth: 800,
-    maxWidth: 900,
-    minHeight: 540,
-    maxHeight: 600,
-    title: "ApTask AiMonitor",
+    minWidth: 760,
+    maxWidth: 800,
+    minHeight: 480,
+    maxHeight: 500,
+    title: `ApTask AiMonitor - v${app.getVersion()}`,
     autoHideMenuBar: isProd ? true : false,
   });
 
@@ -35,14 +35,6 @@ let mainWindow;
     await mainWindow.loadURL(`http://localhost:${port}/home`);
     mainWindow.webContents.openDevTools();
   }
-})();
-
-app.on("window-all-closed", () => {
-  app.quit();
-});
-
-ipcMain.on(EMIT_CHECK_FOR_UPDATES, () => {
-  console.log("called");
 
   let autoUpdater = AutoUpdater.start(sendUpdateEventsToWindow(mainWindow));
 
@@ -53,6 +45,8 @@ ipcMain.on(EMIT_CHECK_FOR_UPDATES, () => {
   autoUpdater.on(UPDATER_EVENTS.UPDATE_DOWNLOADED, () => {
     autoUpdater.quitAndInstall(true, true);
   });
-});
+})();
 
-export const appVersion = app.getVersion();
+app.on("window-all-closed", () => {
+  app.quit();
+});

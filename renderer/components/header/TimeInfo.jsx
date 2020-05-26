@@ -5,7 +5,7 @@ import { WORK_TIMER } from "../../../constants";
 import moment from "moment-timezone";
 import { useTimerHandlerContext } from "../../context-providers/timerHandler";
 
-const getEstTime = () => moment.tz("America/New_York").format("HH:mm:ss");
+const getEstTime = () => moment.tz("America/New_York").format("hh:mm:ss A");
 
 export default function TimerInfo() {
   const { timersManager } = useTimerHandlerContext();

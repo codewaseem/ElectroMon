@@ -21,5 +21,3 @@ export const ROUTES = {
   UPDATE: "/update",
   HOME: "/home",
 };
-
-export const EMIT_CHECK_FOR_UPDATES = "check-updates";

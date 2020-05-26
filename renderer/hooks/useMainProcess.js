@@ -6,13 +6,6 @@ if (remote) {
   mainModule = remote.require("./main");
 }
 
-export function getAppVersion() {
-  if (mainModule) {
-    return mainModule.appVersion;
-  }
-  return null;
-}
-
 export function getIpcRenderer() {
   return ipcRenderer;
 }
