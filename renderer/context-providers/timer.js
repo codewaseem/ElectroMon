@@ -257,6 +257,14 @@ export class TimersManager {
     return this.timers[timerName].totalTime;
   }
 
+  getTotalTimeObjectFrom(timerNames = []) {
+    let duration = 0;
+    for (let timerName of timerNames) {
+      duration += this.timers[timerName].totalTime;
+    }
+    return millisecondsToTimeObject(duration);
+  }
+
   getTotalTimeObjectFor(timerName) {
     return this.timers[timerName].totalTimeObject;
   }

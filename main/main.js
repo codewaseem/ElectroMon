@@ -32,11 +32,11 @@ let mainWindow;
   await app.whenReady();
 
   mainWindow = createWindow("main", {
-    height: 480,
+    height: 490,
     width: 800,
     minWidth: 760,
     maxWidth: 780,
-    minHeight: 480,
+    minHeight: 490,
     maxHeight: 500,
     title: `ApTask AiMonitor - v${app.getVersion()}`,
     autoHideMenuBar: isProd ? true : false,

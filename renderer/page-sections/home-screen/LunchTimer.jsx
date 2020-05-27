@@ -5,7 +5,7 @@ import OptionsCard from "../../components/card";
 import { LunchIcon } from "../../components/icons";
 
 export default function LunchTimer() {
-  const [timer, isTimerActive] = useTimer(LUNCH_TIMER, "Lunch Timer");
+  const [timer, isTimerActive] = useTimer(LUNCH_TIMER, "Lunch Time");
 
   return (
     <OptionsCard icon={LunchIcon} title="Lunch" invert={isTimerActive}>
