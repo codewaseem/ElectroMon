@@ -6,6 +6,7 @@ module.exports = {
       entry: {
         // electron main process
         main: "./main/main.js",
+        tracker: "./main/tracker.js",
         // we can require `config.js` by using `require('electron').remote.require('./config')`
       },
       module: {

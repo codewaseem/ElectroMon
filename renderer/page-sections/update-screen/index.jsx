@@ -9,7 +9,11 @@ import {
 import Logo from "../../components/logo";
 import styles from "./styles.module.scss";
 import { useState, useEffect } from "react";
-import { getIpcRenderer, isDev } from "../../hooks/useMainProcess";
+import {
+  getIpcRenderer,
+  isDev,
+  startTracking,
+} from "../../hooks/useMainProcess";
 import { useRouterContext } from "../../context-providers/router";
 import { UPDATER_EVENTS, ROUTES } from "../../../constants";
 
@@ -84,6 +88,9 @@ export default function UpdateScreen() {
       ipcRenderer.on("message", updateStatus);
       return () => ipcRenderer.removeListener("message", updateStatus);
     }
+
+    console.log("startTracking");
+    startTracking();
   }, []);
 
   return (
