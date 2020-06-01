@@ -70,6 +70,7 @@
     "**/__tests__",
     "**/__mocks__",
     "**/__testdata__",
-    "jest.config.js"
+    "jest.config.js",
+    "dist"
   ]
 }

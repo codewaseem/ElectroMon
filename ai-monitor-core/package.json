@@ -6,7 +6,7 @@
   "author": "codewaseem <codewaseem@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist & tsc",
+    "build": "rm -rf dist & ./node_modules/typescript/bin/tsc",
     "test": "jest",
     "postinstall": "yarn build",
     "run-script": "node -r ts-node/register "
