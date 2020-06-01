@@ -33,6 +33,7 @@
     "moment": "^2.25.3",
     "moment-timezone": "^0.5.28",
     "next": "^9.3.6",
+    "node-gyp": "6.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
