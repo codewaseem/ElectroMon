@@ -6,9 +6,8 @@
   "author": "codewaseem <codewaseem@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist & ./node_modules/typescript/bin/tsc",
+    "build": "rm -rf dist & node_modules/typescript/bin/tsc",
     "test": "jest",
-    "postinstall": "yarn build",
     "run-script": "node -r ts-node/register "
   },
   "devDependencies": {
@@ -22,12 +21,13 @@
     "active-win": "^6.1.0",
     "axios": "^0.19.2",
     "desktop-idle": "^1.3.0",
+    "iconv": "^3.0.0",
     "iohook": "^0.6.5",
     "level": "^6.0.1"
   },
   "iohook": {
     "targets": [
-      "node-64",
+      "node-72",
       "electron-76"
     ],
     "platforms": [
