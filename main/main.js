@@ -3,8 +3,13 @@ import serve from "electron-serve";
 import { createWindow } from "./helpers";
 import AutoUpdater, { sendUpdateEventsToWindow } from "./helpers/auto-updater";
 import { UPDATER_EVENTS } from "../constants";
+import { createAppUsageTracker } from "ai-monitor-core";
 
 export const isProd = process.env.NODE_ENV === "production";
+
+const appTracker = createAppUsageTracker(
+  `${app.getPath("userData")}/apptracker`
+);
 
 if (isProd) {
   serve({ directory: "app" });
@@ -59,8 +64,13 @@ let mainWindow;
   autoUpdater.on(UPDATER_EVENTS.UPDATE_DOWNLOADED, () => {
     autoUpdater.quitAndInstall(true, true);
   });
+  console.log(`${app.getPath("userData")}`);
+
+  appTracker.start();
+  console.log(await appTracker.getAppsUsageLogs());
 })();
 
 app.on("window-all-closed", () => {
   app.quit();
+  appTracker.stop();
 });

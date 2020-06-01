@@ -7,6 +7,8 @@ AppTracker.TIMER_INTERVAL = TestIntervalTime;
 
 
 jest.mock("iohook");
+jest.useFakeTimers();
+
 
 describe("AppTracker", () => {
 
@@ -113,7 +115,7 @@ describe("AppTracker", () => {
         expect(save).toHaveBeenCalledWith({
             'Google Chrome': {
                 'Unicorns - Google Search': {
-                    timeSpent: AppTracker.TIMER_INTERVAL,
+                    timeSpent: AppTracker.TIMER_INTERVAL / 1000,
                     idleTime: expect.any(Number),
                     keystrokes: expect.any(Number),
                     mouseclicks: expect.any(Number)
@@ -135,7 +137,7 @@ describe("AppTracker", () => {
         expect(await tracker.getAppsUsageLogs()).toMatchObject({
             'Google Chrome': {
                 'Unicorns - Google Search': {
-                    timeSpent: AppTracker.TIMER_INTERVAL
+                    timeSpent: AppTracker.TIMER_INTERVAL / 1000
                 }
             }
         });
@@ -147,7 +149,7 @@ describe("AppTracker", () => {
         const initialData = ({
             [initialAppUsageData.owner.name]: {
                 [initialAppUsageData.title]: {
-                    timeSpent: AppTracker.TIMER_INTERVAL * 2
+                    timeSpent: AppTracker.TIMER_INTERVAL * 2 / 1000
                 }
             }
         } as AppsUsageLogs);
@@ -166,7 +168,7 @@ describe("AppTracker", () => {
         expect(await tracker2.getCurrentUsageData()).toMatchObject({
             [initialAppUsageData.owner.name]: {
                 [initialAppUsageData.title]: {
-                    timeSpent: AppTracker.TIMER_INTERVAL * 3
+                    timeSpent: AppTracker.TIMER_INTERVAL * 3 / 1000
                 }
             }
         } as AppsUsageLogs);

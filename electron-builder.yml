@@ -11,3 +11,4 @@ files:
       - app
 publish: github
 generateUpdatesFilesForAllChannels: true
+buildDependenciesFromSource: true

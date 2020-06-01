@@ -63,20 +63,20 @@ export const LogInputData = [appOneTabOne, appOneTabTwo, appOneTabTwo, appOneTab
 export const LogOutputData: AppsUsageLogs = {
     [APP_ONE as string]: {
         [appOneTabOne.title]: {
-            timeSpent: AppTracker.TIMER_INTERVAL,
+            timeSpent: AppTracker.TIMER_INTERVAL / 1000,
             idleTime: expect.any(Number),
             keystrokes: expect.any(Number),
             mouseclicks: expect.any(Number)
         },
         [appOneTabTwo.title]: {
-            timeSpent: 3 * AppTracker.TIMER_INTERVAL,
+            timeSpent: 3 * AppTracker.TIMER_INTERVAL / 1000,
             idleTime: expect.any(Number),
             keystrokes: expect.any(Number),
             mouseclicks: expect.any(Number)
 
         },
         [appOneTabThree.title]: {
-            timeSpent: AppTracker.TIMER_INTERVAL,
+            timeSpent: AppTracker.TIMER_INTERVAL / 1000,
             idleTime: expect.any(Number),
             keystrokes: expect.any(Number),
             mouseclicks: expect.any(Number)
@@ -85,7 +85,7 @@ export const LogOutputData: AppsUsageLogs = {
     },
     [APP_TWO as string]: {
         [appOneTabOne.title]: {
-            timeSpent: AppTracker.TIMER_INTERVAL,
+            timeSpent: AppTracker.TIMER_INTERVAL / 1000,
             idleTime: expect.any(Number),
             keystrokes: expect.any(Number),
             mouseclicks: expect.any(Number)
@@ -94,7 +94,7 @@ export const LogOutputData: AppsUsageLogs = {
     },
     [APP_THREE as string]: {
         [appOneTabOne.title]: {
-            timeSpent: AppTracker.TIMER_INTERVAL,
+            timeSpent: AppTracker.TIMER_INTERVAL / 1000,
             idleTime: expect.any(Number),
             keystrokes: expect.any(Number),
             mouseclicks: expect.any(Number)
