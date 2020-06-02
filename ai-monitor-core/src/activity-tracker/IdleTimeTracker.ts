@@ -1,5 +1,11 @@
 // @ts-ignore
-import desktopIdle from "desktop-idle";
+// import desktopIdle from "desktop-idle";
+
+const desktopIdle = {
+    getIdleTime() {
+        return 0;
+    }
+}
 
 export default class IdleTimeTracker {
 
@@ -25,7 +31,5 @@ export default class IdleTimeTracker {
     private _isNewIdleState() {
         return this._prevIdleTime > this._currentIdleTime;
     }
-
-
 }
 
