@@ -6,7 +6,7 @@ import { LoginOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useRouterContext } from "../../context-providers/router";
 import { ROUTES } from "../../../constants";
-import { aiMonitorApi } from "ai-monitor-core";
+import { aiMonitorApi } from "../../../ai-monitor-core/dist";
 
 const layout = {
   labelCol: { span: 8 },

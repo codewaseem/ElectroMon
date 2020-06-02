@@ -10,8 +10,11 @@
     "url": "https://github.com/codewaseem/ElectroMon.git"
   },
   "scripts": {
-    "dev": "nextron",
-    "build": "nextron build",
+    "test": "jest",
+    "run-script": "node -r ts-node/register ",
+    "build-core": "rm -rf ai-monitor-core/dist && tsc --build ai-monitor-core/tsconfig.json",
+    "dev": "yarn build-core && nextron",
+    "build": "yarn build-core && nextron build",
     "build:all": "nextron build --all",
     "build:win32": "nextron build --win --ia32",
     "build:win64": "nextron build --win --x64",
@@ -21,16 +24,20 @@
     "publish:win": "nextron build --win --x64 --ia32 -- -p always",
     "publish:linux": "nextron build --linux -- -p always",
     "postinstall": "electron-builder install-app-deps",
-    "rebuild": "DEBUG=electron-rebuild electron-rebuild",
-    "test": "jest"
+    "rebuild": "DEBUG=electron-rebuild electron-rebuild"
   },
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
+    "active-win": "^6.1.0",
     "ai-monitor-core": "./ai-monitor-core",
     "antd": "^4.2.0",
+    "axios": "^0.19.2",
+    "desktop-idle": "^1.3.0",
     "electron-log": "^4.1.2",
     "electron-rebuild": "^1.11.0",
     "electron-updater": "^4.3.1",
+    "iohook": "^0.6.5",
+    "level": "^6.0.1",
     "moment": "^2.25.3",
     "moment-timezone": "^0.5.28",
     "next": "^9.3.6",
@@ -42,6 +49,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.9.6",
     "@codewaseem/antd-scss-theme-plugin": "^1.3.7",
+    "@types/jest": "^25.2.3",
     "@zeit/next-less": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
     "babel-eslint": "^10.1.0",
@@ -71,7 +79,10 @@
     "null-loader": "^4.0.0",
     "prettier": "2.0.5",
     "sass": "^1.26.5",
-    "sass-loader": "^8.0.2"
+    "sass-loader": "^8.0.2",
+    "ts-jest": "^26.0.0",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.9.3"
   },
   "husky": {
     "hooks": {
@@ -81,5 +92,20 @@
   "lint-staged": {
     "*.{js,jsx}": "eslint --cache --fix",
     "*.{js,css,md}": "prettier --write"
+  },
+  "iohook": {
+    "targets": [
+      "node-72",
+      "electron-76"
+    ],
+    "platforms": [
+      "win32",
+      "darwin",
+      "linux"
+    ],
+    "arches": [
+      "x64",
+      "ia32"
+    ]
   }
 }

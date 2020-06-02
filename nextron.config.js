@@ -1,8 +1,9 @@
 // eslint-disable-next-line no-undef
 module.exports = {
   // specify an alternate main src directory, defaults to 'main'
-  webpack: (defaultConfig) =>
-    Object.assign(defaultConfig, {
+  webpack: (defaultConfig) => {
+    console.log("Here", defaultConfig);
+    return Object.assign(defaultConfig, {
       entry: {
         // electron main process
         main: "./main/main.js",
@@ -13,5 +14,6 @@ module.exports = {
           { test: /\.jsx?$/, exclude: /node_modules/, loader: "babel-loader" },
         ],
       },
-    }),
+    });
+  },
 };
