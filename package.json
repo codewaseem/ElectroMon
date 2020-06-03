@@ -12,7 +12,7 @@
   "scripts": {
     "test": "jest",
     "run-script": "node -r ts-node/register ",
-    "build-core": "rm -rf ai-monitor-core/dist && tsc --build ai-monitor-core/tsconfig.json",
+    "build-core": "rm -rf ai-monitor-core/exec && tsc --build ai-monitor-core/tsconfig.json",
     "dev": "yarn build-core && nextron",
     "build": "yarn build-core && nextron build",
     "build:all": "nextron build --all",

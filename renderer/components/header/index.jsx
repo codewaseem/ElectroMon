@@ -3,7 +3,7 @@ import { PageHeader, Avatar } from "antd";
 import styles from "./header.module.scss";
 import Logo from "../logo";
 import TimeInfo from "./TimeInfo";
-import { aiMonitorApi } from "../../../ai-monitor-core/dist";
+import { aiMonitorApi } from "../../../ai-monitor-core/exec";
 
 export default function AppHeader() {
   const extras = [];

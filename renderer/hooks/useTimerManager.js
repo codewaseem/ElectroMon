@@ -2,7 +2,7 @@ import useTimerData from "./useTimerData";
 import { TimersManager } from "../context-providers/timer";
 import { useEffect } from "react";
 import { TIMERS_STORAGE_KEY, TIMERS_HISTORY_KEY } from "../../constants";
-import { aiMonitorApi } from "../../ai-monitor-core/dist";
+import { aiMonitorApi } from "../../ai-monitor-core/exec";
 
 export default function useTimerHandler() {
   const [timersData, historyData] = useTimerData();
