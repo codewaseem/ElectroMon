@@ -2,7 +2,6 @@
 module.exports = {
   // specify an alternate main src directory, defaults to 'main'
   webpack: (defaultConfig) => {
-    console.log("Here", defaultConfig);
     return Object.assign(defaultConfig, {
       entry: {
         // electron main process

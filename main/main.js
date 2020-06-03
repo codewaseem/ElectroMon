@@ -3,14 +3,13 @@ import serve from "electron-serve";
 import { createWindow } from "./helpers";
 import AutoUpdater, { sendUpdateEventsToWindow } from "./helpers/auto-updater";
 import { UPDATER_EVENTS } from "../constants";
-// import { createAppUsageTracker } from "ai-monitor-core";
-// eslint-disable-next-line no-unused-vars
-import desktopIdle from "desktop-idle";
-export const isProd = process.env.NODE_ENV === "production";
 
+// import {  createAppUsageTracker } from "ai-monitor-core";
 // const appTracker = createAppUsageTracker(
 //   `${app.getPath("userData")}/apptracker`
 // );
+
+export const isProd = process.env.NODE_ENV === "production";
 
 if (isProd) {
   serve({ directory: "app" });
@@ -69,10 +68,6 @@ let mainWindow;
 
   // appTracker.start();
   // console.log(await appTracker.getAppsUsageLogs());
-
-  setInterval(() => {
-    console.log(desktopIdle.getIdleTime());
-  }, 5000);
 })();
 
 app.on("window-all-closed", () => {
