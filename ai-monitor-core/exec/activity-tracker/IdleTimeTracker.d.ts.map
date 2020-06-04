@@ -1,1 +1,0 @@
-{"version":3,"file":"IdleTimeTracker.d.ts","sourceRoot":"","sources":["../../src/activity-tracker/IdleTimeTracker.ts"],"names":[],"mappings":"AASA,MAAM,CAAC,OAAO,OAAO,eAAe;IAEhC,OAAO,CAAC,aAAa,CAA6B;IAClD,OAAO,CAAC,gBAAgB,CAAsB;IAC9C,OAAO,CAAC,iBAAiB,CAAK;IAC9B,OAAO,CAAC,cAAc,CAAK;IAE3B,gBAAgB;IAchB,OAAO,CAAC,eAAe;CAG1B"}
