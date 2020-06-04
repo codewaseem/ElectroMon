@@ -4,17 +4,17 @@ import { createWindow } from "./helpers";
 import AutoUpdater, { sendUpdateEventsToWindow } from "./helpers/auto-updater";
 import { UPDATER_EVENTS } from "../constants";
 
-// import { createAppUsageTracker } from "../ai-monitor-core/exec/";
+import { createAppUsageTracker } from "../ai-monitor-core/exec/";
 
-// (async () => {
-//   const appTracker = createAppUsageTracker(
-//     `${app.getPath("userData")}/apptracker`
-//   );
-//   await appTracker.init();
-//   appTracker.start();
-// })();
+(async () => {
+  const appTracker = createAppUsageTracker(
+    `${app.getPath("userData")}/apptracker`
+  );
+  await appTracker.init();
+  appTracker.start();
+})();
 
-export const isProd = process.env.NODE_ENV === "production";
+const isProd = process.env.NODE_ENV === "production";
 
 if (isProd) {
   serve({ directory: "app" });
@@ -76,3 +76,5 @@ app.on("window-all-closed", () => {
   app.quit();
   // appTracker.stop();
 });
+
+export { app, isProd };
