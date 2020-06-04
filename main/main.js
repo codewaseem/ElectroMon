@@ -4,7 +4,7 @@ import { createWindow } from "./helpers";
 import AutoUpdater, { sendUpdateEventsToWindow } from "./helpers/auto-updater";
 import { UPDATER_EVENTS } from "../constants";
 
-import { createAppUsageTracker } from "../ai-monitor-core/exec/";
+import createAppUsageTracker from "../ai-monitor-core/exec/activity-tracker";
 
 (async () => {
   const appTracker = createAppUsageTracker(
