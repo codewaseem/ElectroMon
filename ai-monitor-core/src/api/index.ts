@@ -107,7 +107,7 @@ class AiMonitorApi {
             params: {
                 userId: this.#user?.id
             }
-        }).then(r => r.data).then(data => data[0] as UserProfileObject | undefined);
+        }).then(r => r.data.data).then(data => data[0] as UserProfileObject | undefined);
     }
 
 
@@ -121,7 +121,7 @@ class AiMonitorApi {
         // });
     }
 
-    async login(userName: string, password: string): Promise<any> {
+    async login(userName: string, password: string): Promise<{ user: any, profile: UserProfileObject | undefined }> {
 
         const data: PulseLoginResponse | PulseLoginErrorResponse = await axios({
             url: LOGIN_URL,
@@ -150,7 +150,9 @@ class AiMonitorApi {
                 pulseTwoContext
             });
 
-            return user;
+            const profile = await this.getUserProfile();
+
+            return { user, profile };
         }
 
         throw new Error("Should have not reached here!");

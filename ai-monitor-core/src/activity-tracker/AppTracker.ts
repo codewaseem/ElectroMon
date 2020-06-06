@@ -46,6 +46,10 @@ export default class AppTracker {
         this._userProfile = userProfile;
     }
 
+    setUserProfile(profile: UserProfileObject) {
+        this._userProfile = profile;
+    }
+
     async init() {
         this._trackingData = await this._logger.getAppUsageLogs();
         this._isInitialized = true;

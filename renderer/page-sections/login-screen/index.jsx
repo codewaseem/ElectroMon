@@ -5,8 +5,9 @@ import Logo from "../../components/logo";
 import { LoginOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useRouterContext } from "../../context-providers/router";
-import { ROUTES } from "../../../constants";
+import { ROUTES, IPC_CHANNELS } from "../../../constants";
 import { aiMonitorApi } from "../../../ai-monitor-core/exec";
+import { getIpcRenderer } from "../../hooks/useMainProcess";
 
 const layout = {
   labelCol: { span: 8 },
@@ -45,8 +46,13 @@ const LoginForm = () => {
   const onFinish = async (values) => {
     setLoginState(LoginStates.logging);
     try {
-      await aiMonitorApi.login(values.email, values.password);
+      let { profile } = await aiMonitorApi.login(
+        values.email,
+        values.password
+      );
       setPath(ROUTES.HOME);
+      console.log("Profile", profile);
+      getIpcRenderer().send(IPC_CHANNELS.SET_CURRENT_USER, profile);
     } catch (e) {
       setLoginState(LoginStates.error);
       setLoginError(true);

@@ -19,6 +19,7 @@ export const UPDATER_EVENTS = {
 export const IPC_CHANNELS = {
   START_TRACKING: "start-tracking",
   STOP_TRACKING: "stop-tracking",
+  SET_CURRENT_USER: "set-current-user",
 };
 
 export const ROUTES = {

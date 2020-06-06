@@ -46,8 +46,6 @@ ipcMain.on(IPC_CHANNELS.STOP_TRACKING, () => {
 
   initAutoUpdater();
   await initAppTracker();
-
-  ipcMain.emit(IPC_CHANNELS.START_TRACKING);
 })();
 
 app.on("window-all-closed", () => {
@@ -113,3 +111,7 @@ function preventMultipleInstances() {
     });
   }
 }
+
+ipcMain.on(IPC_CHANNELS.SET_CURRENT_USER, (_, profile) => {
+  appTracker.setUserProfile(profile);
+});
