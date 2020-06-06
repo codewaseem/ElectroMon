@@ -1,4 +1,5 @@
 import axios from "axios";
+import { AppsUsageLogs } from "../activity-tracker/AppTracker";
 
 export const BASE_URL = "https://api.dev.aptask.com";
 export const PULSE_AUTH_URL = "/api/v1/users/pulse-two/login";
@@ -8,7 +9,9 @@ export const LOGIN_URL = BASE_URL + PULSE_AUTH_URL;
 export const MONITOR_API_URL = `${BASE_URL}/api/v1/apps/ai-monitor`;
 export const ADD_LEAVE_URL = `${MONITOR_API_URL}/leaves`;
 export const ADD_TIME_LOG = `${MONITOR_API_URL}/logs`
-export const GET_USER_PROFILE = `${MONITOR_API_URL}/profiles`
+export const GET_USER_PROFILE = `${MONITOR_API_URL}/profiles`;
+export const USAGE_LOGS = `${MONITOR_API_URL}/process-logs`;
+
 
 export interface PulseTwoContext {
     token: string
@@ -108,6 +111,15 @@ class AiMonitorApi {
     }
 
 
+    async pushUsageLogs(logs: AppsUsageLogs): Promise<any> {
+        // if (!this.#isAuthInfoSet()) return Promise.reject();
+
+        // return axios({
+        //     url: USAGE_LOGS,
+        //     method: "POST",
+        //     headers: this.#getAuthHeaders(),
+        // });
+    }
 
     async login(userName: string, password: string): Promise<any> {
 
