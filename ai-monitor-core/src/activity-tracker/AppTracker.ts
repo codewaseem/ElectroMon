@@ -2,7 +2,7 @@ import activeWin from "active-win";
 // @ts-ignore
 import ioHookManager from "./IoHookManager";
 import IdleTimeTracker from "./IdleTimeTracker";
-
+import { UserProfileObject } from "../api";
 type Milliseconds = number;
 
 export interface AppsUsageLogs {
@@ -38,10 +38,12 @@ export default class AppTracker {
     private _isInitialized: boolean = false;
     private _lastActiveWindow: string = '';
     private _idleTimeTracker: IdleTimeTracker = new IdleTimeTracker();
+    private _userProfile: UserProfileObject | undefined;
 
 
-    constructor(logger: AppsUsageLogger) {
+    constructor(logger: AppsUsageLogger, userProfile?: UserProfileObject) {
         this._logger = logger;
+        this._userProfile = userProfile;
     }
 
     async init() {
@@ -58,6 +60,7 @@ export default class AppTracker {
             this._startTracking();
             this.saveActiveWindowData();
         }, AppTracker.TIMER_INTERVAL);
+
     }
 
     private async saveActiveWindowData() {
@@ -93,11 +96,13 @@ export default class AppTracker {
 
             this._trackingData[appName][windowTitle].timeSpent += AppTracker.TIMER_INTERVAL / 1000;
             this._trackingData[appName][windowTitle].idleTime = this._idleTimeTracker.getTotalIdleTime();
-            this._trackingData[appName][windowTitle].mouseclicks += mouseclicks;
-            this._trackingData[appName][windowTitle].keystrokes += keystrokes;
+
+            if (!this._userProfile || this._userProfile.trackKeyStrokes) {
+                this._trackingData[appName][windowTitle].mouseclicks += mouseclicks;
+                this._trackingData[appName][windowTitle].keystrokes += keystrokes;
+            }
 
             ioHookManager.resetData();
-
             this._logger.saveAppUsageLogs(this._trackingData);
         }
     }
@@ -132,7 +137,14 @@ export default class AppTracker {
     }
 
     async start() {
+
+        if (this._userProfile && !this._userProfile.trackApps) {
+            console.log('tracking disabled for this user');
+            return;
+        }
+
         if (this._isTracking) return;
+
 
         if (this._isInitialized) {
             this._isTracking = true;

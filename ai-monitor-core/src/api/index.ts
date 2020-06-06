@@ -8,7 +8,7 @@ export const LOGIN_URL = BASE_URL + PULSE_AUTH_URL;
 export const MONITOR_API_URL = `${BASE_URL}/api/v1/apps/ai-monitor`;
 export const ADD_LEAVE_URL = `${MONITOR_API_URL}/leaves`;
 export const ADD_TIME_LOG = `${MONITOR_API_URL}/logs`
-
+export const GET_USER_PROFILE = `${MONITOR_API_URL}/profiles`
 
 export interface PulseTwoContext {
     token: string
@@ -52,6 +52,20 @@ export interface TimeLog {
     manual?: boolean
 }
 
+export interface UserProfileObject {
+    id: number | string,
+    trackKeyStrokes: boolean,
+    trackWebSites: boolean,
+    trackApps: boolean,
+    takeScreenShots: boolean,
+    canApplyForLeave: boolean,
+    trackStartTime: string | null,
+    trackEndTime: string | null,
+    trackWeekends: boolean,
+    isAptaskEmployee: boolean,
+    userId: number
+}
+
 class AiMonitorApi {
 
     #authInfo!: AuthUserInfo | null;
@@ -80,6 +94,20 @@ class AiMonitorApi {
     getUser(): UserInfo | null {
         return this.#user;
     }
+
+    async getUserProfile(): Promise<UserProfileObject | undefined> {
+        if (!this.#isAuthInfoSet()) return Promise.reject();
+        return axios({
+            url: GET_USER_PROFILE,
+            method: "GET",
+            headers: this.#getAuthHeaders(),
+            params: {
+                userId: this.#user?.id
+            }
+        }).then(r => r.data).then(data => data[0] as UserProfileObject | undefined);
+    }
+
+
 
     async login(userName: string, password: string): Promise<any> {
 
@@ -125,13 +153,18 @@ class AiMonitorApi {
     async addLeave(leave: Leave): Promise<any> {
 
         if (!this.#isAuthInfoSet()) return Promise.reject();
+        const profile = await this.getUserProfile();
+        if (profile?.canApplyForLeave) {
+            return axios({
+                url: ADD_LEAVE_URL,
+                method: "POST",
+                headers: this.#getAuthHeaders(),
+                data: [{ userId: this.#authInfo!.userId, ...leave }]
+            })
+        } else {
+            throw new Error("Not allowed to apply for leaves");
+        }
 
-        return axios({
-            url: ADD_LEAVE_URL,
-            method: "POST",
-            headers: this.#getAuthHeaders(),
-            data: [{ userId: this.#authInfo!.userId, ...leave }]
-        })
     }
 
     async addTime(timeLogs: TimeLog[]): Promise<any> {
