@@ -8,6 +8,12 @@ export default class IdleTimeTracker {
     private _newTotalIdleTime = 0;
     private _totalIdleTime = 0;
 
+    constructor(prevIdleTime?: number) {
+        if (prevIdleTime) {
+            this._prevIdleTime = prevIdleTime;
+        }
+    }
+
     getTotalIdleTime() {
         this._currentIdleTime = desktopIdle.getIdleTime();
         this._totalIdleTime = this._newTotalIdleTime + this._prevIdleTime;

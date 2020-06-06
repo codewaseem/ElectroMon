@@ -62,10 +62,7 @@ export default class AppTracker {
             const activeWindowId = `${appName}-${windowTitle}`;
 
 
-            if (this._lastActiveWindow != activeWindowId) {
-                this._lastActiveWindow = activeWindowId;
-                this._idleTimeTracker = new IdleTimeTracker();
-            }
+
 
             if (!this._trackingData[appName]) {
                 this._trackingData[appName] = {};
@@ -81,6 +78,11 @@ export default class AppTracker {
             }
 
             const { mouseclicks, keystrokes } = ioHookManager.getData();
+
+            if (this._lastActiveWindow != activeWindowId) {
+                this._lastActiveWindow = activeWindowId;
+                this._idleTimeTracker = new IdleTimeTracker(this._trackingData[appName][windowTitle].idleTime);
+            }
 
             this._trackingData[appName][windowTitle].timeSpent += AppTracker.TIMER_INTERVAL / 1000;
             this._trackingData[appName][windowTitle].idleTime = this._idleTimeTracker.getTotalIdleTime();
