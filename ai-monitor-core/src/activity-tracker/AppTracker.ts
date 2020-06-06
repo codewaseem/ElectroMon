@@ -11,7 +11,11 @@ export interface AppsUsageLogs {
             timeSpent: Milliseconds,
             idleTime: Milliseconds,
             keystrokes: number,
-            mouseclicks: number
+            mouseclicks: number,
+            sessions: Array<{
+                startTime: number,
+                endTime: number
+            }>
         }
     }
 }
@@ -20,6 +24,8 @@ export interface AppsUsageLogger {
     saveAppUsageLogs(data: AppsUsageLogs): Promise<AppsUsageLogs>;
     getAppUsageLogs(): Promise<AppsUsageLogs>;
 }
+
+const separator = '-*-';
 
 export default class AppTracker {
 
@@ -59,10 +65,7 @@ export default class AppTracker {
         if (data) {
             const appName = data.owner.name;
             const windowTitle = data.title;
-            const activeWindowId = `${appName}-${windowTitle}`;
-
-
-
+            const activeWindowId = `${appName}${separator}${windowTitle}`;
 
             if (!this._trackingData[appName]) {
                 this._trackingData[appName] = {};
@@ -74,14 +77,18 @@ export default class AppTracker {
                     idleTime: 0,
                     mouseclicks: 0,
                     keystrokes: 0,
+                    sessions: [],
                 }
             }
 
             const { mouseclicks, keystrokes } = ioHookManager.getData();
 
             if (this._lastActiveWindow != activeWindowId) {
-                this._lastActiveWindow = activeWindowId;
+
+                this.recordSessionTime(appName, windowTitle);
+
                 this._idleTimeTracker = new IdleTimeTracker(this._trackingData[appName][windowTitle].idleTime);
+                this._lastActiveWindow = activeWindowId;
             }
 
             this._trackingData[appName][windowTitle].timeSpent += AppTracker.TIMER_INTERVAL / 1000;
@@ -95,6 +102,26 @@ export default class AppTracker {
         }
     }
 
+
+    private recordSessionTime(appName: string, windowTitle: string) {
+        const currentTime = Date.now();
+
+        this._trackingData[appName][windowTitle].sessions.push({
+            startTime: currentTime,
+            endTime: -1
+        });
+
+        if (this._lastActiveWindow) {
+            const [lastAppName, lastWindowTitle] = this._lastActiveWindow.split(separator);
+
+            const lastAppSessionIndex = this._trackingData[lastAppName][lastWindowTitle].sessions.length
+                ? this._trackingData[lastAppName][lastWindowTitle].sessions.length - 1 : 0;
+
+
+            this._trackingData[lastAppName][lastWindowTitle].sessions[lastAppSessionIndex].endTime = currentTime;
+        }
+
+    }
 
     getAppsUsageLogs() {
         return this._logger.getAppUsageLogs();
@@ -121,6 +148,5 @@ export default class AppTracker {
         this._isTracking = false;
         clearTimeout(this._timerId);
         ioHookManager.stop();
-
     }
 }
