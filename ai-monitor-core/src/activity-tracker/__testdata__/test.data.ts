@@ -66,20 +66,26 @@ export const LogOutputData: AppsUsageLogs = {
             timeSpent: AppTracker.TIMER_INTERVAL / 1000,
             idleTime: expect.any(Number),
             keystrokes: expect.any(Number),
-            mouseclicks: expect.any(Number)
+            mouseclicks: expect.any(Number),
+            sessions: expect.any(Array)
+
         },
         [appOneTabTwo.title]: {
             timeSpent: 3 * AppTracker.TIMER_INTERVAL / 1000,
             idleTime: expect.any(Number),
             keystrokes: expect.any(Number),
-            mouseclicks: expect.any(Number)
+            mouseclicks: expect.any(Number),
+            sessions: expect.any(Array)
+
 
         },
         [appOneTabThree.title]: {
             timeSpent: AppTracker.TIMER_INTERVAL / 1000,
             idleTime: expect.any(Number),
             keystrokes: expect.any(Number),
-            mouseclicks: expect.any(Number)
+            mouseclicks: expect.any(Number),
+            sessions: expect.any(Array)
+
 
         }
     },
@@ -88,7 +94,9 @@ export const LogOutputData: AppsUsageLogs = {
             timeSpent: AppTracker.TIMER_INTERVAL / 1000,
             idleTime: expect.any(Number),
             keystrokes: expect.any(Number),
-            mouseclicks: expect.any(Number)
+            mouseclicks: expect.any(Number),
+            sessions: expect.any(Array)
+
 
         }
     },
@@ -97,7 +105,9 @@ export const LogOutputData: AppsUsageLogs = {
             timeSpent: AppTracker.TIMER_INTERVAL / 1000,
             idleTime: expect.any(Number),
             keystrokes: expect.any(Number),
-            mouseclicks: expect.any(Number)
+            mouseclicks: expect.any(Number),
+            sessions: expect.any(Array)
+
 
         }
     }

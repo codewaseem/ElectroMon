@@ -118,7 +118,8 @@ describe("AppTracker", () => {
                     timeSpent: AppTracker.TIMER_INTERVAL / 1000,
                     idleTime: expect.any(Number),
                     keystrokes: expect.any(Number),
-                    mouseclicks: expect.any(Number)
+                    mouseclicks: expect.any(Number),
+                    sessions: expect.any(Array)
                 }
             }
         } as AppsUsageLogs);
