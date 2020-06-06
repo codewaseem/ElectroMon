@@ -4,6 +4,7 @@ import { createWindow } from "./helpers";
 import AutoUpdater, { sendUpdateEventsToWindow } from "./helpers/auto-updater";
 import { UPDATER_EVENTS, IPC_CHANNELS } from "../constants";
 import createAppUsageTracker from "../ai-monitor-core/exec/activity-tracker";
+import { rmdirSync } from "fs";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -11,6 +12,8 @@ if (isProd) {
   serve({ directory: "app" });
 } else {
   app.setPath("userData", `${app.getPath("userData")} (development)`);
+  // this was needed to avoid crashing app the app in dev mode.
+  rmdirSync(app.getPath("userData") + "/apptracker", { recursive: true });
 }
 
 let mainWindow;
