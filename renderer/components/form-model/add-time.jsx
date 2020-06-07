@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { WORK_TIMER, LUNCH_TIMER, COFFEE_TIMER } from "../../../constants";
 import moment from "moment";
-import { aiMonitorApi } from "../../../ai-monitor-core/exec";
+import { aiMonitorApi } from "ai-monitor-core";
 
 const { RangePicker: TimeRangePicker } = TimePicker;
 const { Option } = Select;

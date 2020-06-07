@@ -3,7 +3,7 @@ import serve from "electron-serve";
 import { createWindow } from "./helpers";
 import AutoUpdater, { sendUpdateEventsToWindow } from "./helpers/auto-updater";
 import { UPDATER_EVENTS, IPC_CHANNELS } from "../constants";
-import createAppUsageTracker from "../ai-monitor-core/exec/activity-tracker";
+import createAppUsageTracker from "ai-monitor-core/dist/activity-tracker";
 import { rmdirSync } from "fs";
 
 const isProd = process.env.NODE_ENV === "production";
@@ -19,9 +19,20 @@ if (isProd) {
 let mainWindow;
 let appTracker;
 
+let trackerTimeoutId;
+
 ipcMain.on(IPC_CHANNELS.START_TRACKING, () => {
   try {
+    console.log("tracking started");
     appTracker.start();
+    const startLogging = () => {
+      trackerTimeoutId = setTimeout(async () => {
+        console.log(await appTracker.getAppsUsageLogs());
+        startLogging();
+      }, 5000);
+    };
+
+    startLogging();
   } catch (e) {
     console.log("ERROR while starting the apptracker");
     console.log(e);
@@ -30,6 +41,8 @@ ipcMain.on(IPC_CHANNELS.START_TRACKING, () => {
 
 ipcMain.on(IPC_CHANNELS.STOP_TRACKING, () => {
   try {
+    console.log("tracking started");
+    clearTimeout(trackerTimeoutId);
     appTracker.stop();
   } catch (e) {
     console.log("ERROR while stopping the apptracker");

@@ -150,7 +150,8 @@ describe("AppTracker", () => {
         const initialData = ({
             [initialAppUsageData.owner.name]: {
                 [initialAppUsageData.title]: {
-                    timeSpent: AppTracker.TIMER_INTERVAL * 2 / 1000
+                    timeSpent: AppTracker.TIMER_INTERVAL * 2 / 1000,
+                    sessions: [] as any
                 }
             }
         } as AppsUsageLogs);

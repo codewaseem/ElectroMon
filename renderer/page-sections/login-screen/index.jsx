@@ -6,7 +6,7 @@ import { LoginOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useRouterContext } from "../../context-providers/router";
 import { ROUTES, IPC_CHANNELS } from "../../../constants";
-import { aiMonitorApi } from "../../../ai-monitor-core/exec";
+import { aiMonitorApi } from "ai-monitor-core";
 import { getIpcRenderer } from "../../hooks/useMainProcess";
 
 const layout = {

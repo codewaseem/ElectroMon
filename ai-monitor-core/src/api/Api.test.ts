@@ -1,7 +1,7 @@
 jest.mock("axios");
 
 import axios, { AxiosRequestConfig } from "axios";
-import pulseApi, { LOGIN_URL, ADD_LEAVE_URL, ADD_TIME_LOG, TimeLog, PulseLoginResponse, PulseLoginErrorResponse } from "./index";
+import pulseApi, { LOGIN_URL, ADD_LEAVE_URL, ADD_TIME_LOG, TimeLog, PulseLoginResponse, PulseLoginErrorResponse, GET_USER_PROFILE } from "./index";
 
 const VALID_DATA = {
     userName: "taj@aptask.com",
@@ -36,6 +36,17 @@ let userId = `4`;
             });
         }
     }
+
+    if (url == GET_USER_PROFILE) {
+        return Promise.resolve({
+            data: {
+                data: [{
+                    userId: 1,
+                    canApplyForLeave: true
+                }]
+            }
+        })
+    }
 });
 
 describe("PulseApi", () => {
@@ -68,7 +79,7 @@ describe("PulseApi", () => {
         const setAuthInfo = jest.spyOn(pulseApi, 'setAuthInfo');
         const setUser = jest.spyOn(pulseApi, 'setUser');
 
-        let userData = await pulseApi.login(VALID_DATA.userName, VALID_DATA.password);
+        let { user: userData } = await pulseApi.login(VALID_DATA.userName, VALID_DATA.password);
         expect(axios).toHaveBeenCalledWith({
             url: LOGIN_URL,
             method: 'POST',

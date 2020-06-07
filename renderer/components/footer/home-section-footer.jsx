@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useRouterContext } from "../../context-providers/router";
 import { useTimerHandlerContext } from "../../context-providers/timerHandler";
 import { ROUTES } from "../../../constants";
-import { aiMonitorApi } from "../../../ai-monitor-core/exec";
+import { aiMonitorApi } from "ai-monitor-core";
 
 import { Row, Button, Col } from "antd";
 import { ApplyLeaveModal, AddTimeModal } from "../form-model";
