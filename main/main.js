@@ -6,6 +6,9 @@ import { UPDATER_EVENTS, IPC_CHANNELS } from "../constants";
 import createAppUsageTracker from "ai-monitor-core/dist/activity-tracker";
 import { aiMonitorApi } from "ai-monitor-core";
 import { rmdirSync } from "fs";
+import log from "electron-log";
+
+console.log = log.log;
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -30,7 +33,7 @@ ipcMain.on(IPC_CHANNELS.START_TRACKING, () => {
       trackerTimeoutId = setTimeout(async () => {
         await pushAppsUsageToServer();
         startPushingLogs();
-      }, 1000 * 10);
+      }, 1000 * 60 * 5);
     };
 
     startPushingLogs();
@@ -74,6 +77,7 @@ async function pushAppsUsageToServer() {
   if (history && history.length) {
     console.log("PUSHING USAGE HISTORY");
     try {
+      console.log("PUSHING", history);
       const data = await aiMonitorApi.pushAppUsageHistory(history);
       console.log("PUSHED", data);
     } catch (e) {
@@ -150,6 +154,4 @@ ipcMain.on(IPC_CHANNELS.SET_CURRENT_USER, (_, { user, profile }) => {
     token: JSON.parse(user.pulseTwoContext).token,
   });
   appTracker.setUserProfile(profile);
-
-  console.log(aiMonitorApi.getUser());
 });

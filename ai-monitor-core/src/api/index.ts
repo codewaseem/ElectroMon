@@ -1,7 +1,9 @@
 import axios from "axios";
 import { UsageHistory } from "../activity-tracker/AppTracker";
 
-export const BASE_URL = "https://api.dev.aptask.com";
+
+export const BASE_URL = process.env.NODE_ENV == "development" ? "https://api.dev.aptask.com" : "https://api.prod.aptask.com";
+console.log("Using ", BASE_URL);
 export const PULSE_AUTH_URL = "/api/v1/users/pulse-two/login";
 
 export const LOGIN_URL = BASE_URL + PULSE_AUTH_URL;
