@@ -2113,10 +2113,9 @@ acorn@^7.1.1, acorn@^7.2.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.2.0.tgz#17ea7e40d7c8640ff54a694c889c26f31704effe"
   integrity sha512-apwXVmYVpQ34m/i71vrApRrRKCWQnZZF1+npOD0WV5xZFfwWOmKGQ2RWlfdy9vWITsenisM8M0Qeq8agcFHNiQ==
 
-active-win@^6.1.0:
+"active-win@https://github.com/wgcv/active-win.git":
   version "6.1.0"
-  resolved "https://registry.yarnpkg.com/active-win/-/active-win-6.1.0.tgz#9bb3ee5894e91fed8b440f606ed11d0c45d17aaa"
-  integrity sha512-gzcz+V35kRZrbVY43mFaXZfW5DIQ3LOQ/9VKWfQUeCNSgn1h8x7huZZcplP2QLlqnaH+bO6nbVa/TVHAVG1+bw==
+  resolved "https://github.com/wgcv/active-win.git#430e6efc02823c1b04331a987012a519c360ab23"
   optionalDependencies:
     ffi-napi "^2.4.5"
     ref-napi "^1.4.2"
@@ -2144,6 +2143,8 @@ aggregate-error@^3.0.0:
 
 ai-monitor-core@./ai-monitor-core:
   version "0.0.1"
+  dependencies:
+    active-win "https://github.com/wgcv/active-win.git"
 
 ajv-errors@^1.0.0:
   version "1.0.1"

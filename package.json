@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
-    "active-win": "^6.1.0",
+    "active-win": "https://github.com/wgcv/active-win.git",
     "ai-monitor-core": "./ai-monitor-core",
     "antd": "^4.2.0",
     "axios": "^0.19.2",
