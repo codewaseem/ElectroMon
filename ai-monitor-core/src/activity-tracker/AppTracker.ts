@@ -162,6 +162,15 @@ export default class AppTracker {
     stop() {
         if (!this._isTracking) return;
         this._isTracking = false;
+        if (this._lastActiveWindow) {
+            const [lastAppName, lastWindowTitle] = this._lastActiveWindow.split(separator);
+
+            const lastAppSessionIndex = this._trackingData[lastAppName][lastWindowTitle].sessions.length
+                ? this._trackingData[lastAppName][lastWindowTitle].sessions.length - 1 : 0;
+
+
+            this._trackingData[lastAppName][lastWindowTitle].sessions[lastAppSessionIndex].endTime = Date.now();
+        }
         clearTimeout(this._timerId);
         ioHookManager.stop();
     }
