@@ -25,5 +25,6 @@
     "node": true,
     "shared-node-browser": true,
     "es6": true
-  }
+  },
+  "ignorePatterns": ["ai-monitor-core/**"]
 }

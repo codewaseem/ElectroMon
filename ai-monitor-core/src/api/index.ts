@@ -1,6 +1,9 @@
 import axios from "axios";
+import { UsageHistory } from "../activity-tracker/AppTracker";
 
-export const BASE_URL = "https://api.dev.aptask.com";
+
+export const BASE_URL = process.env.NODE_ENV == "development" ? "https://api.dev.aptask.com" : "https://api.prod.aptask.com";
+console.log("Using ", BASE_URL);
 export const PULSE_AUTH_URL = "/api/v1/users/pulse-two/login";
 
 export const LOGIN_URL = BASE_URL + PULSE_AUTH_URL;
@@ -8,6 +11,8 @@ export const LOGIN_URL = BASE_URL + PULSE_AUTH_URL;
 export const MONITOR_API_URL = `${BASE_URL}/api/v1/apps/ai-monitor`;
 export const ADD_LEAVE_URL = `${MONITOR_API_URL}/leaves`;
 export const ADD_TIME_LOG = `${MONITOR_API_URL}/logs`
+export const GET_USER_PROFILE = `${MONITOR_API_URL}/profiles`;
+export const USAGE_LOGS = `${MONITOR_API_URL}/process-logs`;
 
 
 export interface PulseTwoContext {
@@ -52,10 +57,32 @@ export interface TimeLog {
     manual?: boolean
 }
 
-class AiMonitorApi {
+export interface UserProfileObject {
+    id: number | string,
+    trackKeyStrokes: boolean,
+    trackWebSites: boolean,
+    trackApps: boolean,
+    takeScreenShots: boolean,
+    canApplyForLeave: boolean,
+    trackStartTime: string | null,
+    trackEndTime: string | null,
+    trackWeekends: boolean,
+    isAptaskEmployee: boolean,
+    userId: number
+}
 
+class AiMonitorApi {
+    private static _singleton: AiMonitorApi = new AiMonitorApi();
     #authInfo!: AuthUserInfo | null;
     #user!: UserInfo | null;
+
+    private constructor() {
+        console.log("Constructor called");
+    }
+
+    static getInstance() {
+        return this._singleton;
+    }
 
     #getAuthHeaders = () => {
         return {
@@ -81,7 +108,31 @@ class AiMonitorApi {
         return this.#user;
     }
 
-    async login(userName: string, password: string): Promise<any> {
+    async getUserProfile(): Promise<UserProfileObject | undefined> {
+        if (!this.#isAuthInfoSet()) return Promise.reject("User not set!");
+        return axios({
+            url: GET_USER_PROFILE,
+            method: "GET",
+            headers: this.#getAuthHeaders(),
+            params: {
+                userId: this.#user?.id
+            }
+        }).then(r => r.data.data).then(data => data[0] as UserProfileObject | undefined);
+    }
+
+
+    async pushAppUsageHistory(logs: UsageHistory[]): Promise<any> {
+        if (!this.#isAuthInfoSet()) return Promise.reject("User not set!");
+
+        return axios({
+            url: USAGE_LOGS,
+            method: "POST",
+            headers: this.#getAuthHeaders(),
+            data: logs
+        }).then(r => r.data.data);
+    }
+
+    async login(userName: string, password: string): Promise<{ user: any, profile: UserProfileObject | undefined }> {
 
         const data: PulseLoginResponse | PulseLoginErrorResponse = await axios({
             url: LOGIN_URL,
@@ -110,7 +161,9 @@ class AiMonitorApi {
                 pulseTwoContext
             });
 
-            return user;
+            const profile = await this.getUserProfile();
+
+            return { user, profile };
         }
 
         throw new Error("Should have not reached here!");
@@ -124,19 +177,24 @@ class AiMonitorApi {
 
     async addLeave(leave: Leave): Promise<any> {
 
-        if (!this.#isAuthInfoSet()) return Promise.reject();
+        if (!this.#isAuthInfoSet()) return Promise.reject("User not set!");
+        const profile = await this.getUserProfile();
+        if (profile?.canApplyForLeave) {
+            return axios({
+                url: ADD_LEAVE_URL,
+                method: "POST",
+                headers: this.#getAuthHeaders(),
+                data: [{ userId: this.#authInfo!.userId, ...leave }]
+            })
+        } else {
+            throw new Error("Not allowed to apply for leaves");
+        }
 
-        return axios({
-            url: ADD_LEAVE_URL,
-            method: "POST",
-            headers: this.#getAuthHeaders(),
-            data: [{ userId: this.#authInfo!.userId, ...leave }]
-        })
     }
 
     async addTime(timeLogs: TimeLog[]): Promise<any> {
 
-        if (!this.#isAuthInfoSet()) return Promise.reject();
+        if (!this.#isAuthInfoSet()) return Promise.reject("User not set!");
 
         timeLogs.forEach(log => (log as TimeLog & { userId: string }).userId = this.#authInfo!.userId);
 
@@ -152,4 +210,4 @@ class AiMonitorApi {
 
 export type AiMonitorApiInterface = typeof AiMonitorApi;
 
-export default new AiMonitorApi();
+export default AiMonitorApi.getInstance();

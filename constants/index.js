@@ -16,6 +16,12 @@ export const UPDATER_EVENTS = {
   UPDATE_DOWNLOADED: "update-downloaded",
 };
 
+export const IPC_CHANNELS = {
+  START_TRACKING: "start-tracking",
+  STOP_TRACKING: "stop-tracking",
+  SET_CURRENT_USER: "set-current-user",
+};
+
 export const ROUTES = {
   LOGIN: "/login",
   UPDATE: "/update",

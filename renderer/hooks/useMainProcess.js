@@ -3,7 +3,7 @@ const { remote, ipcRenderer } = eval(`require('electron')`);
 let mainModule = null;
 
 if (remote) {
-  mainModule = remote.require("./main");
+  mainModule = remote.require("./ui");
 }
 
 export function getIpcRenderer() {
