@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AppsUsageLogs } from "../activity-tracker/AppTracker";
+import { UsageHistory } from "../activity-tracker/AppTracker";
 
 export const BASE_URL = "https://api.dev.aptask.com";
 export const PULSE_AUTH_URL = "/api/v1/users/pulse-two/login";
@@ -70,9 +70,17 @@ export interface UserProfileObject {
 }
 
 class AiMonitorApi {
-
+    private static _singleton: AiMonitorApi = new AiMonitorApi();
     #authInfo!: AuthUserInfo | null;
     #user!: UserInfo | null;
+
+    private constructor() {
+        console.log("Constructor called");
+    }
+
+    static getInstance() {
+        return this._singleton;
+    }
 
     #getAuthHeaders = () => {
         return {
@@ -99,7 +107,7 @@ class AiMonitorApi {
     }
 
     async getUserProfile(): Promise<UserProfileObject | undefined> {
-        if (!this.#isAuthInfoSet()) return Promise.reject();
+        if (!this.#isAuthInfoSet()) return Promise.reject("User not set!");
         return axios({
             url: GET_USER_PROFILE,
             method: "GET",
@@ -111,14 +119,15 @@ class AiMonitorApi {
     }
 
 
-    async pushUsageLogs(logs: AppsUsageLogs): Promise<any> {
-        // if (!this.#isAuthInfoSet()) return Promise.reject();
+    async pushAppUsageHistory(logs: UsageHistory[]): Promise<any> {
+        if (!this.#isAuthInfoSet()) return Promise.reject("User not set!");
 
-        // return axios({
-        //     url: USAGE_LOGS,
-        //     method: "POST",
-        //     headers: this.#getAuthHeaders(),
-        // });
+        return axios({
+            url: USAGE_LOGS,
+            method: "POST",
+            headers: this.#getAuthHeaders(),
+            data: logs
+        }).then(r => r.data.data);
     }
 
     async login(userName: string, password: string): Promise<{ user: any, profile: UserProfileObject | undefined }> {
@@ -166,7 +175,7 @@ class AiMonitorApi {
 
     async addLeave(leave: Leave): Promise<any> {
 
-        if (!this.#isAuthInfoSet()) return Promise.reject();
+        if (!this.#isAuthInfoSet()) return Promise.reject("User not set!");
         const profile = await this.getUserProfile();
         if (profile?.canApplyForLeave) {
             return axios({
@@ -183,7 +192,7 @@ class AiMonitorApi {
 
     async addTime(timeLogs: TimeLog[]): Promise<any> {
 
-        if (!this.#isAuthInfoSet()) return Promise.reject();
+        if (!this.#isAuthInfoSet()) return Promise.reject("User not set!");
 
         timeLogs.forEach(log => (log as TimeLog & { userId: string }).userId = this.#authInfo!.userId);
 
@@ -199,4 +208,4 @@ class AiMonitorApi {
 
 export type AiMonitorApiInterface = typeof AiMonitorApi;
 
-export default new AiMonitorApi();
+export default AiMonitorApi.getInstance();

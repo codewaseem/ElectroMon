@@ -3,6 +3,7 @@ import activeWin from "active-win";
 import ioHookManager from "./IoHookManager";
 import IdleTimeTracker from "./IdleTimeTracker";
 import { UserProfileObject } from "../api";
+import { diffArrayObject } from "../utils";
 type Milliseconds = number;
 
 export interface AppsUsageLogs {
@@ -53,6 +54,7 @@ export default class AppTracker {
     private _lastActiveWindow: string = '';
     private _idleTimeTracker: IdleTimeTracker = new IdleTimeTracker();
     private _userProfile: UserProfileObject | undefined;
+    private _history: UsageHistory[] = [];
 
     constructor(logger: AppsUsageLogger, userProfile?: UserProfileObject) {
         this._logger = logger;
@@ -195,11 +197,23 @@ export default class AppTracker {
                 history.push({
                     appName,
                     windowTitle,
+                    userId: this._userProfile?.userId,
                     ...this._trackingData[appName][windowTitle]
                 });
             });
         });
         return history;
+    }
+
+    getChangedHistory(): UsageHistory[] {
+        let oldHistory = this._history;
+        let newHistory = this.getHistory();
+
+        let changedHistory = diffArrayObject(oldHistory, newHistory);
+        this._history = newHistory;
+
+        return changedHistory;
+
     }
 
 }

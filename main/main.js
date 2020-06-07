@@ -4,6 +4,7 @@ import { createWindow } from "./helpers";
 import AutoUpdater, { sendUpdateEventsToWindow } from "./helpers/auto-updater";
 import { UPDATER_EVENTS, IPC_CHANNELS } from "../constants";
 import createAppUsageTracker from "ai-monitor-core/dist/activity-tracker";
+import { aiMonitorApi } from "ai-monitor-core";
 import { rmdirSync } from "fs";
 
 const isProd = process.env.NODE_ENV === "production";
@@ -25,29 +26,26 @@ ipcMain.on(IPC_CHANNELS.START_TRACKING, () => {
   try {
     console.log("tracking started");
     appTracker.start();
-    const startLogging = () => {
+    const startPushingLogs = () => {
       trackerTimeoutId = setTimeout(async () => {
-        console.log(await appTracker.getAppsUsageLogs());
-        startLogging();
-      }, 5000);
+        await pushAppsUsageToServer();
+        startPushingLogs();
+      }, 1000 * 10);
     };
 
-    startLogging();
+    startPushingLogs();
   } catch (e) {
     console.log("ERROR while starting the apptracker");
     console.log(e);
   }
 });
 
-ipcMain.on(IPC_CHANNELS.STOP_TRACKING, () => {
+ipcMain.on(IPC_CHANNELS.STOP_TRACKING, async () => {
   try {
     console.log("tracking stop");
     clearTimeout(trackerTimeoutId);
+    await pushAppsUsageToServer();
     appTracker.stop();
-    (async () => {
-      console.log(await appTracker.getAppsUsageLogs());
-      console.log(appTracker.getHistory());
-    })();
   } catch (e) {
     console.log("ERROR while stopping the apptracker");
     console.log(e);
@@ -65,10 +63,25 @@ ipcMain.on(IPC_CHANNELS.STOP_TRACKING, () => {
   await initAppTracker();
 })();
 
-app.on("window-all-closed", () => {
+app.on("window-all-closed", async () => {
   appTracker.stop();
+  await pushAppsUsageToServer();
   app.quit();
 });
+
+async function pushAppsUsageToServer() {
+  const history = appTracker.getChangedHistory();
+  if (history && history.length) {
+    console.log("PUSHING USAGE HISTORY");
+    try {
+      const data = await aiMonitorApi.pushAppUsageHistory(history);
+      console.log("PUSHED", data);
+    } catch (e) {
+      console.log(e);
+      console.log("SOMETHING WENT WRONG");
+    }
+  }
+}
 
 async function initAppTracker() {
   console.log(app.getPath("userData"));
@@ -129,6 +142,14 @@ function preventMultipleInstances() {
   }
 }
 
-ipcMain.on(IPC_CHANNELS.SET_CURRENT_USER, (_, profile) => {
+ipcMain.on(IPC_CHANNELS.SET_CURRENT_USER, (_, { user, profile }) => {
+  console.log("USER SET");
+  aiMonitorApi.setUser(user);
+  aiMonitorApi.setAuthInfo({
+    userId: user.id,
+    token: JSON.parse(user.pulseTwoContext).token,
+  });
   appTracker.setUserProfile(profile);
+
+  console.log(aiMonitorApi.getUser());
 });

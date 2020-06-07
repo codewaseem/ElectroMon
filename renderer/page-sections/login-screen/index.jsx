@@ -46,13 +46,13 @@ const LoginForm = () => {
   const onFinish = async (values) => {
     setLoginState(LoginStates.logging);
     try {
-      let { profile } = await aiMonitorApi.login(
+      let { user, profile } = await aiMonitorApi.login(
         values.email,
         values.password
       );
       setPath(ROUTES.HOME);
       console.log("Profile", profile);
-      getIpcRenderer().send(IPC_CHANNELS.SET_CURRENT_USER, profile);
+      getIpcRenderer().send(IPC_CHANNELS.SET_CURRENT_USER, { user, profile });
     } catch (e) {
       setLoginState(LoginStates.error);
       setLoginError(true);
