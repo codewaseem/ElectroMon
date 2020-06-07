@@ -46,6 +46,7 @@ ipcMain.on(IPC_CHANNELS.STOP_TRACKING, () => {
     appTracker.stop();
     (async () => {
       console.log(await appTracker.getAppsUsageLogs());
+      console.log(appTracker.getHistory());
     })();
   } catch (e) {
     console.log("ERROR while stopping the apptracker");

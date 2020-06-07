@@ -25,6 +25,20 @@ export interface AppsUsageLogger {
     getAppUsageLogs(): Promise<AppsUsageLogs>;
 }
 
+export interface UsageHistory {
+    appName: string,
+    windowTitle: string,
+    timeSpent: Milliseconds,
+    idleTime: Milliseconds,
+    keystrokes: number,
+    mouseclicks: number,
+    userId?: string | number,
+    sessions: Array<{
+        startTime: number,
+        endTime: number
+    }>
+}
+
 const separator = '-*-';
 
 export default class AppTracker {
@@ -39,7 +53,6 @@ export default class AppTracker {
     private _lastActiveWindow: string = '';
     private _idleTimeTracker: IdleTimeTracker = new IdleTimeTracker();
     private _userProfile: UserProfileObject | undefined;
-
 
     constructor(logger: AppsUsageLogger, userProfile?: UserProfileObject) {
         this._logger = logger;
@@ -149,7 +162,6 @@ export default class AppTracker {
 
         if (this._isTracking) return;
 
-
         if (this._isInitialized) {
             this._isTracking = true;
             this._startTracking();
@@ -171,7 +183,23 @@ export default class AppTracker {
 
             this._trackingData[lastAppName][lastWindowTitle].sessions[lastAppSessionIndex].endTime = Date.now();
         }
+
         clearTimeout(this._timerId);
         ioHookManager.stop();
     }
+
+    getHistory() {
+        const history: UsageHistory[] = [];
+        Object.keys(this._trackingData).forEach(appName => {
+            Object.keys(this._trackingData[appName]).forEach(windowTitle => {
+                history.push({
+                    appName,
+                    windowTitle,
+                    ...this._trackingData[appName][windowTitle]
+                });
+            });
+        });
+        return history;
+    }
+
 }
