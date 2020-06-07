@@ -6,11 +6,10 @@
   "author": "codewaseem <codewaseem@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist & node_modules/typescript/bin/tsc",
+    "build": "rm -rf dist & ./node_modules/typescript/bin/tsc",
     "test": "jest",
     "run-script": "node -r ts-node/register ",
-    "install-peers": "install-self-peers",
-    "postinstall": "npm run build"
+    "install-peers": "install-self-peers"
   },
   "devDependencies": {
     "@team-griffin/install-self-peers": "^1.1.1",
