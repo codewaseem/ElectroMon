@@ -3,6 +3,10 @@ import { TimersManager } from "../context-providers/timer";
 import { useEffect } from "react";
 import { TIMERS_STORAGE_KEY, TIMERS_HISTORY_KEY } from "../../constants";
 import { aiMonitorApi } from "ai-monitor-core";
+import { getIpcRenderer } from "./useMainProcess";
+import { IPC_CHANNELS } from "../../constants";
+
+const ipcRenderer = getIpcRenderer();
 
 export default function useTimerHandler() {
   const [timersData, historyData] = useTimerData();
@@ -64,6 +68,7 @@ export default function useTimerHandler() {
   return {
     timersManager,
     stopAndPushTimerData: async () => {
+      ipcRenderer.send(IPC_CHANNELS.STOP_TRACKING);
       timersManager.stopTimer();
       return pushTimerData();
     },

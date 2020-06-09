@@ -2025,7 +2025,7 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@zeit/next-css@1.0.1":
+"@zeit/next-css@1.0.1", "@zeit/next-css@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@zeit/next-css/-/next-css-1.0.1.tgz#4f784e841e7ca1b21b3468a902e2c1fa95a3e75c"
   integrity sha512-yfHPRy/ne/5SddVClsoy+fpU7e0Cs1gkWA67/wm2uIu+9rznF45yQLxHEt5dPGF3h6IiIh7ZtIgA8VV8YKq87A==
@@ -2113,9 +2113,9 @@ acorn@^7.1.1, acorn@^7.2.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.2.0.tgz#17ea7e40d7c8640ff54a694c889c26f31704effe"
   integrity sha512-apwXVmYVpQ34m/i71vrApRrRKCWQnZZF1+npOD0WV5xZFfwWOmKGQ2RWlfdy9vWITsenisM8M0Qeq8agcFHNiQ==
 
-"active-win@https://github.com/wgcv/active-win.git":
+"active-win@https://github.com/wgcv/active-win/tarball/patch-1":
   version "6.1.0"
-  resolved "https://github.com/wgcv/active-win.git#430e6efc02823c1b04331a987012a519c360ab23"
+  resolved "https://github.com/wgcv/active-win/tarball/patch-1#1f9296349dc5eae74148ae4673e76afc31691aec"
   optionalDependencies:
     ffi-napi "^2.4.5"
     ref-napi "^1.4.2"
@@ -2143,8 +2143,6 @@ aggregate-error@^3.0.0:
 
 ai-monitor-core@./ai-monitor-core:
   version "0.0.1"
-  dependencies:
-    active-win "https://github.com/wgcv/active-win.git"
 
 ajv-errors@^1.0.0:
   version "1.0.1"

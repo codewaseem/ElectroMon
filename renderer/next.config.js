@@ -30,10 +30,23 @@ const plugins = [
         importLoaders: 3,
         localIdentName: "[local]___[hash:base64:5]",
       },
+
       webpack: (config, { isServer, dev }) => {
         //Make Ant styles work with less
-
         config.plugins.push(new AntdScssThemePlugin(themeVariables));
+        console.log("\n\n\nBEFORE");
+        console.log("isServer", isServer);
+        config.module.rules.map((rule) => {
+          const given = RegExp(rule.test).toString();
+          const less = RegExp(/\.less$/).toString();
+          const sass = RegExp(/\.sass$/).toString();
+          const scss = RegExp(/\.scss$/).toString();
+
+          if (given == less || given == sass || given == scss) {
+            console.log(given);
+            console.log(JSON.stringify(rule.use, null, 2));
+          }
+        });
 
         config.module.rules[config.module.rules.length - 2].use.pop();
         config.module.rules[config.module.rules.length - 2].use.push(
@@ -45,20 +58,22 @@ const plugins = [
           })
         );
 
-        config.module.rules[config.module.rules.length - 1].use.pop();
+        if (!isServer) {
+          config.module.rules[config.module.rules.length - 1].use.pop();
 
-        config.module.rules[config.module.rules.length - 1].use.push({
-          loader: "less-loader",
-          options: {
-            lessOptions: {
-              javascriptEnabled: true,
+          config.module.rules[config.module.rules.length - 1].use.push({
+            loader: "less-loader",
+            options: {
+              lessOptions: {
+                javascriptEnabled: true,
+              },
+              appendData: fs
+                .readFileSync(path.resolve(themeVariables), "utf8")
+                .replace(/\$/gi, "@")
+                .toString(),
             },
-            appendData: fs
-              .readFileSync(path.resolve(themeVariables), "utf8")
-              .replace(/\$/gi, "@")
-              .toString(),
-          },
-        });
+          });
+        }
         // }
 
         if (isServer) {
@@ -81,6 +96,22 @@ const plugins = [
             use: "null-loader",
           });
         }
+
+        console.log("\n\n\nAFTER");
+        console.log("isServer", isServer);
+        config.module.rules.map((rule) => {
+          const given = RegExp(rule.test).toString();
+          const less = RegExp(/\.less$/).toString();
+          const sass = RegExp(/\.sass$/).toString();
+          const scss = RegExp(/\.scss$/).toString();
+
+          if (given == less || given == sass || given == scss) {
+            console.log(given);
+            console.log(JSON.stringify(rule.use, null, 2));
+          }
+        });
+
+        console.log("\n\n\n");
         return config;
       },
     }),
