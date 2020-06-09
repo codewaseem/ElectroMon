@@ -1,5 +1,10 @@
 import moment from "moment";
-import { TIME_DIFFERENCE_DETECTED } from "../../constants";
+import {
+  TIME_DIFFERENCE_DETECTED,
+  WORK_TIMER,
+  LUNCH_TIMER,
+  COFFEE_TIMER,
+} from "../../constants";
 
 export const zeroPad = (number) => (number <= 9 ? `0${number}` : number);
 
@@ -234,6 +239,12 @@ export class TimersManager {
           this.startTimer(timerName);
         }
       });
+    }
+
+    if (!timersData) {
+      this.addNewTimer(WORK_TIMER);
+      this.addNewTimer(LUNCH_TIMER);
+      this.addNewTimer(COFFEE_TIMER);
     }
   }
 
