@@ -1,1 +1,0 @@
-{"version":3,"file":"AppDataStore.d.ts","sourceRoot":"","sources":["../../src/activity-tracker/AppDataStore.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAE,aAAa,EAAE,MAAM,cAAc,CAAC;AAM9D,MAAM,CAAC,OAAO,OAAO,YAAa,YAAW,eAAe;IACxD,OAAO,CAAC,EAAE,CAAM;gBAGJ,UAAU,SAAgB;IAKhC,gBAAgB,CAAC,IAAI,EAAE,aAAa,GAAG,OAAO,CAAC,aAAa,CAAC;IAgB7D,eAAe,IAAI,OAAO,CAAC,aAAa,CAAC;CAelD"}

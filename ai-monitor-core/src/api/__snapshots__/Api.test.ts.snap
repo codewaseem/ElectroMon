@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`PulseApi Login: invalid data should reject 1`] = `[Error: Login Failed! Please check your Pulse email and/or password or send an email to support@aptask.com]`;
-
-exports[`PulseApi calling add leave without setting authInfo should reject 1`] = `"User not set!"`;
-
-exports[`PulseApi calling add time without setting authInfo should 1`] = `"User not set!"`;
