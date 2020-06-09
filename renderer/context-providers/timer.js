@@ -254,7 +254,7 @@ export class TimersManager {
   }
 
   getTotalTimeFor(timerName) {
-    return this.timers[timerName].totalTime;
+    return this.timers[timerName] ? this.timers[timerName].totalTime : 0;
   }
 
   getTotalTimeObjectFrom(timerNames = []) {
@@ -266,7 +266,9 @@ export class TimersManager {
   }
 
   getTotalTimeObjectFor(timerName) {
-    return this.timers[timerName].totalTimeObject;
+    return this.timers[timerName]
+      ? this.timers[timerName].totalTimeObject
+      : millisecondsToTimeObject(0);
   }
 
   getTimersData() {

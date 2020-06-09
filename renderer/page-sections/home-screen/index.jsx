@@ -17,7 +17,6 @@ export default function HomeScreen() {
   });
   const { timersManager, stopAndPushTimerData } = useTimerHandlerContext();
   const closeWindow = useCloseWindow();
-
   const safelyExit = async () => {
     setSpinner({
       spinning: true,
