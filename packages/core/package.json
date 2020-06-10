@@ -1,0 +1,10 @@
+{
+  "name": "@ai-monitor/core",
+  "version": "0.0.1",
+  "description": "Core bussiness logic for ai-monitor app",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -rf ./dist && yarn tsc"
+  }
+}
