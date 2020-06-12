@@ -242,13 +242,15 @@ describe("StopWatch", () => {
 
     expect(stopWatch3.totalLaps).toBe(2);
     const lastLap = stopWatch3.laps.pop();
-    expect(lastLap?.startTime).toBe(testStartTime);
+    expect(lastLap?.startTime).toBeCloseTo(testStartTime);
     expect(lastLap?.duration).toBe(initialState.milliseconds);
     expect(lastLap?.endTime).toBe(testStartTime + initialState.milliseconds);
 
     // then it should have started the timer back
     expect(stopWatch3.isRunning).toBe(true);
     expect(stopWatch3.lapsTotal).toBe(200);
+
+    stopWatch3.stop();
   });
 
   it("toJSON, toObject  should return the an object containing isRunning, milliseconds, and laps", () => {

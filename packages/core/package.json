@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf ./dist && yarn tsc"
+    "build": "rm -rf ./dist && yarn tsc",
+    "test": "jest --runInBand --detectOpenHandles"
   }
 }

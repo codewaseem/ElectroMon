@@ -1,36 +1,37 @@
-import StopWatch from "./StopWatch";
-
-export const TimerKeys = {
+"use strict";
+var __importDefault =
+  (this && this.__importDefault) ||
+  function (mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TimerKeys = void 0;
+const StopWatch_1 = __importDefault(require("./StopWatch"));
+exports.TimerKeys = {
   WORK_TIMER: "WORK",
   COFFEE_TIMER: "COFFEE",
   LUNCH_TIMER: "LUNCH",
 };
-
-export default class AiMonitorStopWatch
-  implements UserAssignable, HistoryTrackable<TimeLogHistory[]> {
-  private _timers = {
-    [TimerKeys.WORK_TIMER]: new StopWatch(),
-    [TimerKeys.COFFEE_TIMER]: new StopWatch(),
-    [TimerKeys.LUNCH_TIMER]: new StopWatch(),
-  };
-  private _history: TimeLogHistory[] = [];
-  private _durationByCount = 0;
-  private _lastActiveTimer = "";
-  private _currentActiveTimer = "";
-  private _countTimerId: NodeJS.Timeout | undefined = undefined;
-  private _user: UserInfo | null = null;
-
-  constructor(history?: TimeLogHistory[], timersData?: NamedStopWatchesData) {
+class AiMonitorStopWatch {
+  constructor(history, timersData) {
+    this._timers = {
+      [exports.TimerKeys.WORK_TIMER]: new StopWatch_1.default(),
+      [exports.TimerKeys.COFFEE_TIMER]: new StopWatch_1.default(),
+      [exports.TimerKeys.LUNCH_TIMER]: new StopWatch_1.default(),
+    };
+    this._history = [];
+    this._durationByCount = 0;
+    this._lastActiveTimer = "";
+    this._currentActiveTimer = "";
+    this._countTimerId = undefined;
+    this._user = null;
     this._history = history || [];
-
     this.setInitialState(timersData);
   }
-
-  setInitialState(timersData?: NamedStopWatchesData): void {
+  setInitialState(timersData) {
     if (timersData && Object.keys(timersData).length) {
       Object.keys(timersData).forEach((name) => {
-        this._timers[name] = new StopWatch(timersData[name]);
-
+        this._timers[name] = new StopWatch_1.default(timersData[name]);
         if (this._timers[name].isRunning) {
           const lap = this._timers[name].laps.pop();
           if (lap) {
@@ -47,117 +48,91 @@ export default class AiMonitorStopWatch
       });
     }
   }
-
-  getUser(): UserInfo | null {
+  getUser() {
     throw new Error("Method not implemented.");
   }
-
-  getHistory(): TimeLogHistory[] {
+  getHistory() {
     return this._history.slice();
   }
-
-  deleteHistory(): void {
+  deleteHistory() {
     this._history = [];
   }
-
-  getLastSessionHistory(): TimeLogHistory[] {
+  getLastSessionHistory() {
     const currentHistory = this.getHistory();
     this.deleteHistory();
     return currentHistory;
   }
-
-  setUser(user: UserInfo): void {
+  setUser(user) {
     this._user = user;
   }
-
-  get currentActiveTimer(): string {
+  get currentActiveTimer() {
     return this._currentActiveTimer;
   }
-
-  get lastActiveTimer(): string {
+  get lastActiveTimer() {
     return this._lastActiveTimer;
   }
-
-  toJSON(): NamedStopWatchesData {
+  toJSON() {
     return this._timers;
   }
-
-  toObject(): NamedStopWatchesData {
+  toObject() {
     return this.toJSON();
   }
-
-  toString(): string {
+  toString() {
     return JSON.stringify(this._timers);
   }
-
-  getWorkTotal(): Milliseconds {
-    return this._timers[TimerKeys.WORK_TIMER].totalTime;
+  getWorkTotal() {
+    return this._timers[exports.TimerKeys.WORK_TIMER].totalTime;
   }
-
-  getLunchTotal(): Milliseconds {
-    return this._timers[TimerKeys.LUNCH_TIMER].totalTime;
+  getLunchTotal() {
+    return this._timers[exports.TimerKeys.LUNCH_TIMER].totalTime;
   }
-
-  getCoffeeTotal(): Milliseconds {
-    return this._timers[TimerKeys.COFFEE_TIMER].totalTime;
+  getCoffeeTotal() {
+    return this._timers[exports.TimerKeys.COFFEE_TIMER].totalTime;
   }
-
-  getTotal(): Milliseconds {
+  getTotal() {
     return this.getWorkTotal() + this.getCoffeeTotal() + this.getLunchTotal();
   }
-
-  private stopCurrentActiveTimer() {
+  stopCurrentActiveTimer() {
     this._lastActiveTimer = this._currentActiveTimer;
     this._timers[this._currentActiveTimer].stop();
     this.stopManualCount();
   }
-
-  private startManualCount() {
+  startManualCount() {
     this._countTimerId = setTimeout(() => {
       this._durationByCount += 500;
       this.startManualCount();
     }, 500);
   }
-
-  private stopManualCount() {
+  stopManualCount() {
     if (this._countTimerId) {
       clearTimeout(this._countTimerId);
       this._countTimerId = undefined;
     }
   }
-
-  startWork(): void {
-    this.start(TimerKeys.WORK_TIMER);
+  startWork() {
+    this.start(exports.TimerKeys.WORK_TIMER);
   }
-
-  startLunch(): void {
-    this.start(TimerKeys.LUNCH_TIMER);
+  startLunch() {
+    this.start(exports.TimerKeys.LUNCH_TIMER);
   }
-
-  startCoffee(): void {
-    this.start(TimerKeys.COFFEE_TIMER);
+  startCoffee() {
+    this.start(exports.TimerKeys.COFFEE_TIMER);
   }
-
-  private start(timerKey: string) {
+  start(timerKey) {
     if (this._currentActiveTimer) this.stop();
-
     this._currentActiveTimer = timerKey;
     this._timers[timerKey].start();
     this._durationByCount = 0;
     this.startManualCount();
   }
-
-  stop(): void {
+  stop() {
     if (!this._currentActiveTimer) return;
-
     this.stopCurrentActiveTimer();
-
     const durationByCount = this._durationByCount;
     const lastTimer = this._timers[this._lastActiveTimer];
     const lastLap = lastTimer.laps.pop();
-
     if (lastLap) {
-      const lap: TimeLogHistory = {
+      const lap = {
         logType: this._lastActiveTimer,
         ...lastLap,
         durationByCount,
@@ -165,7 +140,8 @@ export default class AiMonitorStopWatch
       if (this._user) lap.userId = this._user.id;
       this._history.push(lap);
     }
-
     this._currentActiveTimer = "";
   }
 }
+exports.default = AiMonitorStopWatch;
+//# sourceMappingURL=AiMonitorStopWatch.js.map

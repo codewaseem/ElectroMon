@@ -139,7 +139,7 @@ describe("AiStopWatch", () => {
   });
 
   it("should be able to start from initial history", () => {
-    const history: LogHistory[] = [
+    const history: TimeLogHistory[] = [
       {
         duration: 60,
         durationByCount: 60,
@@ -164,16 +164,14 @@ describe("AiStopWatch", () => {
     expect(aiStopWatch1.currentActiveTimer).toBe(TimerKeys.COFFEE_TIMER);
     expect(aiStopWatch1.getHistory()).toMatchObject(history);
     expect(JSON.parse(JSON.stringify(aiStopWatch1))).toMatchObject(timersData);
+
+    aiStopWatch.stop();
   });
 
   it("should be able to set userId", () => {
     aiStopWatch.setUser({
       email: "email",
       id: "1",
-      pulseTwoContext: {
-        token: "token",
-      },
-      pulseTwoId: "1",
     });
     aiStopWatch.startWork();
     aiStopWatch.stop();
