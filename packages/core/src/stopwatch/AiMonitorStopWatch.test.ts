@@ -1,8 +1,5 @@
 import { delay } from "../utils";
-import AiMonitorStopWatch, {
-  TimerKeys,
-  LogHistory,
-} from "./AiMonitorStopWatch";
+import AiMonitorStopWatch, { TimerKeys } from "./AiMonitorStopWatch";
 
 describe("AiStopWatch", () => {
   let aiStopWatch: AiMonitorStopWatch;
@@ -170,7 +167,14 @@ describe("AiStopWatch", () => {
   });
 
   it("should be able to set userId", () => {
-    aiStopWatch.setUserId(`1`);
+    aiStopWatch.setUser({
+      email: "email",
+      id: "1",
+      pulseTwoContext: {
+        token: "token",
+      },
+      pulseTwoId: "1",
+    });
     aiStopWatch.startWork();
     aiStopWatch.stop();
 

@@ -6,16 +6,7 @@ export const TimerKeys = {
   LUNCH_TIMER: "LUNCH",
 };
 
-export interface LogHistory {
-  logType: string;
-  startTime: number;
-  endTime: number;
-  duration: number;
-  durationByCount: number;
-  userId?: string;
-}
-
-export default class AiMonitorStopWatch {
+export default class AiMonitorStopWatch implements UserAssignable {
   private _timers = {
     [TimerKeys.WORK_TIMER]: new StopWatch(),
     [TimerKeys.COFFEE_TIMER]: new StopWatch(),
@@ -26,7 +17,7 @@ export default class AiMonitorStopWatch {
   private _lastActiveTimer = "";
   private _currentActiveTimer = "";
   private _countTimerId: NodeJS.Timeout | undefined = undefined;
-  private _userId = "";
+  private _user: UserInfo | null = null;
 
   constructor(
     history?: LogHistory[],
@@ -56,44 +47,51 @@ export default class AiMonitorStopWatch {
       });
     }
   }
-
-  setUserId(id: string) {
-    this._userId = id;
+  getUser(): UserInfo | null {
+    return this._user;
   }
 
-  get currentActiveTimer() {
+  setUser(user: UserInfo): void {
+    this._user = user;
+  }
+
+  get currentActiveTimer(): string {
     return this._currentActiveTimer;
   }
 
-  get lastActiveTimer() {
+  get lastActiveTimer(): string {
     return this._lastActiveTimer;
   }
 
-  toJSON() {
+  toJSON(): {
+    [key: string]: StopWatch;
+  } {
     return this._timers;
   }
 
-  toObject() {
+  toObject(): {
+    [key: string]: StopWatch;
+  } {
     return this.toJSON();
   }
 
-  toString() {
+  toString(): string {
     return JSON.stringify(this._timers);
   }
 
-  getWorkTotal() {
+  getWorkTotal(): Milliseconds {
     return this._timers[TimerKeys.WORK_TIMER].totalTime;
   }
 
-  getLunchTotal() {
+  getLunchTotal(): Milliseconds {
     return this._timers[TimerKeys.LUNCH_TIMER].totalTime;
   }
 
-  getCoffeeTotal() {
+  getCoffeeTotal(): Milliseconds {
     return this._timers[TimerKeys.COFFEE_TIMER].totalTime;
   }
 
-  getTotal() {
+  getTotal(): Milliseconds {
     return this.getWorkTotal() + this.getCoffeeTotal() + this.getLunchTotal();
   }
 
@@ -117,15 +115,15 @@ export default class AiMonitorStopWatch {
     }
   }
 
-  startWork() {
+  startWork(): void {
     this.start(TimerKeys.WORK_TIMER);
   }
 
-  startLunch() {
+  startLunch(): void {
     this.start(TimerKeys.LUNCH_TIMER);
   }
 
-  startCoffee() {
+  startCoffee(): void {
     this.start(TimerKeys.COFFEE_TIMER);
   }
 
@@ -138,7 +136,7 @@ export default class AiMonitorStopWatch {
     this.startManualCount();
   }
 
-  stop() {
+  stop(): void {
     if (!this._currentActiveTimer) return;
 
     this.stopCurrentActiveTimer();
@@ -153,18 +151,18 @@ export default class AiMonitorStopWatch {
         ...lastLap,
         durationByCount,
       };
-      if (this._userId) lap.userId = this._userId;
+      if (this._user) lap.userId = this._user.id;
       this._history.push(lap);
     }
 
     this._currentActiveTimer = "";
   }
 
-  getHistory() {
+  getHistory(): LogHistory[] {
     return this._history.slice();
   }
 
-  deleteHistory() {
+  deleteHistory(): void {
     this._history = [];
   }
 }
