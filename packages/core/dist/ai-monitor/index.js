@@ -34,8 +34,26 @@ class AiMonitor {
     __classPrivateFieldSet(this, _stopwatch, stopwatch);
     __classPrivateFieldSet(this, _storageGateway, storageGateway);
   }
+  async login(email, password) {
+    const user = await __classPrivateFieldGet(this, _aiMonitorApi).login(
+      email,
+      password
+    );
+    __classPrivateFieldGet(this, _stopwatch).setUser(user);
+    await __classPrivateFieldGet(this, _activityTracker).init(user);
+    const [stopwatchState, trackerState] = await Promise.all([
+      __classPrivateFieldGet(this, _storageGateway).getStopWatchState(),
+      __classPrivateFieldGet(this, _storageGateway).getActivityTrackerState(),
+    ]);
+    __classPrivateFieldGet(this, _stopwatch).setInitialState(stopwatchState);
+    __classPrivateFieldGet(this, _activityTracker).setInitialState(
+      trackerState
+    );
+    __classPrivateFieldSet(this, _user, user);
+  }
   async startWork() {
     this.throwIfUserNotSet();
+    await this.stop();
     __classPrivateFieldGet(this, _stopwatch).startWork();
     __classPrivateFieldGet(this, _activityTracker).startTracking();
   }
@@ -54,41 +72,27 @@ class AiMonitor {
     __classPrivateFieldGet(this, _activityTracker).stopTracking();
     await this.syncData();
   }
-  addManualTime() {
-    throw new Error("Method not implemented.");
-  }
-  applyForLeave() {
-    throw new Error("Method not implemented.");
-  }
   async logout() {
     if (!__classPrivateFieldGet(this, _user)) return;
     await this.stop();
     await __classPrivateFieldGet(this, _aiMonitorApi).logout();
     __classPrivateFieldSet(this, _user, undefined);
   }
-  async login(email, password) {
-    const user = await __classPrivateFieldGet(this, _aiMonitorApi).login(
-      email,
-      password
-    );
-    __classPrivateFieldGet(this, _stopwatch).setUser(user);
-    const state = await __classPrivateFieldGet(
-      this,
-      _storageGateway
-    ).getSavedStopWatchState();
-    __classPrivateFieldGet(this, _stopwatch).setInitialState(state);
-    await __classPrivateFieldGet(this, _activityTracker).init(user);
-    __classPrivateFieldSet(this, _user, user);
+  addManualTime() {
+    throw new Error("Method not implemented.");
+  }
+  applyForLeave() {
+    throw new Error("Method not implemented.");
   }
   async syncData() {
     const timeLogs = __classPrivateFieldGet(
       this,
       _stopwatch
-    ).getLastSessionHistory();
+    ).getChangedHistory();
     const usageLogs = __classPrivateFieldGet(
       this,
       _activityTracker
-    ).getLastSessionHistory();
+    ).getChangedHistory();
     await Promise.all([
       __classPrivateFieldGet(this, _aiMonitorApi).addTimeLogs(timeLogs),
       __classPrivateFieldGet(this, _aiMonitorApi).addUsageLogs(usageLogs),

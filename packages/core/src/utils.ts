@@ -1,7 +1,10 @@
 export const delay = (ms: number): Promise<never> =>
   new Promise((r) => setTimeout(r, ms));
 
-export const diffArrayObject = (oldArray: any[], newArray: any[]): any[] => {
+export function diffArrayObject<T>(
+  oldArray: readonly T[],
+  newArray: readonly T[]
+): T[] {
   const diffedArray = [];
   const len = oldArray.length;
   for (let i = 0; i < len; i++) {
@@ -13,4 +16,4 @@ export const diffArrayObject = (oldArray: any[], newArray: any[]): any[] => {
   if (newArray.length > oldArray.length)
     diffedArray.push(...newArray.slice(len));
   return diffedArray;
-};
+}

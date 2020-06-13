@@ -1,12 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="../../../../contracts/index.d.ts" />
+/// <reference path="../../../../../contracts/index.d.ts" />
 
-import aiMonitorApi, { validLoginData } from "./__mocks__/aiMonitorApi";
-import activityTracker from "./__mocks__/activityTracker";
-import storageGateway from "./__mocks__/storageGateway";
+import aiMonitorApi, { validLoginData } from "../__mocks__/aiMonitorApi";
+import activityTracker from "../__mocks__/activityTracker";
+import storageGateway from "../__mocks__/storageGateway";
 
 import AiMonitorStopWatch from "../stopwatch/AiMonitorStopWatch";
-import AiMonitor, { ErrorMessages } from ".";
+import AiMonitor, { ErrorMessages } from "..";
 
 jest.mock("../stopwatch/AiMonitorStopWatch");
 
@@ -51,7 +51,9 @@ describe("AiMonitor", () => {
       setUserCallData
     );
 
-    expect(storageGateway.getSavedStopWatchState).toHaveBeenCalled();
+    expect(storageGateway.getStopWatchState).toHaveBeenCalled();
+    expect(storageGateway.getActivityTrackerState).toHaveBeenCalled();
+    expect(activityTracker.setInitialState).toHaveBeenCalled();
     expect(activityTracker.init).toHaveBeenLastCalledWith(setUserCallData);
     expect(spy).toHaveBeenCalled();
   });
@@ -113,6 +115,7 @@ describe("AiMonitor", () => {
     expect(storageGateway.saveTimeLogs).toHaveBeenCalled();
     expect(storageGateway.saveUsageHistory).toHaveBeenCalled();
     expect(storageGateway.saveStopWatchState).toHaveBeenCalled();
+    expect(activityTracker.getChangedHistory).toHaveBeenCalled();
     expect(aiMonitorApi.addTimeLogs).toHaveBeenCalled();
     expect(aiMonitorApi.addUsageLogs).toHaveBeenCalled();
   });

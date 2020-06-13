@@ -1,4 +1,4 @@
-import AiMonitorStopWatch from "../stopwatch/AiMonitorStopWatch";
+import AiMonitorStopWatch from "./stopwatch/AiMonitorStopWatch";
 
 export const ErrorMessages = {
   notLoggedIn: "Not Logged In: Please Login first.",
@@ -28,20 +28,42 @@ export default class AiMonitor implements IAiMonitor {
     this.#stopwatch = stopwatch;
     this.#storageGateway = storageGateway;
   }
+
+  async login(email: string, password: string): Promise<void> {
+    const user = await this.#aiMonitorApi.login(email, password);
+
+    this.#stopwatch.setUser(user);
+    await this.#activityTracker.init(user);
+
+    const [stopwatchState, trackerState] = await Promise.all([
+      this.#storageGateway.getStopWatchState(),
+      this.#storageGateway.getActivityTrackerState(),
+    ]);
+
+    this.#stopwatch.setInitialState(stopwatchState);
+    this.#activityTracker.setInitialState(trackerState);
+
+    this.#user = user;
+  }
+
   async startWork(): Promise<void> {
     this.throwIfUserNotSet();
+
+    await this.stop();
 
     this.#stopwatch.startWork();
     this.#activityTracker.startTracking();
   }
   async startCoffeeBreak(): Promise<void> {
     this.throwIfUserNotSet();
+
     await this.stop();
     this.#stopwatch.startCoffee();
   }
 
   async startLunchBreak(): Promise<void> {
     this.throwIfUserNotSet();
+
     await this.stop();
     this.#stopwatch.startLunch();
   }
@@ -53,12 +75,6 @@ export default class AiMonitor implements IAiMonitor {
     await this.syncData();
   }
 
-  addManualTime(): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
-  applyForLeave(): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
   async logout(): Promise<void> {
     if (!this.#user) return;
 
@@ -68,21 +84,16 @@ export default class AiMonitor implements IAiMonitor {
     this.#user = undefined;
   }
 
-  async login(email: string, password: string): Promise<void> {
-    const user = await this.#aiMonitorApi.login(email, password);
-    this.#stopwatch.setUser(user);
-
-    const state = await this.#storageGateway.getSavedStopWatchState();
-    this.#stopwatch.setInitialState(state);
-
-    await this.#activityTracker.init(user);
-
-    this.#user = user;
+  addManualTime(): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  applyForLeave(): Promise<void> {
+    throw new Error("Method not implemented.");
   }
 
   private async syncData() {
-    const timeLogs = this.#stopwatch.getLastSessionHistory();
-    const usageLogs = this.#activityTracker.getLastSessionHistory();
+    const timeLogs = this.#stopwatch.getChangedHistory();
+    const usageLogs = this.#activityTracker.getChangedHistory();
 
     await Promise.all([
       this.#aiMonitorApi.addTimeLogs(timeLogs),

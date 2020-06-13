@@ -4,7 +4,7 @@ export declare const TimerKeys: {
   LUNCH_TIMER: string;
 };
 export default class AiMonitorStopWatch
-  implements UserAssignable, HistoryTrackable<TimeLogHistory[]> {
+  implements UserAssignable, HistoryTrackable<TimeLogHistory> {
   private _timers;
   private _history;
   private _durationByCount;
@@ -13,11 +13,12 @@ export default class AiMonitorStopWatch
   private _countTimerId;
   private _user;
   constructor(history?: TimeLogHistory[], timersData?: NamedStopWatchesData);
+  getFullHistory(): TimeLogHistory[];
+  deleteFullHistory(): void;
+  getChangedHistory(): TimeLogHistory[];
+  push(item: TimeLogHistory): void;
   setInitialState(timersData?: NamedStopWatchesData): void;
   getUser(): UserInfo | null;
-  getHistory(): TimeLogHistory[];
-  deleteHistory(): void;
-  getLastSessionHistory(): TimeLogHistory[];
   setUser(user: UserInfo): void;
   get currentActiveTimer(): string;
   get lastActiveTimer(): string;

@@ -1,4 +1,4 @@
-import { delay } from "../utils";
+import { delay } from "../../utils";
 import AiMonitorStopWatch, { TimerKeys } from "./AiMonitorStopWatch";
 
 describe("AiStopWatch", () => {
@@ -84,12 +84,12 @@ describe("AiStopWatch", () => {
 
   it("after stopping the current timer it should push the data to the history", () => {
     aiStopWatch.stop();
-    expect(aiStopWatch.getHistory()).toStrictEqual([]);
+    expect(aiStopWatch.getFullHistory()).toStrictEqual([]);
 
     aiStopWatch.startWork();
     aiStopWatch.stop();
 
-    expect(aiStopWatch.getHistory().pop()).toMatchObject({
+    expect(aiStopWatch.getFullHistory().pop()).toMatchObject({
       logType: "WORK",
       startTime: expect.any(Number),
       endTime: expect.any(Number),
@@ -102,10 +102,10 @@ describe("AiStopWatch", () => {
     aiStopWatch.startWork();
     aiStopWatch.stop();
 
-    expect(aiStopWatch.getHistory().length).toBe(1);
+    expect(aiStopWatch.getFullHistory().length).toBe(1);
 
-    aiStopWatch.deleteHistory();
-    expect(aiStopWatch.getHistory().length).toBe(0);
+    aiStopWatch.deleteFullHistory();
+    expect(aiStopWatch.getFullHistory().length).toBe(0);
   });
 
   it("should be also able to time manually", async () => {
@@ -113,7 +113,7 @@ describe("AiStopWatch", () => {
     await delay(1550);
     aiStopWatch.stop();
 
-    const log = aiStopWatch.getHistory().pop();
+    const log = aiStopWatch.getFullHistory().pop();
 
     expect(log?.durationByCount).toBeGreaterThan(1495);
     expect(log?.durationByCount).toBeLessThan(1550);
@@ -149,7 +149,7 @@ describe("AiStopWatch", () => {
       },
     ];
     const aiStopWatch1 = new AiMonitorStopWatch(history);
-    expect(aiStopWatch1.getHistory()).toMatchObject(history);
+    expect(aiStopWatch1.getFullHistory()).toMatchObject(history);
   });
 
   it("should be able to start from initial timers data", () => {
@@ -157,12 +157,12 @@ describe("AiStopWatch", () => {
     aiStopWatch.startLunch();
     aiStopWatch.startCoffee();
 
-    const history = aiStopWatch.getHistory();
+    const history = aiStopWatch.getFullHistory();
     const timersData = JSON.parse(JSON.stringify(aiStopWatch));
 
     const aiStopWatch1 = new AiMonitorStopWatch(history, timersData);
     expect(aiStopWatch1.currentActiveTimer).toBe(TimerKeys.COFFEE_TIMER);
-    expect(aiStopWatch1.getHistory()).toMatchObject(history);
+    expect(aiStopWatch1.getFullHistory()).toMatchObject(history);
     expect(JSON.parse(JSON.stringify(aiStopWatch1))).toMatchObject(timersData);
 
     aiStopWatch.stop();
@@ -176,7 +176,7 @@ describe("AiStopWatch", () => {
     aiStopWatch.startWork();
     aiStopWatch.stop();
 
-    expect(aiStopWatch.getHistory().pop()).toMatchObject({
+    expect(aiStopWatch.getFullHistory().pop()).toMatchObject({
       logType: "WORK",
       startTime: expect.any(Number),
       endTime: expect.any(Number),

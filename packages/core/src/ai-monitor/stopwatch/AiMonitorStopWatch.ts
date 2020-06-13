@@ -1,4 +1,5 @@
 import StopWatch from "./StopWatch";
+import HistoryTracker from "../HistoryTracker";
 
 export const TimerKeys = {
   WORK_TIMER: "WORK",
@@ -7,13 +8,13 @@ export const TimerKeys = {
 };
 
 export default class AiMonitorStopWatch
-  implements UserAssignable, HistoryTrackable<TimeLogHistory[]> {
+  implements UserAssignable, HistoryTrackable<TimeLogHistory> {
   private _timers = {
     [TimerKeys.WORK_TIMER]: new StopWatch(),
     [TimerKeys.COFFEE_TIMER]: new StopWatch(),
     [TimerKeys.LUNCH_TIMER]: new StopWatch(),
   };
-  private _history: TimeLogHistory[] = [];
+  private _history: HistoryTracker<TimeLogHistory>;
   private _durationByCount = 0;
   private _lastActiveTimer = "";
   private _currentActiveTimer = "";
@@ -21,9 +22,22 @@ export default class AiMonitorStopWatch
   private _user: UserInfo | null = null;
 
   constructor(history?: TimeLogHistory[], timersData?: NamedStopWatchesData) {
-    this._history = history || [];
+    this._history = new HistoryTracker<TimeLogHistory>(history || []);
 
     this.setInitialState(timersData);
+  }
+
+  getFullHistory(): TimeLogHistory[] {
+    return this._history.getFullHistory();
+  }
+  deleteFullHistory(): void {
+    this._history.deleteFullHistory();
+  }
+  getChangedHistory(): TimeLogHistory[] {
+    return this._history.getChangedHistory();
+  }
+  push(item: TimeLogHistory): void {
+    this._history.push(item);
   }
 
   setInitialState(timersData?: NamedStopWatchesData): void {
@@ -50,20 +64,6 @@ export default class AiMonitorStopWatch
 
   getUser(): UserInfo | null {
     throw new Error("Method not implemented.");
-  }
-
-  getHistory(): TimeLogHistory[] {
-    return this._history.slice();
-  }
-
-  deleteHistory(): void {
-    this._history = [];
-  }
-
-  getLastSessionHistory(): TimeLogHistory[] {
-    const currentHistory = this.getHistory();
-    this.deleteHistory();
-    return currentHistory;
   }
 
   setUser(user: UserInfo): void {

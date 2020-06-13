@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.diffArrayObject = exports.delay = void 0;
 exports.delay = (ms) => new Promise((r) => setTimeout(r, ms));
-exports.diffArrayObject = (oldArray, newArray) => {
+function diffArrayObject(oldArray, newArray) {
   const diffedArray = [];
   const len = oldArray.length;
   for (let i = 0; i < len; i++) {
@@ -13,5 +13,6 @@ exports.diffArrayObject = (oldArray, newArray) => {
   if (newArray.length > oldArray.length)
     diffedArray.push(...newArray.slice(len));
   return diffedArray;
-};
+}
+exports.diffArrayObject = diffArrayObject;
 //# sourceMappingURL=utils.js.map

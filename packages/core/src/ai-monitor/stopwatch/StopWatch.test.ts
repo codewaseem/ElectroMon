@@ -191,8 +191,9 @@ describe("StopWatch", () => {
   });
 
   it("should be able to set initial state and continue from it", () => {
-    const initialState = {
+    const initialState: StopWatchData = {
       isRunning: false,
+      milliseconds: 0,
       laps: [
         {
           startTime: Date.now(),

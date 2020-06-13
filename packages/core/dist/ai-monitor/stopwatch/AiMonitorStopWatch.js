@@ -7,6 +7,7 @@ var __importDefault =
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TimerKeys = void 0;
 const StopWatch_1 = __importDefault(require("./StopWatch"));
+const HistoryTracker_1 = __importDefault(require("../HistoryTracker"));
 exports.TimerKeys = {
   WORK_TIMER: "WORK",
   COFFEE_TIMER: "COFFEE",
@@ -19,14 +20,25 @@ class AiMonitorStopWatch {
       [exports.TimerKeys.COFFEE_TIMER]: new StopWatch_1.default(),
       [exports.TimerKeys.LUNCH_TIMER]: new StopWatch_1.default(),
     };
-    this._history = [];
     this._durationByCount = 0;
     this._lastActiveTimer = "";
     this._currentActiveTimer = "";
     this._countTimerId = undefined;
     this._user = null;
-    this._history = history || [];
+    this._history = new HistoryTracker_1.default(history || []);
     this.setInitialState(timersData);
+  }
+  getFullHistory() {
+    return this._history.getFullHistory();
+  }
+  deleteFullHistory() {
+    this._history.deleteFullHistory();
+  }
+  getChangedHistory() {
+    return this._history.getChangedHistory();
+  }
+  push(item) {
+    this._history.push(item);
   }
   setInitialState(timersData) {
     if (timersData && Object.keys(timersData).length) {
@@ -50,17 +62,6 @@ class AiMonitorStopWatch {
   }
   getUser() {
     throw new Error("Method not implemented.");
-  }
-  getHistory() {
-    return this._history.slice();
-  }
-  deleteHistory() {
-    this._history = [];
-  }
-  getLastSessionHistory() {
-    const currentHistory = this.getHistory();
-    this.deleteHistory();
-    return currentHistory;
   }
   setUser(user) {
     this._user = user;

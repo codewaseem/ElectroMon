@@ -9,10 +9,12 @@ declare interface IAiMonitor {
   logout(): Promise<void>;
 }
 
-declare interface IActivityTracker extends HistoryTrackable<UsageHistory[]> {
+declare interface IActivityTracker extends HistoryTrackable<UsageHistory> {
   init(user: UserInfo): Promise<void>;
   startTracking(): Promise<void>;
   stopTracking(): Promise<void>;
+  setInitialState(state: ActivityTrackerData): Promise<void>;
+  getActivityTrackerData(): ActivityTrackerData;
 }
 
 declare interface IStorageGateway {
@@ -21,7 +23,9 @@ declare interface IStorageGateway {
   getUsageHistory(): Promise<UsageHistory[]>;
   saveUsageHistory(history: UsageHistory[]): Promise<void>;
   saveStopWatchState(state: NamedStopWatchesData): Promise<void>;
-  getSavedStopWatchState(): Promise<NamedStopWatchesData | undefined>;
+  getStopWatchState(): Promise<NamedStopWatchesData | undefined>;
+  saveActivityTrackerState(state: ActivityTrackerData): Promise<void>;
+  getActivityTrackerState(): Promise<ActivityTrackerData>;
 }
 
 declare interface IAiMonitorApi {
@@ -30,6 +34,21 @@ declare interface IAiMonitorApi {
   addTimeLogs(logs: TimeLogHistory[]): Promise<void>;
   addUsageLogs(logs: UsageHistory[]): Promise<void>;
   applyForLeave(): Promise<void>;
+}
+
+declare interface ActivityTrackerData {
+  [key: string]: {
+    [key: string]: {
+      timeSpent: Milliseconds;
+      idleTime: Milliseconds;
+      keystrokes: number;
+      mouseclicks: number;
+      sessions: Array<{
+        startTime: number;
+        endTime: number;
+      }>;
+    };
+  };
 }
 
 declare interface UsageHistory {
@@ -76,9 +95,10 @@ declare type MockIt<T> = {
 };
 
 declare interface HistoryTrackable<T> {
-  getHistory(): T;
-  deleteHistory(): void;
-  getLastSessionHistory(): T;
+  getFullHistory(): T[];
+  deleteFullHistory(): void;
+  getChangedHistory(): T[];
+  push(item: T): void;
 }
 
 declare interface UserAssignable {

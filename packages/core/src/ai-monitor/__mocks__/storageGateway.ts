@@ -4,7 +4,9 @@ const storageGateway: MockIt<IStorageGateway> = {
   saveTimeLogs: jest.fn(),
   saveUsageHistory: jest.fn(),
   saveStopWatchState: jest.fn(),
-  getSavedStopWatchState: jest.fn(),
+  getStopWatchState: jest.fn(),
+  getActivityTrackerState: jest.fn(),
+  saveActivityTrackerState: jest.fn(),
 };
 
 export default storageGateway;
