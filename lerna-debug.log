@@ -1,0 +1,14 @@
+0 silly argv {
+0 silly argv   _: [ 'add' ],
+0 silly argv   scope: '@ai-monitor/demo',
+0 silly argv   globs: [ 'packages/storage', 'packages/native' ],
+0 silly argv   lernaVersion: '3.22.1',
+0 silly argv   '$0': 'lerna',
+0 silly argv   pkg: 'packages/core'
+0 silly argv }
+1 notice cli v3.22.1
+2 verbose rootPath /home/waseem/work/emp-monitoring-ts
+3 error Error: exited with error code: 128
+3 error     at ChildProcess.<anonymous> (/home/waseem/work/emp-monitoring-ts/node_modules/@evocateur/pacote/lib/util/finished.js:12:19)
+3 error     at ChildProcess.emit (events.js:315:20)
+3 error     at maybeClose (internal/child_process.js:1021:16)
