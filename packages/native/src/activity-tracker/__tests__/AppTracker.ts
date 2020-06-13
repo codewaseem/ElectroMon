@@ -2,7 +2,7 @@
 /// <reference path="../../../../../contracts/index.d.ts" />
 
 import activeWin from "active-win";
-import AppTracker from "../ActivityTracker";
+import ActivityTracker from "../ActivityTracker";
 import { delay } from "@ai-monitor/common";
 import {
   LogInputData,
@@ -11,16 +11,16 @@ import {
   initialAppUsageData,
 } from "../__testdata__/test.data";
 
-AppTracker.TIMER_INTERVAL = TestIntervalTime;
+ActivityTracker.TIMER_INTERVAL = TestIntervalTime;
 
 jest.mock("iohook");
 jest.useFakeTimers();
 
-describe("AppTracker", () => {
-  let tracker: AppTracker;
+describe("ActivityMonitor", () => {
+  let tracker: ActivityTracker;
 
   beforeEach(async () => {
-    tracker = new AppTracker();
+    tracker = new ActivityTracker();
     await tracker.setUser({
       email: "some@email.com",
       id: "454",
@@ -41,7 +41,7 @@ describe("AppTracker", () => {
     expect(timerIdSet).toHaveBeenCalled();
     expect(setTimeout).toHaveBeenCalledWith(
       expect.any(Function),
-      AppTracker.TIMER_INTERVAL
+      ActivityTracker.TIMER_INTERVAL
     );
 
     tracker.stopTracking();
@@ -88,7 +88,7 @@ describe("AppTracker", () => {
 
     tracker.startTracking();
 
-    await delay(AppTracker.TIMER_INTERVAL * (LogInputData.length + 1));
+    await delay(ActivityTracker.TIMER_INTERVAL * (LogInputData.length + 1));
 
     expect(tracker.getActivityTrackerData()).toMatchObject(LogOutputData);
 
@@ -99,12 +99,12 @@ describe("AppTracker", () => {
     jest.useRealTimers();
     tracker.startTracking();
 
-    await delay(AppTracker.TIMER_INTERVAL);
+    await delay(ActivityTracker.TIMER_INTERVAL);
 
     expect(await tracker.getActivityTrackerData()).toMatchObject({
       "Google Chrome": {
         "Unicorns - Google Search": {
-          timeSpent: AppTracker.TIMER_INTERVAL / 1000,
+          timeSpent: ActivityTracker.TIMER_INTERVAL / 1000,
         },
       },
     });
@@ -116,13 +116,13 @@ describe("AppTracker", () => {
     const initialData = {
       [initialAppUsageData.owner.name]: {
         [initialAppUsageData.title]: {
-          timeSpent: (AppTracker.TIMER_INTERVAL * 2) / 1000,
+          timeSpent: (ActivityTracker.TIMER_INTERVAL * 2) / 1000,
           sessions: [] as any,
         },
       },
     } as ActivityTrackerData;
 
-    const tracker2 = new AppTracker();
+    const tracker2 = new ActivityTracker();
     await tracker2.setUser({
       email: "email@email",
       id: "1",
@@ -131,12 +131,12 @@ describe("AppTracker", () => {
     jest.useRealTimers();
 
     tracker2.startTracking();
-    await delay(AppTracker.TIMER_INTERVAL);
+    await delay(ActivityTracker.TIMER_INTERVAL);
 
     expect(await tracker2.getActivityTrackerData()).toMatchObject({
       [initialAppUsageData.owner.name]: {
         [initialAppUsageData.title]: {
-          timeSpent: (AppTracker.TIMER_INTERVAL * 3) / 1000,
+          timeSpent: (ActivityTracker.TIMER_INTERVAL * 3) / 1000,
         },
       },
     } as ActivityTrackerData);

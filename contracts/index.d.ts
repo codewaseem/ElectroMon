@@ -13,7 +13,7 @@ declare interface IActivityTracker extends HistoryTrackable<UsageHistory> {
   setUser(user: UserInfo): void;
   startTracking(): Promise<void>;
   stopTracking(): Promise<void>;
-  setInitialState(state: ActivityTrackerData): void;
+  setInitialState(state: ActivityTrackerData | undefined): void;
   getActivityTrackerData(): ActivityTrackerData;
 }
 
@@ -25,7 +25,7 @@ declare interface IStorageGateway {
   saveStopWatchState(state: NamedStopWatchesData): Promise<void>;
   getStopWatchState(): Promise<NamedStopWatchesData | undefined>;
   saveActivityTrackerState(state: ActivityTrackerData): Promise<void>;
-  getActivityTrackerState(): Promise<ActivityTrackerData>;
+  getActivityTrackerState(): Promise<ActivityTrackerData | undefined>;
 }
 
 declare interface IAiMonitorApi {

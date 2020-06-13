@@ -14,18 +14,16 @@ export default class AiMonitor implements IAiMonitor {
 
   constructor({
     aiMonitorApi,
-    stopwatch,
     activityTracker,
     storageGateway,
   }: {
     aiMonitorApi: IAiMonitorApi;
-    stopwatch: AiMonitorStopWatch;
     activityTracker: IActivityTracker;
     storageGateway: IStorageGateway;
   }) {
     this.#aiMonitorApi = aiMonitorApi;
     this.#activityTracker = activityTracker;
-    this.#stopwatch = stopwatch;
+    this.#stopwatch = new AiMonitorStopWatch();
     this.#storageGateway = storageGateway;
   }
 
@@ -82,6 +80,10 @@ export default class AiMonitor implements IAiMonitor {
     await this.#aiMonitorApi.logout();
 
     this.#user = undefined;
+  }
+
+  getStopWatch(): AiMonitorStopWatch {
+    return this.#stopwatch;
   }
 
   addManualTime(): Promise<void> {

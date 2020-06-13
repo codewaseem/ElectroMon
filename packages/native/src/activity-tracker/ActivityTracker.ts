@@ -5,7 +5,7 @@ import { HistoryTracker } from "@ai-monitor/common";
 
 const separator = "-*-";
 
-export default class AppTracker implements IActivityTracker {
+export default class ActivityTracker implements IActivityTracker {
   static TIMER_INTERVAL = 5000;
 
   private _timerId!: NodeJS.Timeout;
@@ -20,8 +20,8 @@ export default class AppTracker implements IActivityTracker {
     this._history = new HistoryTracker<UsageHistory>(history || []);
   }
 
-  async setInitialState(state: ActivityTrackerData): Promise<void> {
-    this._trackingData = state;
+  setInitialState(state: ActivityTrackerData | undefined): void {
+    if (state && Object.keys(state).length) this._trackingData = state;
   }
 
   getActivityTrackerData(): ActivityTrackerData {
@@ -48,7 +48,7 @@ export default class AppTracker implements IActivityTracker {
     this.timerId = setTimeout(async () => {
       this._startTracking();
       this.saveActiveWindowData();
-    }, AppTracker.TIMER_INTERVAL);
+    }, ActivityTracker.TIMER_INTERVAL);
   }
 
   private async saveActiveWindowData() {
@@ -84,7 +84,7 @@ export default class AppTracker implements IActivityTracker {
       }
 
       this._trackingData[appName][windowTitle].timeSpent +=
-        AppTracker.TIMER_INTERVAL / 1000;
+        ActivityTracker.TIMER_INTERVAL / 1000;
       this._trackingData[appName][
         windowTitle
       ].idleTime = this._idleTimeTracker.getTotalIdleTime();

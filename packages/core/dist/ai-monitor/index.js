@@ -16,14 +16,22 @@ var __classPrivateFieldGet =
     }
     return privateMap.get(receiver);
   };
+var __importDefault =
+  (this && this.__importDefault) ||
+  function (mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
 var _aiMonitorApi, _stopwatch, _activityTracker, _storageGateway, _user;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ErrorMessages = void 0;
+const AiMonitorStopWatch_1 = __importDefault(
+  require("./stopwatch/AiMonitorStopWatch")
+);
 exports.ErrorMessages = {
   notLoggedIn: "Not Logged In: Please Login first.",
 };
 class AiMonitor {
-  constructor({ aiMonitorApi, stopwatch, activityTracker, storageGateway }) {
+  constructor({ aiMonitorApi, activityTracker, storageGateway }) {
     _aiMonitorApi.set(this, void 0);
     _stopwatch.set(this, void 0);
     _activityTracker.set(this, void 0);
@@ -31,7 +39,11 @@ class AiMonitor {
     _user.set(this, void 0);
     __classPrivateFieldSet(this, _aiMonitorApi, aiMonitorApi);
     __classPrivateFieldSet(this, _activityTracker, activityTracker);
-    __classPrivateFieldSet(this, _stopwatch, stopwatch);
+    __classPrivateFieldSet(
+      this,
+      _stopwatch,
+      new AiMonitorStopWatch_1.default()
+    );
     __classPrivateFieldSet(this, _storageGateway, storageGateway);
   }
   async login(email, password) {
@@ -40,7 +52,7 @@ class AiMonitor {
       password
     );
     __classPrivateFieldGet(this, _stopwatch).setUser(user);
-    await __classPrivateFieldGet(this, _activityTracker).init(user);
+    __classPrivateFieldGet(this, _activityTracker).setUser(user);
     const [stopwatchState, trackerState] = await Promise.all([
       __classPrivateFieldGet(this, _storageGateway).getStopWatchState(),
       __classPrivateFieldGet(this, _storageGateway).getActivityTrackerState(),
@@ -77,6 +89,9 @@ class AiMonitor {
     await this.stop();
     await __classPrivateFieldGet(this, _aiMonitorApi).logout();
     __classPrivateFieldSet(this, _user, undefined);
+  }
+  getStopWatch() {
+    return __classPrivateFieldGet(this, _stopwatch);
   }
   addManualTime() {
     throw new Error("Method not implemented.");

@@ -1,0 +1,16 @@
+{
+  "exclude": [
+    "dist",
+    "**/**.test.*",
+    "**/__tests__",
+    "**/__mocks__",
+    "**/__testdata__",
+    "jest.config.js"
+  ],
+  "include": ["./src", "../../contracts", "../common/HistoryTracker.ts"],
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist"
+  }
+}

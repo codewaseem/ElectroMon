@@ -10,7 +10,7 @@ const IoHookManager_1 = __importDefault(require("./IoHookManager"));
 const IdleTimeTracker_1 = __importDefault(require("./IdleTimeTracker"));
 const common_1 = require("@ai-monitor/common");
 const separator = "-*-";
-class AppTracker {
+class ActivityTracker {
   constructor(history) {
     this._isTracking = false;
     this._trackingData = {};
@@ -18,8 +18,8 @@ class AppTracker {
     this._idleTimeTracker = new IdleTimeTracker_1.default();
     this._history = new common_1.HistoryTracker(history || []);
   }
-  async setInitialState(state) {
-    this._trackingData = state;
+  setInitialState(state) {
+    if (state && Object.keys(state).length) this._trackingData = state;
   }
   getActivityTrackerData() {
     return this._trackingData;
@@ -40,7 +40,7 @@ class AppTracker {
     this.timerId = setTimeout(async () => {
       this._startTracking();
       this.saveActiveWindowData();
-    }, AppTracker.TIMER_INTERVAL);
+    }, ActivityTracker.TIMER_INTERVAL);
   }
   async saveActiveWindowData() {
     const data = await active_win_1.default();
@@ -69,7 +69,7 @@ class AppTracker {
         this._lastActiveWindow = activeWindowId;
       }
       this._trackingData[appName][windowTitle].timeSpent +=
-        AppTracker.TIMER_INTERVAL / 1000;
+        ActivityTracker.TIMER_INTERVAL / 1000;
       this._trackingData[appName][
         windowTitle
       ].idleTime = this._idleTimeTracker.getTotalIdleTime();
@@ -145,6 +145,6 @@ class AppTracker {
     this._history = new common_1.HistoryTracker(history);
   }
 }
-exports.default = AppTracker;
-AppTracker.TIMER_INTERVAL = 5000;
+exports.default = ActivityTracker;
+ActivityTracker.TIMER_INTERVAL = 5000;
 //# sourceMappingURL=ActivityTracker.js.map

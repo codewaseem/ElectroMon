@@ -1,4 +1,4 @@
-export default class AppTracker implements IActivityTracker {
+export default class ActivityTracker implements IActivityTracker {
   static TIMER_INTERVAL: number;
   private _timerId;
   private _isTracking;
@@ -8,7 +8,7 @@ export default class AppTracker implements IActivityTracker {
   private _history;
   private _user?;
   constructor(history?: UsageHistory[]);
-  setInitialState(state: ActivityTrackerData): Promise<void>;
+  setInitialState(state: ActivityTrackerData | undefined): void;
   getActivityTrackerData(): ActivityTrackerData;
   deleteFullHistory(): void;
   push(item: UsageHistory): void;

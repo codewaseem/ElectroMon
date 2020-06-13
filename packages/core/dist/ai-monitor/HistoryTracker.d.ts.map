@@ -1,1 +1,0 @@
-{"version":3,"file":"HistoryTracker.d.ts","sourceRoot":"","sources":["../../src/ai-monitor/HistoryTracker.ts"],"names":[],"mappings":"AAEA,MAAM,CAAC,OAAO,OAAO,cAAc,CAAC,CAAC,CAAE,YAAW,gBAAgB,CAAC,CAAC,CAAC;;gBAIvD,cAAc,EAAE,CAAC,EAAE;IAI/B,IAAI,CAAC,IAAI,EAAE,CAAC,GAAG,IAAI;IAInB,cAAc,IAAI,CAAC,EAAE;IAIrB,iBAAiB,IAAI,CAAC,EAAE;IAWxB,iBAAiB,IAAI,IAAI;CAG1B"}

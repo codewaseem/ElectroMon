@@ -1,0 +1,13 @@
+{
+  "name": "@ai-monitor/storage",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -rf ./dist && yarn tsc",
+    "test": "jest --runInBand --detectOpenHandles"
+  },
+  "dependencies": {
+    "level": "^6.0.1"
+  }
+}

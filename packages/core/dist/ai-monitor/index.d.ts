@@ -6,12 +6,10 @@ export default class AiMonitor implements IAiMonitor {
   #private;
   constructor({
     aiMonitorApi,
-    stopwatch,
     activityTracker,
     storageGateway,
   }: {
     aiMonitorApi: IAiMonitorApi;
-    stopwatch: AiMonitorStopWatch;
     activityTracker: IActivityTracker;
     storageGateway: IStorageGateway;
   });
@@ -21,6 +19,7 @@ export default class AiMonitor implements IAiMonitor {
   startLunchBreak(): Promise<void>;
   stop(): Promise<void>;
   logout(): Promise<void>;
+  getStopWatch(): AiMonitorStopWatch;
   addManualTime(): Promise<void>;
   applyForLeave(): Promise<void>;
   private syncData;

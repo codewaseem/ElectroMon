@@ -1,5 +1,5 @@
 import activeWin from "active-win";
-import AppTracker from "../ActivityTracker";
+import ActivityTracker from "../ActivityTracker";
 
 const APP_ONE = "Google Chrome";
 const APP_TWO = "VS Code";
@@ -7,7 +7,7 @@ const APP_THREE = "AiMonitor";
 
 export const TestIntervalTime = 10;
 
-AppTracker.TIMER_INTERVAL = TestIntervalTime;
+ActivityTracker.TIMER_INTERVAL = TestIntervalTime;
 
 const appOneTabOne: activeWin.WindowsResult = {
   platform: "windows",
@@ -68,21 +68,21 @@ export const LogInputData = [
 export const LogOutputData: ActivityTrackerData = {
   [APP_ONE as string]: {
     [appOneTabOne.title]: {
-      timeSpent: AppTracker.TIMER_INTERVAL / 1000,
+      timeSpent: ActivityTracker.TIMER_INTERVAL / 1000,
       idleTime: expect.any(Number),
       keystrokes: expect.any(Number),
       mouseclicks: expect.any(Number),
       sessions: expect.any(Array),
     },
     [appOneTabTwo.title]: {
-      timeSpent: (3 * AppTracker.TIMER_INTERVAL) / 1000,
+      timeSpent: (3 * ActivityTracker.TIMER_INTERVAL) / 1000,
       idleTime: expect.any(Number),
       keystrokes: expect.any(Number),
       mouseclicks: expect.any(Number),
       sessions: expect.any(Array),
     },
     [appOneTabThree.title]: {
-      timeSpent: AppTracker.TIMER_INTERVAL / 1000,
+      timeSpent: ActivityTracker.TIMER_INTERVAL / 1000,
       idleTime: expect.any(Number),
       keystrokes: expect.any(Number),
       mouseclicks: expect.any(Number),
@@ -91,7 +91,7 @@ export const LogOutputData: ActivityTrackerData = {
   },
   [APP_TWO as string]: {
     [appOneTabOne.title]: {
-      timeSpent: AppTracker.TIMER_INTERVAL / 1000,
+      timeSpent: ActivityTracker.TIMER_INTERVAL / 1000,
       idleTime: expect.any(Number),
       keystrokes: expect.any(Number),
       mouseclicks: expect.any(Number),
@@ -100,7 +100,7 @@ export const LogOutputData: ActivityTrackerData = {
   },
   [APP_THREE as string]: {
     [appOneTabOne.title]: {
-      timeSpent: AppTracker.TIMER_INTERVAL / 1000,
+      timeSpent: ActivityTracker.TIMER_INTERVAL / 1000,
       idleTime: expect.any(Number),
       keystrokes: expect.any(Number),
       mouseclicks: expect.any(Number),

@@ -11,18 +11,17 @@ import AiMonitor, { ErrorMessages } from "..";
 jest.mock("../stopwatch/AiMonitorStopWatch");
 
 describe("AiMonitor", () => {
-  const aiMonitorStopWatch = new AiMonitorStopWatch();
+  let aiMonitorStopWatch: AiMonitorStopWatch;
 
-  let aiMonitor: IAiMonitor;
+  let aiMonitor: AiMonitor;
 
   beforeEach(() => {
     aiMonitor = new AiMonitor({
       aiMonitorApi,
-      stopwatch: aiMonitorStopWatch,
       activityTracker,
       storageGateway,
     });
-
+    aiMonitorStopWatch = aiMonitor.getStopWatch();
     jest.clearAllMocks();
   });
 

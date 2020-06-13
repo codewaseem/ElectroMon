@@ -7,7 +7,7 @@ var __importDefault =
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TimerKeys = void 0;
 const StopWatch_1 = __importDefault(require("./StopWatch"));
-const HistoryTracker_1 = __importDefault(require("../HistoryTracker"));
+const common_1 = require("@ai-monitor/common");
 exports.TimerKeys = {
   WORK_TIMER: "WORK",
   COFFEE_TIMER: "COFFEE",
@@ -25,7 +25,7 @@ class AiMonitorStopWatch {
     this._currentActiveTimer = "";
     this._countTimerId = undefined;
     this._user = null;
-    this._history = new HistoryTracker_1.default(history || []);
+    this._history = new common_1.HistoryTracker(history || []);
     this.setInitialState(timersData);
   }
   getFullHistory() {

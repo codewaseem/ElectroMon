@@ -5,6 +5,7 @@ var __importDefault =
     return mod && mod.__esModule ? mod : { default: mod };
   };
 Object.defineProperty(exports, "__esModule", { value: true });
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const desktop_idle_1 = __importDefault(require("desktop-idle"));
 class IdleTimeTracker {

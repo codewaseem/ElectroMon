@@ -1,9 +1,9 @@
 #!/usr/bin/env ts-node-script
 
-import AppTracker from "./ActivityTracker";
+import ActivityTracker from "./ActivityTracker";
 
 (async () => {
-  const tracker = new AppTracker();
+  const tracker = new ActivityTracker();
   tracker.startTracking();
 
   setInterval(async () => {
@@ -11,5 +11,5 @@ import AppTracker from "./ActivityTracker";
 
     console.log("Current Data");
     console.log(JSON.stringify(data, null, 2));
-  }, AppTracker.TIMER_INTERVAL);
+  }, ActivityTracker.TIMER_INTERVAL);
 })();
