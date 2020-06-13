@@ -1,5 +1,3 @@
-export interface AiMonitor {
-  startWork: () => void;
-}
-export declare const sayHello: () => void;
+import AiMonitor from "./ai-monitor";
+export default AiMonitor;
 //# sourceMappingURL=index.d.ts.map

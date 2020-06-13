@@ -1,5 +1,3 @@
-export interface AiMonitor {
-  startWork: () => void;
-}
+import AiMonitor from "./ai-monitor";
 
-export const sayHello = () => console.log("Hello from core");
+export default AiMonitor;

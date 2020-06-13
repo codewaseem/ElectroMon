@@ -1,5 +1,10 @@
 "use strict";
+var __importDefault =
+  (this && this.__importDefault) ||
+  function (mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sayHello = void 0;
-exports.sayHello = () => console.log("Hello from core");
+const ai_monitor_1 = __importDefault(require("./ai-monitor"));
+exports.default = ai_monitor_1.default;
 //# sourceMappingURL=index.js.map
