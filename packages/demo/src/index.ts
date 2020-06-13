@@ -1,8 +1,8 @@
 import AiMonitor from "@ai-monitor/core";
 import ActivityTracker from "@ai-monitor/native";
-import { delay } from "@ai-monitor/common";
-
 import { InMemoryStorage } from "@ai-monitor/storage";
+
+import { delay } from "@ai-monitor/common";
 
 const aiMonitorApi: IAiMonitorApi = {
   login: () =>
