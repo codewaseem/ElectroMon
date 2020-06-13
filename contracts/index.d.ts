@@ -10,10 +10,10 @@ declare interface IAiMonitor {
 }
 
 declare interface IActivityTracker extends HistoryTrackable<UsageHistory> {
-  init(user: UserInfo): Promise<void>;
+  setUser(user: UserInfo): void;
   startTracking(): Promise<void>;
   stopTracking(): Promise<void>;
-  setInitialState(state: ActivityTrackerData): Promise<void>;
+  setInitialState(state: ActivityTrackerData): void;
   getActivityTrackerData(): ActivityTrackerData;
 }
 

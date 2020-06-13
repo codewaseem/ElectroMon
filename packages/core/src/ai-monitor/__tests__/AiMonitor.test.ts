@@ -54,7 +54,7 @@ describe("AiMonitor", () => {
     expect(storageGateway.getStopWatchState).toHaveBeenCalled();
     expect(storageGateway.getActivityTrackerState).toHaveBeenCalled();
     expect(activityTracker.setInitialState).toHaveBeenCalled();
-    expect(activityTracker.init).toHaveBeenLastCalledWith(setUserCallData);
+    expect(activityTracker.setUser).toHaveBeenLastCalledWith(setUserCallData);
     expect(spy).toHaveBeenCalled();
   });
 

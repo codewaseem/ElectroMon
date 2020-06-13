@@ -1,4 +1,4 @@
-import { diffArrayObject } from "../utils";
+import { diffArrayObject } from "./utils";
 
 export default class HistoryTracker<T> implements HistoryTrackable<T> {
   #history: T[] = [];

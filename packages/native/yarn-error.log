@@ -1,0 +1,47 @@
+Arguments: 
+  /home/waseem/.nvm/versions/node/v12.18.0/bin/node /usr/share/yarn/bin/yarn.js install
+
+PATH: 
+  /home/waseem/.sdkman/candidates/gradle/current/bin:/home/waseem/.nvm/versions/node/v12.18.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-12-oracle/bin:/usr/lib/jvm/java-12-oracle/db/bin:/home/waseem/apps/android-studio/bin:/home/waseem/Android/Sdk/tools/bin:/home/waseem/Android/Sdk/platform-tools:/home/waseem/Android/Sdk/emulator:/home/waseem/Downloads/nand2tetris/tools
+
+Yarn version: 
+  1.22.4
+
+Node version: 
+  12.18.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  SyntaxError: /home/waseem/work/emp-monitoring-ts/packages/native/package.json: Unexpected token } in JSON at position 321
+      at JSON.parse (<anonymous>)
+      at /usr/share/yarn/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/usr/share/yarn/lib/cli.js:310:30)
+      at /usr/share/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "@ai-monitor/native",
+    "version": "0.0.1",
+    "main": "dist/index.js",
+    "license": "MIT",
+    "dependencies": {
+      "@ai-monitor/common": "^0.0.1",
+      "@ai-monitor/core": "^0.0.1",
+      "active-win": "https://github.com/wgcv/active-win/tarball/patch-1",
+      "desktop-idle": "^1.3.0",
+      "iohook": "^0.6.5",
+    },
+    "scripts": {
+      "build": "rm -rf ./dist && yarn tsc",
+      "test": "jest --runInBand --detectOpenHandles"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

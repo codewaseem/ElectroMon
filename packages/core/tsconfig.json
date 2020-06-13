@@ -7,7 +7,7 @@
     "**/__testdata__",
     "jest.config.js"
   ],
-  "include": ["./src", "../../contracts"],
+  "include": ["./src", "../../contracts", "../common/HistoryTracker.ts"],
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "rootDir": "./src",

@@ -1,0 +1,10 @@
+{
+  "name": "@ai-monitor/common",
+  "version": "0.0.1",
+  "main": "./dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -rf ./dist && yarn tsc",
+    "test": "jest --runInBand --detectOpenHandles"
+  }
+}

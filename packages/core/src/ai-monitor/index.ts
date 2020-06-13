@@ -33,7 +33,7 @@ export default class AiMonitor implements IAiMonitor {
     const user = await this.#aiMonitorApi.login(email, password);
 
     this.#stopwatch.setUser(user);
-    await this.#activityTracker.init(user);
+    this.#activityTracker.setUser(user);
 
     const [stopwatchState, trackerState] = await Promise.all([
       this.#storageGateway.getStopWatchState(),

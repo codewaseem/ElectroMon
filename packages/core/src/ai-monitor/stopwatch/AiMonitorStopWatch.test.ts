@@ -1,4 +1,4 @@
-import { delay } from "../../utils";
+import { delay } from "@ai-monitor/common";
 import AiMonitorStopWatch, { TimerKeys } from "./AiMonitorStopWatch";
 
 describe("AiStopWatch", () => {

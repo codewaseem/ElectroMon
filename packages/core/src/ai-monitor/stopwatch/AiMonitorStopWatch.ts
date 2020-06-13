@@ -1,5 +1,5 @@
 import StopWatch from "./StopWatch";
-import HistoryTracker from "../HistoryTracker";
+import { HistoryTracker } from "@ai-monitor/common";
 
 export const TimerKeys = {
   WORK_TIMER: "WORK",
