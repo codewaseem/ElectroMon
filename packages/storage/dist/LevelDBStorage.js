@@ -39,46 +39,90 @@ class LevelDBStorage {
     __classPrivateFieldSet(this, _db, level_1.default(DB_NAME));
   }
   async saveTimeLogs(timeLogs) {
-    __classPrivateFieldGet(this, _timeLogs).push(...timeLogs);
-    await __classPrivateFieldGet(this, _db).put(
-      TIME_LOG,
-      JSON.stringify(__classPrivateFieldGet(this, _timeLogs))
-    );
+    try {
+      __classPrivateFieldGet(this, _timeLogs).push(...timeLogs);
+      await __classPrivateFieldGet(this, _db).put(
+        TIME_LOG,
+        JSON.stringify(__classPrivateFieldGet(this, _timeLogs))
+      );
+    } catch (e) {
+      console.log("KEY NOT FOUND! CREATING NEW ONE");
+    }
   }
   async getTimeLogs() {
-    const data = await __classPrivateFieldGet(this, _db).get(TIME_LOG);
-    return JSON.parse(data);
+    let data = [];
+    try {
+      const strData = await __classPrivateFieldGet(this, _db).get(TIME_LOG);
+      data = JSON.parse(strData);
+    } catch (e) {
+      console.log("Data not found");
+    }
+    return data;
   }
   async getUsageHistory() {
-    const data = await __classPrivateFieldGet(this, _db).get(USAGE_LOG);
-    return JSON.parse(data);
+    let data = [];
+    try {
+      const strData = await __classPrivateFieldGet(this, _db).get(USAGE_LOG);
+      data = JSON.parse(strData);
+    } catch (e) {
+      console.log("Data not found");
+    }
+    return data;
   }
   async saveUsageHistory(history) {
-    __classPrivateFieldGet(this, _usageLogs).push(...history);
-    await __classPrivateFieldGet(this, _db).put(
-      USAGE_LOG,
-      JSON.stringify(__classPrivateFieldGet(this, _usageLogs))
-    );
+    try {
+      __classPrivateFieldGet(this, _usageLogs).push(...history);
+      await __classPrivateFieldGet(this, _db).put(
+        USAGE_LOG,
+        JSON.stringify(__classPrivateFieldGet(this, _usageLogs))
+      );
+    } catch (e) {
+      console.log("Key not found! Creating new");
+    }
   }
   async saveStopWatchState(state) {
-    await __classPrivateFieldGet(this, _db).put(
-      STOPWATCh_STATE,
-      JSON.stringify(state)
-    );
+    try {
+      await __classPrivateFieldGet(this, _db).put(
+        STOPWATCh_STATE,
+        JSON.stringify(state)
+      );
+    } catch (e) {
+      console.log("Key not found! Creating new");
+    }
   }
   async getStopWatchState() {
-    const data = await __classPrivateFieldGet(this, _db).get(STOPWATCh_STATE);
-    return data ? JSON.parse(data) : undefined;
+    let data = undefined;
+    try {
+      const strData = await __classPrivateFieldGet(this, _db).get(
+        STOPWATCh_STATE
+      );
+      data = strData ? JSON.parse(strData) : undefined;
+    } catch (e) {
+      console.log("No data found!");
+    }
+    return data;
   }
   async saveActivityTrackerState(state) {
-    await __classPrivateFieldGet(this, _db).put(
-      TRACKER_STATE,
-      JSON.stringify(state)
-    );
+    try {
+      await __classPrivateFieldGet(this, _db).put(
+        TRACKER_STATE,
+        JSON.stringify(state)
+      );
+    } catch (e) {
+      console.log("Data not found");
+    }
   }
   async getActivityTrackerState() {
-    const data = await __classPrivateFieldGet(this, _db).get(TRACKER_STATE);
-    return data ? JSON.parse(data) : undefined;
+    let data = [];
+    try {
+      const strData = await __classPrivateFieldGet(this, _db).get(
+        TRACKER_STATE
+      );
+      data = strData ? JSON.parse(strData) : undefined;
+    } catch (e) {
+      console.log("Key not found!");
+    }
+    return data;
   }
 }
 exports.default = LevelDBStorage;

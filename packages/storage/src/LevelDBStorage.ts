@@ -19,40 +19,80 @@ export default class LevelDBStorage implements IStorageGateway {
   }
 
   async saveTimeLogs(timeLogs: TimeLogHistory[]): Promise<void> {
-    this.#timeLogs.push(...timeLogs);
-    await this.#db.put(TIME_LOG, JSON.stringify(this.#timeLogs));
+    try {
+      this.#timeLogs.push(...timeLogs);
+      await this.#db.put(TIME_LOG, JSON.stringify(this.#timeLogs));
+    } catch (e) {
+      console.log("KEY NOT FOUND! CREATING NEW ONE");
+    }
   }
 
   async getTimeLogs(): Promise<TimeLogHistory[]> {
-    const data = await this.#db.get(TIME_LOG);
-    return JSON.parse(data);
+    let data = [];
+    try {
+      const strData = await this.#db.get(TIME_LOG);
+      data = JSON.parse(strData);
+    } catch (e) {
+      console.log("Data not found");
+    }
+    return data;
   }
 
   async getUsageHistory(): Promise<UsageHistory[]> {
-    const data = await this.#db.get(USAGE_LOG);
-    return JSON.parse(data);
+    let data = [];
+    try {
+      const strData = await this.#db.get(USAGE_LOG);
+      data = JSON.parse(strData);
+    } catch (e) {
+      console.log("Data not found");
+    }
+    return data;
   }
 
   async saveUsageHistory(history: UsageHistory[]): Promise<void> {
-    this.#usageLogs.push(...history);
-    await this.#db.put(USAGE_LOG, JSON.stringify(this.#usageLogs));
+    try {
+      this.#usageLogs.push(...history);
+      await this.#db.put(USAGE_LOG, JSON.stringify(this.#usageLogs));
+    } catch (e) {
+      console.log("Key not found! Creating new");
+    }
   }
 
   async saveStopWatchState(state: NamedStopWatchesData): Promise<void> {
-    await this.#db.put(STOPWATCh_STATE, JSON.stringify(state));
+    try {
+      await this.#db.put(STOPWATCh_STATE, JSON.stringify(state));
+    } catch (e) {
+      console.log("Key not found! Creating new");
+    }
   }
 
   async getStopWatchState(): Promise<NamedStopWatchesData | undefined> {
-    const data = await this.#db.get(STOPWATCh_STATE);
-    return data ? JSON.parse(data) : undefined;
+    let data = undefined;
+    try {
+      const strData = await this.#db.get(STOPWATCh_STATE);
+      data = strData ? JSON.parse(strData) : undefined;
+    } catch (e) {
+      console.log("No data found!");
+    }
+    return data;
   }
 
   async saveActivityTrackerState(state: ActivityTrackerData): Promise<void> {
-    await this.#db.put(TRACKER_STATE, JSON.stringify(state));
+    try {
+      await this.#db.put(TRACKER_STATE, JSON.stringify(state));
+    } catch (e) {
+      console.log("Data not found");
+    }
   }
 
   async getActivityTrackerState(): Promise<ActivityTrackerData | undefined> {
-    const data = await this.#db.get(TRACKER_STATE);
-    return data ? JSON.parse(data) : undefined;
+    let data = [];
+    try {
+      const strData = await this.#db.get(TRACKER_STATE);
+      data = strData ? JSON.parse(strData) : undefined;
+    } catch (e) {
+      console.log("Key not found!");
+    }
+    return data;
   }
 }
